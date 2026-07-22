@@ -411,6 +411,45 @@ section.alt{background:linear-gradient(180deg,rgba(232,225,209,.55),rgba(244,240
 .faq-a{max-height:0; overflow:hidden; transition:max-height .42s cubic-bezier(.4,0,.2,1);}
 .faq-a p{padding:0 22px 21px; font-size:14px; color:var(--muted);}
 
+/* ============ TYPE DETAIL MODAL ============ */
+.type-modal{position:fixed; inset:0; z-index:200; display:flex; align-items:flex-end; justify-content:center; opacity:0; pointer-events:none; transition:opacity .3s;}
+.type-modal.open{opacity:1; pointer-events:auto;}
+.type-modal-overlay{position:absolute; inset:0; background:rgba(10,20,35,.58); backdrop-filter:blur(3px);}
+.type-modal-panel{
+  position:relative; z-index:1; width:100%; max-width:720px; max-height:88vh; overflow-y:auto;
+  margin:0 auto 0; background:linear-gradient(165deg,#FDFBF6,#EEE8D9);
+  border-radius:22px 22px 0 0; box-shadow:0 -18px 50px rgba(15,20,35,.35), inset 1px 1px 0 rgba(255,255,255,.9);
+  padding:34px clamp(20px,4vw,44px) 40px; transform:translateY(24px); transition:transform .34s cubic-bezier(.2,.9,.25,1);
+}
+.type-modal.open .type-modal-panel{transform:translateY(0);}
+@media (min-width:760px){
+  .type-modal{align-items:center;}
+  .type-modal-panel{border-radius:22px; margin:auto;}
+}
+.type-modal-close{
+  position:sticky; float:right; top:0; margin-left:12px; width:38px; height:38px; border-radius:50%; border:none; cursor:pointer;
+  background:linear-gradient(145deg,#FDFBF6,#E8E1D1); box-shadow:4px 5px 12px var(--sh),-3px -3px 8px var(--lt);
+  color:var(--navy); font-size:16px; line-height:1; z-index:2;
+}
+.tmd-icon{width:52px; height:52px; border-radius:16px; display:flex; align-items:center; justify-content:center; margin-bottom:16px;
+  background:linear-gradient(145deg,var(--navy-2),var(--navy-3)); color:var(--gold-2); box-shadow:6px 7px 16px var(--sh2),-4px -4px 12px var(--lt);}
+.tmd-icon svg{width:26px; height:26px;}
+.type-modal-panel h2{font-size:clamp(21px,3vw,27px); margin-bottom:6px; letter-spacing:-.015em; padding-right:44px;}
+.tmd-tagline{font-size:14.5px; color:var(--muted); margin-bottom:22px; max-width:56ch;}
+.tmd-section{margin-bottom:20px;}
+.tmd-section h4{font-family:'IBM Plex Sans',sans-serif; font-size:12.5px; text-transform:uppercase; letter-spacing:.08em; color:var(--gold-dark); font-weight:700; margin-bottom:10px;}
+.tmd-section p{font-size:14.2px; color:var(--ink); line-height:1.7;}
+.tmd-list{list-style:none; padding:0; margin:0; display:flex; flex-direction:column; gap:8px;}
+.tmd-list li{font-size:13.6px; color:var(--muted); padding-left:20px; position:relative;}
+.tmd-list li::before{content:''; position:absolute; left:0; top:7px; width:7px; height:7px; border-radius:50%; background:var(--gold);}
+.tmd-list.tmd-caution li::before{background:var(--rust);}
+.tmd-refs{display:flex; flex-wrap:wrap; gap:10px; margin-top:4px;}
+.tmd-refs a{font-size:12.6px; font-weight:600; color:var(--gold-dark); background:rgba(185,135,60,.1); padding:8px 13px; border-radius:8px; box-shadow:inset 2px 2px 4px rgba(139,120,78,.14);}
+.tmd-actions{display:flex; gap:10px; flex-wrap:wrap; margin-top:26px; padding-top:22px; border-top:1px solid var(--line);}
+.tmd-actions .primary{background:linear-gradient(145deg,var(--gold-2),var(--gold-dark)); color:#241800; font-weight:600; padding:13px 20px; border-radius:10px; font-size:14px;}
+.tmd-actions .ghost{border:1px solid var(--line); padding:13px 20px; border-radius:10px; font-size:14px; color:var(--navy); font-weight:600;}
+body.modal-lock{overflow:hidden;}
+
 /* ============ FOOTER ============ */
 footer{background:var(--navy); color:#C6CEDA; padding:56px 0 0; margin-top:20px; position:relative; z-index:1;}
 .foot-grid{display:grid; grid-template-columns:1.5fr 1fr 1fr 1fr; gap:34px; padding-bottom:38px;}
@@ -747,6 +786,14 @@ footer{background:var(--navy); color:#C6CEDA; padding:56px 0 0; margin-top:20px;
   </div>
 </footer>
 
+<div class="type-modal" id="typeModal" role="dialog" aria-modal="true" aria-hidden="true" aria-labelledby="tmdTitle">
+  <div class="type-modal-overlay" data-close></div>
+  <div class="type-modal-panel" id="typeModalPanel" role="document">
+    <button class="type-modal-close" id="typeModalClose" aria-label="Kapat" data-close>✕</button>
+    <div id="typeModalBody"></div>
+  </div>
+</div>
+
 <div class="fab-zone">
   <a class="fab fab-wa" href="https://api.whatsapp.com/send?phone=905421793220" target="_blank" rel="noopener" aria-label="WhatsApp ile teklif al">
     <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.45 1.32 4.95L2 22l5.25-1.38a9.9 9.9 0 004.79 1.22h.01c5.46 0 9.91-4.45 9.91-9.91S17.5 2 12.04 2zm5.8 14.16c-.24.68-1.42 1.3-1.95 1.35-.5.05-1.13.07-1.82-.11-.42-.13-.96-.31-1.65-.61-2.9-1.25-4.8-4.17-4.94-4.37-.15-.2-1.19-1.58-1.19-3.02s.76-2.14 1.03-2.44c.27-.29.58-.37.78-.37h.56c.18 0 .42-.07.66.5.24.59.82 2.03.89 2.18.07.15.12.32.02.51-.1.2-.15.32-.29.49-.15.17-.31.38-.44.51-.15.15-.3.31-.13.6.17.29.76 1.25 1.63 2.03 1.12 1 2.06 1.31 2.35 1.46.29.15.46.12.63-.07.17-.2.73-.85.92-1.14.2-.29.39-.24.66-.15.27.1 1.71.81 2 .95.29.15.49.22.56.34.07.12.07.7-.17 1.38z"/></svg>
@@ -819,37 +866,70 @@ footer{background:var(--navy); color:#C6CEDA; padding:56px 0 0; margin-top:20px;
   var TYPES = [
     {c:'saglik', i:'cross', t:'Sağlık Sigortası', d:"Hastane, ameliyat ve tetkik giderlerinizi özel sağlık kuruluşlarında güvence altına alır.",
      l:["Yatarak / ayakta tedavi seçenekleri","Anlaşmalı kurum ağı","Yıllık yenilenebilir teminat"],
-     u:"https://www.hayatsigorta.com.tr/sigorta-cesitleri/saglik-sigortasi/"},
+     ozet:"Hastalık veya kaza sonucu ihtiyaç duyduğunuz özel hastane, ameliyat, yoğun bakım ve tetkik giderlerinin sigorta şirketiniz tarafından karşılanmasını sağlar. Anlaşmalı kurum ağındaki hastanelerde, poliçe kapsamınıza göre ödeme yapmadan veya sınırlı bir fark ile tedavi olabilirsiniz.",
+     kapsam:["Yatarak tedavi: ameliyat, yoğun bakım, oda-yemek giderleri","Ayakta tedavi: muayene, tahlil, ilaç — poliçeye göre opsiyonel teminat","Doğum ve check-up paketleri (bazı poliçelerde ek teminat)","Anlaşmalı kurum ağında ödemesiz veya indirimli tedavi imkânı"],
+     dikkat:["Poliçe öncesi mevcut/kronik rahatsızlıklar genellikle teminat dışıdır ya da bekleme süresine tabidir","Anlaşmasız kurumlarda fatura önce sigortalı tarafından ödenip sonradan sigortadan tahsil edilebilir","Yıllık yenilemede yaş ve hasar geçmişine göre prim değişebilir"],
+     refs:[{href:"#mevzuat",label:"Sigortacılık mevzuatı"}]},
     {c:'saglik', i:'shield', t:'Tamamlayıcı Sağlık Sigortası', d:"SGK'lı olanların özel hastanelerde ek fark ödemeden tedavi olmasını sağlar.",
      l:["SGK ile birlikte çalışır","Fark ücretini karşılar","Daha uygun prim seviyesi"],
-     u:"https://www.hayatsigorta.com.tr/sigorta-cesitleri/tamamlayici-saglik-sigortasi/"},
+     ozet:"SGK'ya tabi sigortalıların, anlaşmalı özel hastanelerde SUT (Sağlık Uygulama Tebliği) üzerinden talep edilen fark ücretini ödemeden veya daha düşük bir fark ile tedavi görmesini sağlar. SGK'nın yerine geçmez, onunla birlikte çalışır.",
+     kapsam:["SGK ile birlikte, özel hastanedeki fark ücretini karşılama","Genellikle yatarak tedavi ağırlıklı; bazı planlarda ayakta tedavi de dahil","Sağlık sigortasına göre daha uygun prim seviyesi","Anlaşmalı özel hastane ve tıp merkezi ağı"],
+     dikkat:["SGK'lı olmayanlar bu poliçeyi yaptıramaz — önce SGK kaydı gerekir","Anlaşmasız kurumlarda teminat sınırlı olabilir veya hiç uygulanmayabilir","Mevcut kronik rahatsızlıklar poliçe başlangıcında beyan edilmelidir"],
+     refs:[{href:"#mevzuat",label:"Sigortacılık mevzuatı"}]},
     {c:'konut', i:'quake', t:'DASK — Zorunlu Deprem Sigortası', d:"Deprem, yangın, infilak ve yer kayması gibi hasarlarda binanızın yapısal zararını karşılar.",
      l:["Tapulu tüm konutlar için zorunlu","m² bazlı teminat hesaplama","6305 sayılı Afet Sigortaları Kanunu"],
-     u:"https://www.hayatsigorta.com.tr/sigorta-cesitleri/dask-zorunlu-deprem-sigortasi/"},
+     ozet:"Deprem ve depremin doğrudan neden olduğu yangın, infilak, tsunami ve yer kayması sonucu konutunuzun taşıyıcı sisteminde oluşan maddi zararı, poliçe limitleri dahilinde karşılayan; tapulu meskenler için kanunen zorunlu bir sigortadır.",
+     kapsam:["Taşıyıcı sistem, duvar, çatı gibi yapısal unsurların depremden doğan hasarı","Depremin tetiklediği yangın, infilak, tsunami ve yer kayması zararları","250 m²'ye kadar olan bağımsız bölümler için teminat","Yıllık yenilenen, m² birim bedeline göre hesaplanan poliçe bedeli"],
+     dikkat:["Ev eşyaları, dekorasyon ve tadilat harcamaları DASK kapsamı dışındadır — bunun için Konut Sigortası gerekir","Kaçak/ruhsatsız yapılarda teminat süreci sorunlu olabilir","Azami teminat tutarının üzerindeki bina değerleri için ek deprem teminatlı Konut Sigortası önerilir"],
+     refs:[{href:"#law-6305",label:"6305 sayılı Afet Sigortaları Kanunu"},{href:"#oranlar",label:"Güncel teminat tutarları"}]},
     {c:'konut', i:'home', t:'Konut Sigortası', d:"Yangın, hırsızlık, su baskını ve doğal afetlere karşı evinizi ve eşyalarınızı korur.",
      l:["Bina + eşya teminatı seçenekleri","DASK ile birlikte tamamlayıcı","Kiracı / malik için ayrı planlar"],
-     u:"https://www.hayatsigorta.com.tr/sigorta-cesitleri/konut-sigortasi/"},
+     ozet:"DASK'ın kapsam dışı bıraktığı ev eşyalarını ve binanın kendisini; yangın, hırsızlık, su baskını, cam kırılması gibi risklere karşı koruyan, isteğe bağlı bir sigortadır. Genellikle DASK ile birlikte, onu tamamlayıcı şekilde yaptırılır.",
+     kapsam:["Bina ve/veya eşya teminatı — ayrı ayrı veya birlikte seçilebilir","Yangın, duman, infilak, hırsızlık, su baskını, cam kırılması","Ek deprem teminatı ile DASK limitinin üzerini tamamlama seçeneği","Kiracı ve malik için ayrı poliçe planları"],
+     dikkat:["Değerli eşya (mücevher, elektronik) için ayrıca beyan veya ek teminat gerekebilir","Boş/kullanılmayan konutlarda bazı teminatlar kısıtlanabilir","Hasar anında rayiç bedel mi yoksa yenileme bedeli mi ödeneceği poliçe şartına bağlıdır"],
+     refs:[{href:"#law-6305",label:"DASK ile ilişkisi"}]},
     {c:'arac', i:'car', t:'Kasko Sigortası', d:"Kazadan hırsızlığa, yangından doğal afete kadar aracınızın kendi hasarlarını karşılar.",
      l:["Genişletilmiş / dar kasko seçenekleri","Hasarsızlık indirim kademeleri","İkame araç, mini onarım ek teminatları"],
-     u:"https://www.hayatsigorta.com.tr/sigorta-cesitleri/kasko-sigortasi/"},
+     ozet:"Trafik sigortasının aksine, kendi aracınızda meydana gelen hasarları karşılayan isteğe bağlı bir sigortadır: çarpma, çarpışma, yangın, hırsızlık, doğal afet ve cam kırılması gibi riskleri kapsar.",
+     kapsam:["Çarpışma, devrilme, yangın, hırsızlık, doğal afet hasarları","Cam, far, ayna kırılmaları (bazı poliçelerde ayrı sublimit ile)","Anahtar kaybı, ikame araç, yol yardımı gibi ek teminatlar","Hasarsızlık indirim kademeleri ile prim avantajı"],
+     dikkat:["Alkollü veya ehliyetsiz kullanım gibi durumlarda hasar ödemesi reddedilebilir","Muafiyet (sigortalı katılım payı) seçeneklerine göre prim ve ödenecek hasar tutarı değişir","Araç yaşı ve modeline göre bazı sigorta şirketleri kasko yapmayabilir"],
+     refs:[{href:"#law-ttk",label:"6102 sayılı TTK — Sigorta Hukuku"}]},
     {c:'arac', i:'traffic', t:'Trafik Sigortası (ZMSS)', d:"Karşı tarafa verdiğiniz maddi ve bedensel zararları güvence altına alan, kanunen zorunlu poliçe.",
      l:["2918 sayılı kanun ile zorunlu","Basamak (hasarsızlık) sistemine tabi","Sigortasız araç trafiğe çıkamaz"],
-     u:"https://www.hayatsigorta.com.tr/sigorta-cesitleri/trafik-sigortasi/"},
+     ozet:"Kanunen zorunlu olan bu poliçe, kendi hasarınızı değil, bir trafik kazasında karşı tarafa (üçüncü kişilere) verdiğiniz maddi ve bedensel zararı, belirlenen teminat limitleri dahilinde karşılar.",
+     kapsam:["Karşı araçta oluşan maddi hasar (belirli bir limite kadar)","Karşı taraftaki kişilerin sağlık, sakatlanma ve vefat giderleri","Değer kaybı tazminatı — kusurlu tarafın trafik poliçesinden talep edilir","Basamak (hasarsızlık) sistemine göre yıldan yıla prim değişimi"],
+     dikkat:["Kendi aracınızın hasarını karşılamaz — bunun için Kasko Sigortası gereklidir","Teminat limitleri her yıl yeniden belirlenir; güncel tutarlar Oranlar bölümünde","Sigortasız araç trafiğe çıkamaz; poliçesiz araçlara idari para cezası uygulanır"],
+     refs:[{href:"#law-2918",label:"2918 sayılı Karayolları Trafik Kanunu"},{href:"#oranlar",label:"Güncel teminat limitleri"}]},
     {c:'birey', i:'heart', t:'Hayat Sigortası', d:"Vefat, maluliyet ya da kritik hastalık hâlinde ailenize maddi güvence sağlar.",
      l:["Vefat / maluliyet / kritik hastalık","Kredi hayat sigortası bağlantılı seçenekler","TTK m.1430 uyarınca 30 gün cayma hakkı"],
-     u:"https://www.hayatsigorta.com.tr/bilgi-bankasi/hayat-sigortasi/"},
+     ozet:"Sigortalının vefatı, maluliyeti veya poliçede belirtilen kritik hastalıklardan birine yakalanması durumunda, geride kalanlara veya sigortalının kendisine belirlenen teminat tutarının ödenmesini sağlar. Kredi bağlantılı veya bireysel birikim amaçlı olarak da düzenlenebilir.",
+     kapsam:["Vefat teminatı — lehtar olarak belirlenen kişilere ödeme","Maluliyet ve kritik hastalık ek teminatları","Kredi hayat sigortası — kredi borcunun kalan bakiyesini karşılama","Birikimli planlarda vade sonunda toplu ödeme seçeneği"],
+     dikkat:["Poliçe başlangıcında sağlık beyanı istenir; eksik/yanlış beyan tazminatı etkileyebilir","Birikimli ve birikimsiz (risk teminatlı) planlar farklı vergi avantajlarına tabidir","Cayma hakkı diğer branşlardan farklı olarak 30 gündür"],
+     refs:[{href:"#law-cayma",label:"Cayma hakkı (TTK m.1430)"},{href:"#oranlar",label:"Vergi avantajı"}]},
     {c:'birey', i:'shield', t:'Ferdi Kaza Sigortası', d:"Ani ve beklenmedik kazalar sonucu oluşan vefat, sakatlık ve tedavi giderlerini karşılar.",
      l:["7/24, dünya genelinde geçerli seçenekler","İşe / spora / mesleğe özel paketler","Uygun prim, hızlı hasar süreci"],
-     u:"https://www.hayatsigorta.com.tr/bilgi-bankasi/ferdi-kaza-sigortasi/"},
+     ozet:"Ani ve beklenmedik bir kaza sonucu oluşan vefat, sürekli sakatlık ve tedavi masraflarını karşılayan; günlük hayatta veya belirli bir aktivite/meslek özelinde geçerli olabilen bir teminattır.",
+     kapsam:["Kaza sonucu vefat ve sürekli sakatlık teminatı","Tedavi masrafları teminatı (poliçeye göre)","7/24 veya yalnızca iş saatleri gibi kapsam seçenekleri","Spor, meslek veya seyahate özel ek paketler"],
+     dikkat:["Hastalık sonucu oluşan durumları kapsamaz, yalnızca kaza kaynaklı riskleri karşılar","Sakatlık oranı tıbbi rapor ile belirlenir ve ödeme bu orana göre yapılır","Bazı yüksek riskli sporlar veya meslekler ek prim ya da istisna gerektirebilir"],
+     refs:[{href:"#law-ttk",label:"6102 sayılı TTK — Sigorta Hukuku"}]},
     {c:'ticari', i:'box', t:'Nakliyat Sigortası', d:"Kara, deniz, hava veya demiryoluyla taşınan yükleri hasar, kayıp ve çalınmaya karşı korur.",
      l:["İthalat / ihracat yükleri","Emtia bazında teminat kapsamı","Ticari işletmeler için özelleştirilebilir"],
-     u:"https://www.hayatsigorta.com.tr/bilgi-bankasi/nakliyat-sigortasi/"},
+     ozet:"Kara, deniz, hava veya demiryolu ile taşınan yüklerin; taşıma sırasında hasar, kayıp, çalınma veya kaza gibi risklere karşı güvence altına alınmasını sağlar. İthalat/ihracat yapan işletmeler için sıkça tercih edilir.",
+     kapsam:["Taşıma sırasında oluşan fiziksel hasar ve kayıp","Yükleme/boşaltma sırasındaki hasarlar (poliçe şartına göre)","Emtia bazında özelleştirilebilir teminat kapsamı (dar/geniş teminat)","Çok modlu taşımalarda (kara + deniz gibi) tek poliçe ile kapsama"],
+     dikkat:["Ambalajlama kusurundan kaynaklanan hasarlar genellikle teminat dışıdır","Teminat kapsamı poliçe bazında (dar/geniş klozlar) büyük farklılık gösterir","Hasar bildirim süresine dikkat edilmesi tazminat sürecini hızlandırır"],
+     refs:[{href:"#law-ttk",label:"6102 sayılı TTK — Sigorta Hukuku"}]},
     {c:'ticari', i:'fire', t:'Yangın Sigortası', d:"İşyeri, konut veya sanayi tesislerini yangın, duman, infilak gibi risklere karşı güvenceye alır.",
      l:["Bina + emtia + demirbaş teminatı","İş durması (kâr kaybı) eklenebilir","Yangın söndürme masrafları dahil"],
-     u:"https://www.hayatsigorta.com.tr/bilgi-bankasi/yangin-sigortasi/"},
+     ozet:"İşyeri, konut veya sanayi tesislerini; yangın, yıldırım, infilak, duman gibi risklere karşı güvence altına alan, ticari işletmeler için özellikle önemli bir teminattır. Kâr kaybı gibi ek teminatlarla genişletilebilir.",
+     kapsam:["Bina, demirbaş ve emtia (stok) teminatı","Yangın söndürme sırasında oluşan zararlar","İş durması / kâr kaybı ek teminatı","Deprem, sel, hırsızlık gibi ek teminatlarla genişletilebilir paket yapısı"],
+     dikkat:["Sigorta bedelinin gerçek değerin altında belirlenmesi (eksik sigorta) kısmi ödemeye yol açabilir","Yüksek riskli faaliyet konusu olan işletmelerde ek koşullar veya prim uygulanabilir","Stok değeri değişken işletmelerde beyan usulü poliçe tercih edilebilir"],
+     refs:[{href:"#law-ttk",label:"6102 sayılı TTK — Sigorta Hukuku"}]},
     {c:'ticari', i:'leaf', t:'Tarım Sigortası', d:"Don, dolu, kuraklık ve hastalık gibi risklere karşı bitkisel ve hayvansal üretimi korur (TARSİM).",
      l:["Devlet destekli prim yapısı","5363 sayılı Tarım Sigortaları Kanunu","Bölgesel risk katsayılarına göre fiyatlama"],
-     u:"https://www.hayatsigorta.com.tr/bilgi-bankasi/tarim-sigortasi/"}
+     ozet:"TARSİM (Tarım Sigortaları Havuzu) kapsamında, don, dolu, kuraklık, sel, fırtına ve bazı hastalıklar gibi risklere karşı bitkisel üretimi; hastalık ve kaza risklerine karşı da hayvansal üretimi güvence altına alır. Devlet, prim maliyetinin önemli bir kısmına destek sağlar.",
+     kapsam:["Bitkisel ürünlerde don, dolu, fırtına, sel, kuraklık gibi risklere karşı teminat","Hayvancılıkta hastalık, kaza ve doğal afet teminatları (ürüne göre değişir)","Devlet destekli prim yapısı — üreticinin ödediği prim payı azalır","Bölgesel risk katsayılarına göre fiyatlama"],
+     dikkat:["Poliçe kapsamı ürüne (paket) göre değişir; her risk her ürün için standart değildir","Hasar tespiti eksper incelemesi ile yapılır, bildirim süresine dikkat edilmelidir","Devlet destekli olduğu için başvuru ve ödeme süreçleri TARSİM usullerine tabidir"],
+     refs:[{href:"#law-5363",label:"5363 sayılı Tarım Sigortaları Kanunu"}]}
   ];
   var CATS = [{k:'all',n:'Tümü'},{k:'saglik',n:'Sağlık'},{k:'arac',n:'Araç'},{k:'konut',n:'Konut'},{k:'birey',n:'Bireysel'},{k:'ticari',n:'Ticari'}];
 
@@ -1071,4 +1151,3 @@ footer{background:var(--navy); color:#C6CEDA; padding:56px 0 0; margin-top:20px;
 
 </body>
 </html>
-
