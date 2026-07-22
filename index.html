@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <meta name="theme-color" content="#0F2440">
 <title>Sigorta Bilgi Merkezi | Hayat Sigorta</title>
-<meta name="description" content="Sigorta çeşitleri, güncel mevzuat, ilgili kurumlar, sektör duyuruları ve sıkça sorulan sorular — Hayat Sigorta Bilgi Merkezi.">
+<meta name="description" content="Sigorta çeşitleri, güncel mevzuat, ilgili kurumlar, sektör duyuruları, SBM/Sigortam360 online sorgulama servisleri ve 55+ resmi kaynak arşivi — Hayat Sigorta Bilgi Merkezi.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
@@ -552,6 +552,282 @@ footer{background:var(--navy); color:#C6CEDA; padding:56px 0 0; margin-top:20px;
 @media (max-width:400px){
   .grid-org{grid-template-columns:1fr;}
 }
+
+/* ============ 07 · ONLINE SERVİSLER ============ */
+.svc-intro{
+  display:flex; gap:16px; align-items:flex-start; padding:20px 22px; margin-bottom:26px;
+  background:linear-gradient(145deg,#173257,#0B1D35); border-radius:16px; color:#E8E2D4;
+  box-shadow:8px 8px 20px rgba(6,16,30,.35), -6px -6px 16px rgba(255,255,255,.04), inset 1px 1px 0 rgba(255,255,255,.08);
+}
+.svc-intro .sig{
+  flex:none; width:52px; height:52px; border-radius:13px; display:grid; place-items:center;
+  background:linear-gradient(145deg,var(--gold-2),var(--gold-dark)); color:#2A1B00;
+  font-family:'Fraunces',serif; font-weight:700; font-size:19px; letter-spacing:-.02em;
+  box-shadow:inset 1px 1px 0 rgba(255,255,255,.5), 3px 4px 10px rgba(0,0,0,.3);
+}
+.svc-intro b{font-family:'Fraunces',serif; font-size:17px; display:block; color:#fff; margin-bottom:4px;}
+.svc-intro p{font-size:14px; line-height:1.6; color:#BFC7D3;}
+.svc-intro a{color:var(--gold-2); font-weight:600; white-space:nowrap;}
+
+.svc-grid{display:grid; grid-template-columns:repeat(auto-fill,minmax(288px,1fr)); gap:18px;}
+.svc-card{
+  position:relative; display:flex; flex-direction:column; overflow:hidden;
+  background:linear-gradient(145deg,#FDFBF6,#EDE7D9); border-radius:16px;
+  box-shadow:7px 7px 16px var(--sh), -7px -7px 16px var(--lt), inset 1px 1px 0 rgba(255,255,255,.9);
+  opacity:0; transform:translateY(18px); transition:opacity .55s, transform .55s, box-shadow .3s;
+}
+.svc-card.in-view{opacity:1; transform:none;}
+.svc-card:hover{box-shadow:10px 12px 26px var(--sh2), -8px -8px 18px var(--lt);}
+.svc-visual{
+  position:relative; height:104px; flex:none; overflow:hidden;
+  display:grid; place-items:center;
+}
+.svc-visual::after{
+  content:""; position:absolute; inset:0;
+  background:
+    repeating-linear-gradient(45deg, rgba(255,255,255,.045) 0 2px, transparent 2px 9px),
+    linear-gradient(to bottom, transparent 45%, rgba(0,0,0,.28));
+}
+.svc-visual svg{width:44px; height:44px; color:#fff; opacity:.95; z-index:1; filter:drop-shadow(0 3px 6px rgba(0,0,0,.35));}
+.svc-visual .ghost{
+  position:absolute; right:-18px; bottom:-24px; width:120px; height:120px;
+  color:#fff; opacity:.13; z-index:0;
+}
+.svc-visual .ghost svg{width:100%; height:100%; stroke-width:1; filter:none;}
+.v-tramer{background:linear-gradient(135deg,#2A4C79 0%,#16304F 60%,#0A1B31 100%);}
+.v-hasar{background:linear-gradient(135deg,#B85639 0%,#7E3221 60%,#4A1B10 100%);}
+.v-police{background:linear-gradient(135deg,#3E7059 0%,#255440 60%,#12301F 100%);}
+.v-kaza{background:linear-gradient(135deg,#C99A4C 0%,#8C6529 60%,#503716 100%);}
+.v-surucu{background:linear-gradient(135deg,#5A5470 0%,#3A3550 60%,#1E1B2E 100%);}
+.v-acente{background:linear-gradient(135deg,#2F6B72 0%,#1D474D 60%,#0D272B 100%);}
+.svc-body{padding:18px 20px 20px; display:flex; flex-direction:column; flex:1; gap:9px;}
+.svc-body h3{font-size:16.5px; letter-spacing:-.01em;}
+.svc-body p{font-size:13.6px; color:var(--muted); line-height:1.6;}
+.svc-badge{
+  position:absolute; top:12px; left:12px; z-index:2;
+  font-family:'IBM Plex Mono',monospace; font-size:9.5px; letter-spacing:.13em; text-transform:uppercase;
+  background:var(--gold-2); color:#2A1B00; font-weight:700; padding:4px 9px; border-radius:20px;
+  box-shadow:0 2px 6px rgba(0,0,0,.3);
+}
+.svc-how{
+  margin-top:auto; padding-top:12px; border-top:1px solid var(--line);
+  font-size:12.4px; color:var(--gold-dark); font-weight:600;
+  display:flex; align-items:center; gap:7px;
+}
+.svc-how svg{width:14px; height:14px; flex:none;}
+.svc-links{display:flex; flex-wrap:wrap; gap:8px; margin-top:2px;}
+.svc-links a{
+  font-size:12.4px; font-weight:600; color:var(--navy); padding:7px 12px; border-radius:9px;
+  background:linear-gradient(145deg,#FAF7F0,#EBE5D6);
+  box-shadow:3px 3px 7px var(--sh), -3px -3px 7px var(--lt);
+  transition:box-shadow .2s, color .2s, transform .2s; min-height:34px; display:inline-flex; align-items:center;
+}
+.svc-links a:hover{box-shadow:inset 3px 3px 7px var(--sh), inset -3px -3px 7px var(--lt); color:var(--gold-dark);}
+.sms-strip{
+  margin-top:26px; display:grid; grid-template-columns:auto 1fr; gap:20px; align-items:center;
+  padding:22px 24px; border-radius:16px;
+  background:linear-gradient(145deg,#EBE5D6,#FAF7F0);
+  box-shadow:inset 5px 5px 11px var(--sh), inset -5px -5px 11px var(--lt);
+}
+.sms-num{
+  font-family:'Fraunces',serif; font-size:44px; font-weight:700; color:var(--gold-dark); line-height:1;
+  letter-spacing:-.02em; text-shadow:1px 1px 0 rgba(255,255,255,.8);
+}
+.sms-strip b{font-family:'Fraunces',serif; font-size:16px; display:block; margin-bottom:5px;}
+.sms-strip p{font-size:13.6px; color:var(--muted); line-height:1.6;}
+.sms-strip code{
+  font-family:'IBM Plex Mono',monospace; font-size:12.5px; background:var(--navy); color:#E8E2D4;
+  padding:2px 8px; border-radius:6px; letter-spacing:.02em;
+}
+
+/* ============ 08 · BİLGİ BANKASI (kaynak arşivi) ============ */
+.kb-toolbar{display:flex; flex-direction:column; gap:14px; margin-bottom:22px;}
+.kb-search{
+  position:relative; max-width:640px; width:100%;
+  background:linear-gradient(145deg,#EBE5D6,#FAF7F0); border-radius:14px;
+  box-shadow:inset 5px 5px 11px var(--sh), inset -5px -5px 11px var(--lt);
+}
+.kb-search svg{position:absolute; left:16px; top:50%; transform:translateY(-50%); width:19px; height:19px; color:var(--muted); pointer-events:none;}
+.kb-search input{
+  width:100%; border:0; background:transparent; outline:none; padding:15px 18px 15px 46px;
+  font-family:'IBM Plex Sans',sans-serif; font-size:15px; color:var(--ink); min-height:52px;
+}
+.kb-search input::placeholder{color:#9AA1AA;}
+.kb-count{font-family:'IBM Plex Mono',monospace; font-size:11.5px; letter-spacing:.1em; text-transform:uppercase; color:var(--muted);}
+.kb-groups{display:flex; flex-direction:column; gap:18px;}
+.kb-group{
+  border-radius:16px; overflow:hidden;
+  background:linear-gradient(145deg,#FDFBF6,#EDE7D9);
+  box-shadow:7px 7px 16px var(--sh), -7px -7px 16px var(--lt), inset 1px 1px 0 rgba(255,255,255,.9);
+}
+.kb-head{
+  display:flex; align-items:center; gap:14px; padding:16px 20px; cursor:pointer;
+  user-select:none; min-height:60px; transition:background .2s;
+}
+.kb-head:hover{background:rgba(185,135,60,.06);}
+.kb-badge{
+  flex:none; width:42px; height:42px; border-radius:11px; display:grid; place-items:center;
+  color:#fff; box-shadow:inset 1px 1px 0 rgba(255,255,255,.25), 3px 4px 9px rgba(120,100,60,.3);
+}
+.kb-badge svg{width:20px; height:20px;}
+.kb-b-seddk{background:linear-gradient(145deg,#2A4C79,#0E223E);}
+.kb-b-sbm{background:linear-gradient(145deg,#3E7059,#12301F);}
+.kb-b-dask{background:linear-gradient(145deg,#B85639,#4A1B10);}
+.kb-b-tsb{background:linear-gradient(145deg,#C99A4C,#503716);}
+.kb-b-tahkim{background:linear-gradient(145deg,#5A5470,#1E1B2E);}
+.kb-b-devlet{background:linear-gradient(145deg,#2F6B72,#0D272B);}
+.kb-head-text{flex:1; min-width:0;}
+.kb-head-text b{font-family:'Fraunces',serif; font-size:16.5px; display:block; letter-spacing:-.01em;}
+.kb-head-text span{font-size:12.8px; color:var(--muted); display:block; line-height:1.5;}
+.kb-n{
+  font-family:'IBM Plex Mono',monospace; font-size:11.5px; font-weight:600; color:var(--gold-dark);
+  background:linear-gradient(145deg,#FAF7F0,#EBE5D6); padding:5px 11px; border-radius:20px; flex:none;
+  box-shadow:2px 2px 5px var(--sh), -2px -2px 5px var(--lt);
+}
+.kb-chev{flex:none; width:18px; height:18px; color:var(--muted); transition:transform .3s;}
+.kb-group.open .kb-chev{transform:rotate(180deg);}
+.kb-body{max-height:0; overflow:hidden; transition:max-height .4s cubic-bezier(.2,.7,.3,1);}
+.kb-list{padding:2px 14px 16px; display:grid; grid-template-columns:repeat(auto-fill,minmax(300px,1fr)); gap:8px;}
+.kb-item{
+  display:flex; align-items:flex-start; gap:11px; padding:13px 15px; border-radius:11px;
+  transition:box-shadow .2s, transform .18s; min-height:52px;
+}
+.kb-item:hover{box-shadow:inset 3px 3px 8px var(--sh), inset -3px -3px 8px var(--lt);}
+.kb-dot{flex:none; width:6px; height:6px; border-radius:50%; background:var(--gold); margin-top:8px; box-shadow:0 0 0 3px rgba(185,135,60,.14);}
+.kb-item-text{min-width:0; flex:1;}
+.kb-item-text b{font-size:14px; font-weight:600; display:block; line-height:1.45; color:var(--ink);}
+.kb-item-text span{
+  font-family:'IBM Plex Mono',monospace; font-size:10.8px; color:var(--muted); display:block; margin-top:3px;
+  overflow:hidden; text-overflow:ellipsis; white-space:nowrap;
+}
+.kb-item mark{background:rgba(214,166,82,.42); color:inherit; border-radius:3px; padding:0 2px;}
+.kb-empty{font-size:14px; color:var(--muted); background:var(--card); border-radius:14px; padding:22px 24px;}
+.kb-note{
+  margin-top:22px; display:flex; gap:13px; align-items:flex-start; font-size:13px; color:var(--muted);
+  background:var(--card); border-radius:14px; padding:18px 20px; line-height:1.65;
+}
+.kb-note span:first-child{color:var(--gold-dark); font-size:16px; flex:none;}
+
+@media (max-width:640px){
+  .svc-intro{flex-direction:column; gap:12px; padding:18px;}
+  .sms-strip{grid-template-columns:1fr; gap:12px; text-align:left;}
+  .sms-num{font-size:38px;}
+  .kb-list{grid-template-columns:1fr; padding:2px 10px 14px;}
+  .kb-head{padding:14px 16px; gap:11px;}
+  .kb-head-text b{font-size:15px;}
+  .kb-badge{width:38px; height:38px;}
+}
+
+/* ============ FOTOĞRAF KATMANI (hayatsigorta.com.tr) ============ */
+/* Ortak: görsel yüklenmezse altındaki gradient görünür kalır — hiçbir zaman boş kutu olmaz */
+.ph{
+  position:absolute; inset:0; width:100%; height:100%;
+  object-fit:cover; z-index:0; opacity:0;
+  transition:opacity .7s ease, transform 7s ease;
+}
+.ph.loaded{opacity:1;}
+.ph-fail{display:none;}
+
+/* -- sigorta çeşitleri kart görseli -- */
+.type-photo .ph{filter:saturate(.92) contrast(1.04);}
+.type-photo .ph.loaded{opacity:.88;}
+.type-card:hover .type-photo .ph.loaded{transform:scale(1.06);}
+.type-photo .photo-icon{z-index:2;}
+.type-photo::after{z-index:1; background:linear-gradient(180deg,rgba(10,25,45,.10) 0%, rgba(10,25,45,.30) 55%, rgba(10,25,45,.62) 100%);}
+
+/* -- hero: fotoğraf mozaiği -- */
+.hero-photos{
+  position:absolute; inset:0; z-index:0; overflow:hidden; pointer-events:none;
+  display:grid; grid-template-columns:1fr 1fr; grid-template-rows:1fr 1fr; gap:4px;
+  opacity:.20; mask-image:radial-gradient(120% 100% at 100% 0%, #000 20%, transparent 78%);
+  -webkit-mask-image:radial-gradient(120% 100% at 100% 0%, #000 20%, transparent 78%);
+}
+.hero-photos img{width:100%; height:100%; object-fit:cover; filter:sepia(.28) saturate(.7);}
+
+/* -- bölüm başlığı yanındaki dekoratif şerit -- */
+.sec-strip{
+  position:relative; height:150px; border-radius:16px; overflow:hidden; margin-bottom:28px;
+  background:linear-gradient(135deg,#173257,#0A1B31);
+  box-shadow:8px 9px 22px var(--sh2), -6px -6px 16px var(--lt), inset 1px 1px 0 rgba(255,255,255,.08);
+  display:flex; align-items:flex-end;
+}
+.sec-strip img{position:absolute; inset:0; width:100%; height:100%; object-fit:cover; opacity:0; transition:opacity .8s;}
+.sec-strip img.loaded{opacity:.42;}
+.sec-strip::after{
+  content:""; position:absolute; inset:0; z-index:1;
+  background:linear-gradient(100deg, rgba(10,27,49,.90) 0%, rgba(10,27,49,.62) 45%, rgba(10,27,49,.20) 100%),
+             repeating-linear-gradient(45deg, rgba(255,255,255,.03) 0 2px, transparent 2px 10px);
+}
+.sec-strip .strip-text{position:relative; z-index:2; padding:20px 24px; color:#EDE7D8;}
+.sec-strip .strip-text b{font-family:'Fraunces',serif; font-size:19px; display:block; letter-spacing:-.01em; color:#fff;}
+.sec-strip .strip-text span{font-size:13.4px; color:#BFC7D3; display:block; margin-top:4px; max-width:600px; line-height:1.55;}
+@media (max-width:640px){ .sec-strip{height:128px;} .sec-strip .strip-text{padding:16px 18px;} .sec-strip .strip-text b{font-size:16.5px;} }
+
+/* -- kurum kartlarında logo yerine mühür -- */
+.org-card{position:relative;}
+.org-seal{
+  position:absolute; right:16px; top:16px; width:34px; height:34px; border-radius:9px;
+  display:grid; place-items:center; color:#fff; font-family:'Fraunces',serif; font-size:11px; font-weight:700;
+  letter-spacing:.02em; opacity:.92;
+  box-shadow:inset 1px 1px 0 rgba(255,255,255,.28), 2px 3px 7px rgba(120,100,60,.3);
+}
+
+/* -- servis kartı fotoğraf başlığı -- */
+.svc-visual .ph{z-index:0;}
+.svc-visual .ph.loaded{opacity:.40; filter:saturate(.75) contrast(1.05);}
+.svc-visual .ghost{z-index:1;}
+.svc-visual svg{z-index:2;}
+.svc-visual::after{z-index:1;}
+.svc-card:hover .svc-visual .ph.loaded{transform:scale(1.07);}
+
+/* -- acentelikler şeridi -- */
+.partners{margin-top:32px;}
+.partners-title{
+  font-family:'IBM Plex Mono',monospace; font-size:11px; letter-spacing:.16em; text-transform:uppercase;
+  color:var(--muted); margin-bottom:14px; text-align:center;
+}
+.partner-row{
+  display:grid; grid-template-columns:repeat(auto-fit,minmax(112px,1fr)); gap:12px;
+  padding:20px 22px; border-radius:16px;
+  background:linear-gradient(145deg,#FAF7F0,#EBE5D6);
+  box-shadow:inset 5px 5px 11px var(--sh), inset -5px -5px 11px var(--lt);
+}
+.partner{
+  display:grid; place-items:center; min-height:56px; border-radius:11px; overflow:hidden;
+  background:#fff; padding:8px;
+  box-shadow:3px 3px 8px var(--sh), -3px -3px 8px var(--lt);
+  transition:transform .2s, box-shadow .2s;
+}
+.partner:hover{transform:translateY(-2px); box-shadow:5px 6px 13px var(--sh2), -3px -3px 8px var(--lt);}
+.partner img{max-width:100%; max-height:44px; object-fit:contain; opacity:0; transition:opacity .6s;}
+.partner img.loaded{opacity:1;}
+.partner .fallback{font-family:'Fraunces',serif; font-size:13px; font-weight:600; color:var(--navy); text-align:center; line-height:1.2;}
+
+/* -- SSS yanındaki destek görseli -- */
+.faq-layout{display:grid; grid-template-columns:1fr 300px; gap:28px; align-items:start;}
+.faq-aside{
+  position:sticky; top:96px; border-radius:16px; overflow:hidden;
+  background:linear-gradient(145deg,#173257,#0A1B31); color:#EDE7D8;
+  box-shadow:9px 10px 26px rgba(6,16,30,.4), -6px -6px 16px var(--lt), inset 1px 1px 0 rgba(255,255,255,.08);
+}
+.faq-aside .aside-img{position:relative; height:210px; overflow:hidden; background:linear-gradient(160deg,#2A4C79,#0E223E);}
+.faq-aside .aside-img img{width:100%; height:100%; object-fit:cover; object-position:center 22%; opacity:0; transition:opacity .8s;}
+.faq-aside .aside-img img.loaded{opacity:.9;}
+.faq-aside .aside-img::after{content:""; position:absolute; inset:0; background:linear-gradient(180deg,transparent 40%, rgba(10,27,49,.92) 100%);}
+.faq-aside .aside-body{padding:18px 20px 22px;}
+.faq-aside b{font-family:'Fraunces',serif; font-size:17px; color:#fff; display:block; margin-bottom:7px;}
+.faq-aside p{font-size:13.4px; color:#BFC7D3; line-height:1.6; margin-bottom:14px;}
+.faq-aside .aside-cta{
+  display:flex; align-items:center; justify-content:center; gap:8px; width:100%; min-height:46px;
+  background:linear-gradient(145deg,var(--gold-2),var(--gold-dark)); color:#2A1B00;
+  font-weight:700; font-size:14px; border-radius:12px;
+  box-shadow:inset 1px 1px 0 rgba(255,255,255,.45), 4px 5px 12px rgba(0,0,0,.3);
+}
+.faq-aside .aside-tel{
+  display:block; text-align:center; margin-top:10px; font-family:'IBM Plex Mono',monospace;
+  font-size:13px; color:var(--gold-2); letter-spacing:.04em;
+}
+@media (max-width:900px){ .faq-layout{grid-template-columns:1fr;} .faq-aside{position:static; max-width:420px;} }
 </style>
 </head>
 <body>
@@ -577,6 +853,8 @@ footer{background:var(--navy); color:#C6CEDA; padding:56px 0 0; margin-top:20px;
       <a href="#kurumlar">Kurumlar</a>
       <a href="#duyurular">Duyurular</a>
       <a href="#oranlar">Oranlar</a>
+      <a href="#servisler">Servisler</a>
+      <a href="#bilgibankasi">Bilgi Bankası</a>
       <a href="#sss">SSS</a>
     </nav>
     <a class="cta-btn" href="https://api.whatsapp.com/send?phone=905421793220" target="_blank" rel="noopener">Teklif Al</a>
@@ -597,11 +875,19 @@ footer{background:var(--navy); color:#C6CEDA; padding:56px 0 0; margin-top:20px;
   <a class="dl" href="#duyurular">Duyurular <i>04</i></a>
   <a class="dl" href="#oranlar">Oranlar <i>05</i></a>
   <a class="dl" href="#sss">SSS <i>06</i></a>
+  <a class="dl" href="#servisler">Online Servisler <i>07</i></a>
+  <a class="dl" href="#bilgibankasi">Bilgi Bankası <i>08</i></a>
   <a class="cta-btn" href="https://api.whatsapp.com/send?phone=905421793220" target="_blank" rel="noopener">WhatsApp'tan Teklif Al</a>
 </div>
 
 <span id="top"></span>
 <section class="hero">
+  <div class="hero-photos" aria-hidden="true">
+    <img data-src="https://www.hayatsigorta.com.tr/wp-content/uploads/2026/05/hayat-sigorta-saglik-sigortasi.webp" alt="">
+    <img data-src="https://www.hayatsigorta.com.tr/wp-content/uploads/2026/05/hayat-sigorta-konut-sigortasi.webp" alt="">
+    <img data-src="https://www.hayatsigorta.com.tr/wp-content/uploads/2026/05/hayat-sigorta-kasko-sigortasi.webp" alt="">
+    <img data-src="https://www.hayatsigorta.com.tr/wp-content/uploads/2026/05/hayat-sigorta-dask-zorunlu-deprem-sigortasi.webp" alt="">
+  </div>
   <div class="wrap">
     <div>
       <span class="eyebrow">Sigortacılık Bilgi Merkezi</span>
@@ -653,6 +939,11 @@ footer{background:var(--navy); color:#C6CEDA; padding:56px 0 0; margin-top:20px;
       <h2>Sigortacılığın yasal çerçevesi</h2>
       <p>Sektörü şekillendiren temel kanunlar ve düzenlemeler — sade bir dille özetlendi.</p>
     </div>
+    <div class="sec-strip">
+      <img data-src="https://www.hayatsigorta.com.tr/wp-content/uploads/2026/05/hayat-sigorta-trafik-sigortasi.webp" alt="" aria-hidden="true">
+      <div class="strip-text"><b>Yasal çerçeve, poliçenizin dayandığı zemindir</b><span>Aşağıdaki her başlık, teminatınızın hangi kanun maddesine dayandığını gösterir. Soldaki dizinden ilgili başlığa geçebilirsiniz.</span></div>
+    </div>
+
     <div class="law-layout">
       <div class="law-index" id="lawIndex">
         <a href="#law-5684">5684 · Sigortacılık Kanunu</a>
@@ -724,13 +1015,23 @@ footer{background:var(--navy); color:#C6CEDA; padding:56px 0 0; margin-top:20px;
       <h2>Sektörün resmi muhatapları</h2>
       <p>Şikayet, bilgi edinme ya da resmi kaynak doğrulaması için başvurabileceğiniz kurumlar.</p>
     </div>
-    <div class="grid-org">
-      <div class="org-card"><b>SEDDK</b><p>Sigortacılık ve Özel Emeklilik Düzenleme ve Denetleme Kurumu. Sektörün başdenetleyicisi.</p><a class="link" href="https://www.seddk.gov.tr" target="_blank" rel="noopener">seddk.gov.tr →</a></div>
-      <div class="org-card"><b>TSB</b><p>Türkiye Sigorta Birliği. Sigorta ve reasürans şirketlerinin çatı meslek kuruluşu.</p><a class="link" href="https://www.tsb.org.tr" target="_blank" rel="noopener">tsb.org.tr →</a></div>
-      <div class="org-card"><b>SBM</b><p>Sigorta Bilgi ve Gözetim Merkezi. Poliçe, hasar ve kaza kayıtlarının merkezi veri sistemi.</p><a class="link" href="https://www.sbm.org.tr" target="_blank" rel="noopener">sbm.org.tr →</a></div>
-      <div class="org-card"><b>DASK</b><p>Doğal Afet Sigortaları Kurumu. Zorunlu Deprem Sigortası'nı yöneten kamu kurumu.</p><a class="link" href="https://www.dask.gov.tr" target="_blank" rel="noopener">dask.gov.tr →</a></div>
-      <div class="org-card"><b>Sigorta Tahkim</b><p>Sigortalı–şirket uyuşmazlıklarında alternatif çözüm merci.</p><a class="link" href="https://www.sigortatahkim.org.tr" target="_blank" rel="noopener">sigortatahkim.org.tr →</a></div>
+    <div class="sec-strip">
+      <img data-src="https://www.hayatsigorta.com.tr/wp-content/uploads/2026/05/hayat-sigorta-tamamlayici-saglik-sigortasi.webp" alt="" aria-hidden="true">
+      <div class="strip-text"><b>Resmi muhataplarınızı tanıyın</b><span>Poliçenizle ilgili her adımda başvurabileceğiniz kamu kurumları ve düzenleyiciler — doğrudan resmi sitelerine bağlanır.</span></div>
     </div>
+
+    <div class="grid-org">
+      <div class="org-card"><span class="org-seal kb-b-seddk" aria-hidden="true">SD</span><b>SEDDK</b><p>Sigortacılık ve Özel Emeklilik Düzenleme ve Denetleme Kurumu. Sektörün başdenetleyicisi.</p><a class="link" href="https://www.seddk.gov.tr" target="_blank" rel="noopener">seddk.gov.tr →</a></div>
+      <div class="org-card"><span class="org-seal kb-b-tsb" aria-hidden="true">TSB</span><b>TSB</b><p>Türkiye Sigorta Birliği. Sigorta ve reasürans şirketlerinin çatı meslek kuruluşu.</p><a class="link" href="https://www.tsb.org.tr" target="_blank" rel="noopener">tsb.org.tr →</a></div>
+      <div class="org-card"><span class="org-seal kb-b-sbm" aria-hidden="true">SBM</span><b>SBM</b><p>Sigorta Bilgi ve Gözetim Merkezi. Poliçe, hasar ve kaza kayıtlarının merkezi veri sistemi.</p><a class="link" href="https://www.sbm.org.tr" target="_blank" rel="noopener">sbm.org.tr →</a></div>
+      <div class="org-card"><span class="org-seal kb-b-dask" aria-hidden="true">DK</span><b>DASK</b><p>Doğal Afet Sigortaları Kurumu. Zorunlu Deprem Sigortası'nı yöneten kamu kurumu.</p><a class="link" href="https://www.dask.gov.tr" target="_blank" rel="noopener">dask.gov.tr →</a></div>
+      <div class="org-card"><span class="org-seal kb-b-tahkim" aria-hidden="true">ST</span><b>Sigorta Tahkim</b><p>Sigortalı–şirket uyuşmazlıklarında alternatif çözüm merci.</p><a class="link" href="https://www.sigortatahkim.org.tr" target="_blank" rel="noopener">sigortatahkim.org.tr →</a></div>
+    </div>
+    <div class="partners">
+      <p class="partners-title">Acenteliklerimiz — karşılaştırmalı teklif sunduğumuz şirketler</p>
+      <div class="partner-row"><span class="partner"><img data-src="https://www.hayatsigorta.com.tr/wp-content/uploads/2026/05/axa-sigorta.jpg" alt="AXA Sigorta"><span class="fallback" hidden>AXA</span></span><span class="partner"><img data-src="https://www.hayatsigorta.com.tr/wp-content/uploads/2026/05/hdi-sigorta.jpg" alt="HDI Sigorta"><span class="fallback" hidden>HDI</span></span><span class="partner"><img data-src="https://www.hayatsigorta.com.tr/wp-content/uploads/2026/05/zurich-sigorta.jpg" alt="Zurich Sigorta"><span class="fallback" hidden>Zurich</span></span><span class="partner"><img data-src="https://www.hayatsigorta.com.tr/wp-content/uploads/2026/05/quick-sigorta.jpg" alt="Quick Sigorta"><span class="fallback" hidden>Quick</span></span><span class="partner"><img data-src="https://www.hayatsigorta.com.tr/wp-content/uploads/2026/05/hepiyi-sigorta.jpg" alt="Hepiyi Sigorta"><span class="fallback" hidden>Hepiyi</span></span><span class="partner"><img data-src="https://www.hayatsigorta.com.tr/wp-content/uploads/2026/05/doga-sigorta.jpg" alt="Doğa Sigorta"><span class="fallback" hidden>Doğa</span></span></div>
+    </div>
+
   </div>
 </section>
 
@@ -741,6 +1042,11 @@ footer{background:var(--navy); color:#C6CEDA; padding:56px 0 0; margin-top:20px;
       <h2>Mevzuatta neler değişti?</h2>
       <p>SEDDK tarafından yayımlanan güncel genelge ve kararlardan seçmeler.</p>
     </div>
+    <div class="sec-strip">
+      <img data-src="https://www.hayatsigorta.com.tr/wp-content/uploads/2026/04/kusadasi-dask-zorunlu-deprem-sigortasi-370x400.webp" alt="" aria-hidden="true">
+      <div class="strip-text"><b>Mevzuat sürekli güncelleniyor</b><span>Genel şartlar, teminat limitleri ve tarifeler yıl içinde değişebilir. Bu bölüm panelden yönetilen güncel duyuruları listeler.</span></div>
+    </div>
+
     <div class="chips" id="annChips"></div>
     <div class="announce-list" id="announceList"></div>
     <p class="announce-note">Bu liste <code>/admin</code> panelinden yönetilir; eklediğiniz veya sildiğiniz duyurular anında burada görünür. Tüm resmi genelge ve duyurular için <a href="https://www.seddk.gov.tr" target="_blank" rel="noopener" style="color:var(--gold-dark); font-weight:600;">seddk.gov.tr</a> adresi periyodik olarak takip edilmelidir.</p>
@@ -818,8 +1124,85 @@ footer{background:var(--navy); color:#C6CEDA; padding:56px 0 0; margin-top:20px;
       <input type="text" id="faqSearch" placeholder="Sorunuzu yazın: örn. kasko, cayma, DASK, hasar…" aria-label="SSS içinde ara">
     </div>
     <p class="faq-count" id="faqCount"></p>
+    <div class="faq-layout">
+      <div>
     <div class="faq" id="faqList"></div>
     <p class="faq-empty" id="faqEmpty" hidden>Aramanızla eşleşen bir soru bulunamadı. Farklı bir kelime deneyebilir veya <a href="https://api.whatsapp.com/send?phone=905421793220" target="_blank" rel="noopener">bize WhatsApp'tan sorabilirsiniz</a>.</p>
+      </div>
+      <aside class="faq-aside">
+        <div class="aside-img"><img data-src="https://www.hayatsigorta.com.tr/wp-content/uploads/2023/07/girl.webp" alt="Hayat Sigorta müşteri danışmanı"></div>
+        <div class="aside-body">
+          <b>Sorunuz listede yok mu?</b>
+          <p>Poliçenize özel durumları burada genelleyemiyoruz. Kuşadası'ndaki ekibimize yazın — teminat kapsamınızı birlikte inceleyelim.</p>
+          <a class="aside-cta" href="https://api.whatsapp.com/send?phone=905421793220" target="_blank" rel="noopener">WhatsApp'tan sorun</a>
+          <a class="aside-tel" href="tel:+902566147075">0256 614 70 75</a>
+        </div>
+      </aside>
+    </div>
+  </div>
+</section>
+
+<section id="servisler">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="eyebrow">07 · Online Sigorta Servisleri</span>
+      <h2>Kendi kayıtlarınızı e-Devlet ile sorgulayın</h2>
+      <p>Sigorta Bilgi ve Gözetim Merkezi (SBM) tarafından işletilen Sigortam360 platformu üzerinden poliçe, hasar ve kaza kayıtlarınıza doğrudan erişebilirsiniz.</p>
+    </div>
+    <div class="sec-strip">
+      <img data-src="https://www.hayatsigorta.com.tr/wp-content/uploads/2026/05/hayat-sigorta-kasko-sigortasi.webp" alt="" aria-hidden="true">
+      <div class="strip-text"><b>Kayıtlarınız zaten sizin — doğrudan erişin</b><span>Aşağıdaki servislerin tamamı e-Devlet şifresiyle ücretsizdir. Acenteye gitmeden hasar, poliçe ve kaza kayıtlarınızı sorgulayabilirsiniz.</span></div>
+    </div>
+
+
+    <div class="svc-intro">
+      <span class="sig">360</span>
+      <div>
+        <b>Sigortam360 — SBM'nin resmi vatandaş portalı</b>
+        <p>Tüm sorgulamalar e-Devlet şifresi ile ücretsiz yapılır; kayıtlar Sigorta Bilgi ve Gözetim Merkezi'nin merkezi veri tabanından gelir. → <a href="https://sigortam360.com/" target="_blank" rel="noopener">sigortam360.com</a></p>
+      </div>
+    </div>
+
+    <div class="svc-grid" id="svcGrid"></div>
+
+    <div class="sms-strip">
+      <span class="sms-num">5664</span>
+      <div>
+        <b>SMS ile hızlı sorgulama</b>
+        <p>Plaka ve hasar sorgularınızı e-Devlet'e girmeden SMS ile de yapabilirsiniz: mesaj kutusuna <code>HASAR PLAKA</code> yazıp <b>5664</b>'e gönderin. Aynı hat üzerinden yapılan sorgu sonuçlarına Sigortam360 üzerinden itiraz edilebilir. Operatör ücretlendirmesi geçerlidir.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="bilgibankasi" class="alt">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="eyebrow">08 · Bilgi Bankası</span>
+      <h2>Resmi kaynak arşivi</h2>
+      <p>SEDDK mevzuatı, SBM sorgulama ekranları, DASK tarifeleri, TSB listeleri ve tahkim düzenlemeleri — tek yerde toplandı. Aramak için yazın ya da kurum başlığına dokunun.</p>
+    </div>
+    <div class="sec-strip">
+      <img data-src="https://www.hayatsigorta.com.tr/wp-content/uploads/2026/05/hayat-sigorta-konut-sigortasi.webp" alt="" aria-hidden="true">
+      <div class="strip-text"><b>Tek yerde 51 resmi kaynak</b><span>Kanun metinleri, genel şartlar, tarifeler ve sorgulama ekranları — hepsi ilgili kamu kurumunun resmi sitesine bağlanır.</span></div>
+    </div>
+
+
+    <div class="kb-toolbar">
+      <div class="kb-search">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
+        <input type="text" id="kbSearch" placeholder="Ara: genel şartlar, DASK tarife, kasko değer listesi, tahkim…" aria-label="Bilgi bankasında ara">
+      </div>
+      <p class="kb-count" id="kbCount"></p>
+    </div>
+
+    <div class="kb-groups" id="kbGroups"></div>
+    <p class="kb-empty" id="kbEmpty" hidden>Aramanızla eşleşen kaynak bulunamadı. Farklı bir kelime deneyin ya da <a href="https://api.whatsapp.com/send?phone=905421793220" target="_blank" rel="noopener" style="color:var(--gold-dark); font-weight:600;">bize WhatsApp'tan sorun</a>.</p>
+
+    <div class="kb-note">
+      <span>ⓘ</span>
+      <span>Bu arşivdeki bağlantılar ilgili kamu kurumlarının resmi internet sitelerine yönlendirir. Mevzuat metinleri ve tarifeler kurumlar tarafından güncellenebildiğinden, işlem yapmadan önce yayın tarihini kontrol etmeniz önerilir. Bağlantıların tamamı yeni sekmede açılır.</span>
+    </div>
   </div>
 </section>
 
@@ -843,6 +1226,8 @@ footer{background:var(--navy); color:#C6CEDA; padding:56px 0 0; margin-top:20px;
         <a href="#mevzuat">Güncel Mevzuat</a>
         <a href="#kurumlar">İlgili Kurumlar</a>
         <a href="#duyurular">Sektör Duyuruları</a>
+        <a href="#servisler">Online Servisler</a>
+        <a href="#bilgibankasi">Kaynak Arşivi</a>
         <a href="#sss">Sıkça Sorulan Sorular</a>
       </div>
       <div>
@@ -880,6 +1265,7 @@ footer{background:var(--navy); color:#C6CEDA; padding:56px 0 0; margin-top:20px;
 (function(){
   "use strict";
   var WA = "https://api.whatsapp.com/send?phone=905421793220";
+  var IMGBASE = "https://www.hayatsigorta.com.tr/wp-content/uploads/2026/05/";
   var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   var fine = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
 
@@ -994,67 +1380,67 @@ footer{background:var(--navy); color:#C6CEDA; padding:56px 0 0; margin-top:20px;
     leaf:'<path d="M12 21V9M12 9C7 9 4 6 4 3c4 0 7 2 8 6zM12 13c4-1 7-4 8-8-4 0-7 2-8 6"/>'
   };
   var TYPES = [
-    {c:'saglik', i:'cross', t:'Sağlık Sigortası', d:"Hastane, ameliyat ve tetkik giderlerinizi özel sağlık kuruluşlarında güvence altına alır.",
+    {c:'saglik', i:'cross', t:'Sağlık Sigortası', ph:'hayat-sigorta-saglik-sigortasi.webp', d:"Hastane, ameliyat ve tetkik giderlerinizi özel sağlık kuruluşlarında güvence altına alır.",
      l:["Yatarak / ayakta tedavi seçenekleri","Anlaşmalı kurum ağı","Yıllık yenilenebilir teminat"],
      ozet:"Hastalık veya kaza sonucu ihtiyaç duyduğunuz özel hastane, ameliyat, yoğun bakım ve tetkik giderlerinin sigorta şirketiniz tarafından karşılanmasını sağlar. Anlaşmalı kurum ağındaki hastanelerde, poliçe kapsamınıza göre ödeme yapmadan veya sınırlı bir fark ile tedavi olabilirsiniz.",
      kapsam:["Yatarak tedavi: ameliyat, yoğun bakım, oda-yemek giderleri","Ayakta tedavi: muayene, tahlil, ilaç — poliçeye göre opsiyonel teminat","Doğum ve check-up paketleri (bazı poliçelerde ek teminat)","Anlaşmalı kurum ağında ödemesiz veya indirimli tedavi imkânı"],
      dikkat:["Poliçe öncesi mevcut/kronik rahatsızlıklar genellikle teminat dışıdır ya da bekleme süresine tabidir","Anlaşmasız kurumlarda fatura önce sigortalı tarafından ödenip sonradan sigortadan tahsil edilebilir","Yıllık yenilemede yaş ve hasar geçmişine göre prim değişebilir"],
      refs:[{href:"#mevzuat",label:"Sigortacılık mevzuatı"}]},
-    {c:'saglik', i:'shield', t:'Tamamlayıcı Sağlık Sigortası', d:"SGK'lı olanların özel hastanelerde ek fark ödemeden tedavi olmasını sağlar.",
+    {c:'saglik', i:'shield', t:'Tamamlayıcı Sağlık Sigortası', ph:'hayat-sigorta-tamamlayici-saglik-sigortasi.webp', d:"SGK'lı olanların özel hastanelerde ek fark ödemeden tedavi olmasını sağlar.",
      l:["SGK ile birlikte çalışır","Fark ücretini karşılar","Daha uygun prim seviyesi"],
      ozet:"SGK'ya tabi sigortalıların, anlaşmalı özel hastanelerde SUT (Sağlık Uygulama Tebliği) üzerinden talep edilen fark ücretini ödemeden veya daha düşük bir fark ile tedavi görmesini sağlar. SGK'nın yerine geçmez, onunla birlikte çalışır.",
      kapsam:["SGK ile birlikte, özel hastanedeki fark ücretini karşılama","Genellikle yatarak tedavi ağırlıklı; bazı planlarda ayakta tedavi de dahil","Sağlık sigortasına göre daha uygun prim seviyesi","Anlaşmalı özel hastane ve tıp merkezi ağı"],
      dikkat:["SGK'lı olmayanlar bu poliçeyi yaptıramaz — önce SGK kaydı gerekir","Anlaşmasız kurumlarda teminat sınırlı olabilir veya hiç uygulanmayabilir","Mevcut kronik rahatsızlıklar poliçe başlangıcında beyan edilmelidir"],
      refs:[{href:"#mevzuat",label:"Sigortacılık mevzuatı"}]},
-    {c:'konut', i:'quake', t:'DASK — Zorunlu Deprem Sigortası', d:"Deprem, yangın, infilak ve yer kayması gibi hasarlarda binanızın yapısal zararını karşılar.",
+    {c:'konut', i:'quake', t:'DASK — Zorunlu Deprem Sigortası', ph:'hayat-sigorta-dask-zorunlu-deprem-sigortasi.webp', d:"Deprem, yangın, infilak ve yer kayması gibi hasarlarda binanızın yapısal zararını karşılar.",
      l:["Tapulu tüm konutlar için zorunlu","m² bazlı teminat hesaplama","6305 sayılı Afet Sigortaları Kanunu"],
      ozet:"Deprem ve depremin doğrudan neden olduğu yangın, infilak, tsunami ve yer kayması sonucu konutunuzun taşıyıcı sisteminde oluşan maddi zararı, poliçe limitleri dahilinde karşılayan; tapulu meskenler için kanunen zorunlu bir sigortadır.",
      kapsam:["Taşıyıcı sistem, duvar, çatı gibi yapısal unsurların depremden doğan hasarı","Depremin tetiklediği yangın, infilak, tsunami ve yer kayması zararları","250 m²'ye kadar olan bağımsız bölümler için teminat","Yıllık yenilenen, m² birim bedeline göre hesaplanan poliçe bedeli"],
      dikkat:["Ev eşyaları, dekorasyon ve tadilat harcamaları DASK kapsamı dışındadır — bunun için Konut Sigortası gerekir","Kaçak/ruhsatsız yapılarda teminat süreci sorunlu olabilir","Azami teminat tutarının üzerindeki bina değerleri için ek deprem teminatlı Konut Sigortası önerilir"],
      refs:[{href:"#law-6305",label:"6305 sayılı Afet Sigortaları Kanunu"},{href:"#oranlar",label:"Güncel teminat tutarları"}]},
-    {c:'konut', i:'home', t:'Konut Sigortası', d:"Yangın, hırsızlık, su baskını ve doğal afetlere karşı evinizi ve eşyalarınızı korur.",
+    {c:'konut', i:'home', t:'Konut Sigortası', ph:'hayat-sigorta-konut-sigortasi.webp', d:"Yangın, hırsızlık, su baskını ve doğal afetlere karşı evinizi ve eşyalarınızı korur.",
      l:["Bina + eşya teminatı seçenekleri","DASK ile birlikte tamamlayıcı","Kiracı / malik için ayrı planlar"],
      ozet:"DASK'ın kapsam dışı bıraktığı ev eşyalarını ve binanın kendisini; yangın, hırsızlık, su baskını, cam kırılması gibi risklere karşı koruyan, isteğe bağlı bir sigortadır. Genellikle DASK ile birlikte, onu tamamlayıcı şekilde yaptırılır.",
      kapsam:["Bina ve/veya eşya teminatı — ayrı ayrı veya birlikte seçilebilir","Yangın, duman, infilak, hırsızlık, su baskını, cam kırılması","Ek deprem teminatı ile DASK limitinin üzerini tamamlama seçeneği","Kiracı ve malik için ayrı poliçe planları"],
      dikkat:["Değerli eşya (mücevher, elektronik) için ayrıca beyan veya ek teminat gerekebilir","Boş/kullanılmayan konutlarda bazı teminatlar kısıtlanabilir","Hasar anında rayiç bedel mi yoksa yenileme bedeli mi ödeneceği poliçe şartına bağlıdır"],
      refs:[{href:"#law-6305",label:"DASK ile ilişkisi"}]},
-    {c:'arac', i:'car', t:'Kasko Sigortası', d:"Kazadan hırsızlığa, yangından doğal afete kadar aracınızın kendi hasarlarını karşılar.",
+    {c:'arac', i:'car', t:'Kasko Sigortası', ph:'hayat-sigorta-kasko-sigortasi.webp', d:"Kazadan hırsızlığa, yangından doğal afete kadar aracınızın kendi hasarlarını karşılar.",
      l:["Genişletilmiş / dar kasko seçenekleri","Hasarsızlık indirim kademeleri","İkame araç, mini onarım ek teminatları"],
      ozet:"Trafik sigortasının aksine, kendi aracınızda meydana gelen hasarları karşılayan isteğe bağlı bir sigortadır: çarpma, çarpışma, yangın, hırsızlık, doğal afet ve cam kırılması gibi riskleri kapsar.",
      kapsam:["Çarpışma, devrilme, yangın, hırsızlık, doğal afet hasarları","Cam, far, ayna kırılmaları (bazı poliçelerde ayrı sublimit ile)","Anahtar kaybı, ikame araç, yol yardımı gibi ek teminatlar","Hasarsızlık indirim kademeleri ile prim avantajı"],
      dikkat:["Alkollü veya ehliyetsiz kullanım gibi durumlarda hasar ödemesi reddedilebilir","Muafiyet (sigortalı katılım payı) seçeneklerine göre prim ve ödenecek hasar tutarı değişir","Araç yaşı ve modeline göre bazı sigorta şirketleri kasko yapmayabilir"],
      refs:[{href:"#law-ttk",label:"6102 sayılı TTK — Sigorta Hukuku"}]},
-    {c:'arac', i:'traffic', t:'Trafik Sigortası (ZMSS)', d:"Karşı tarafa verdiğiniz maddi ve bedensel zararları güvence altına alan, kanunen zorunlu poliçe.",
+    {c:'arac', i:'traffic', t:'Trafik Sigortası (ZMSS)', ph:'hayat-sigorta-trafik-sigortasi.webp', d:"Karşı tarafa verdiğiniz maddi ve bedensel zararları güvence altına alan, kanunen zorunlu poliçe.",
      l:["2918 sayılı kanun ile zorunlu","Basamak (hasarsızlık) sistemine tabi","Sigortasız araç trafiğe çıkamaz"],
      ozet:"Kanunen zorunlu olan bu poliçe, kendi hasarınızı değil, bir trafik kazasında karşı tarafa (üçüncü kişilere) verdiğiniz maddi ve bedensel zararı, belirlenen teminat limitleri dahilinde karşılar.",
      kapsam:["Karşı araçta oluşan maddi hasar (belirli bir limite kadar)","Karşı taraftaki kişilerin sağlık, sakatlanma ve vefat giderleri","Değer kaybı tazminatı — kusurlu tarafın trafik poliçesinden talep edilir","Basamak (hasarsızlık) sistemine göre yıldan yıla prim değişimi"],
      dikkat:["Kendi aracınızın hasarını karşılamaz — bunun için Kasko Sigortası gereklidir","Teminat limitleri her yıl yeniden belirlenir; güncel tutarlar Oranlar bölümünde","Sigortasız araç trafiğe çıkamaz; poliçesiz araçlara idari para cezası uygulanır"],
      refs:[{href:"#law-2918",label:"2918 sayılı Karayolları Trafik Kanunu"},{href:"#oranlar",label:"Güncel teminat limitleri"}]},
-    {c:'birey', i:'heart', t:'Hayat Sigortası', d:"Vefat, maluliyet ya da kritik hastalık hâlinde ailenize maddi güvence sağlar.",
+    {c:'birey', i:'heart', t:'Hayat Sigortası', ph:'hayat-sigorta-saglik-sigortasi.webp', d:"Vefat, maluliyet ya da kritik hastalık hâlinde ailenize maddi güvence sağlar.",
      l:["Vefat / maluliyet / kritik hastalık","Kredi hayat sigortası bağlantılı seçenekler","TTK m.1430 uyarınca 30 gün cayma hakkı"],
      ozet:"Sigortalının vefatı, maluliyeti veya poliçede belirtilen kritik hastalıklardan birine yakalanması durumunda, geride kalanlara veya sigortalının kendisine belirlenen teminat tutarının ödenmesini sağlar. Kredi bağlantılı veya bireysel birikim amaçlı olarak da düzenlenebilir.",
      kapsam:["Vefat teminatı — lehtar olarak belirlenen kişilere ödeme","Maluliyet ve kritik hastalık ek teminatları","Kredi hayat sigortası — kredi borcunun kalan bakiyesini karşılama","Birikimli planlarda vade sonunda toplu ödeme seçeneği"],
      dikkat:["Poliçe başlangıcında sağlık beyanı istenir; eksik/yanlış beyan tazminatı etkileyebilir","Birikimli ve birikimsiz (risk teminatlı) planlar farklı vergi avantajlarına tabidir","Cayma hakkı diğer branşlardan farklı olarak 30 gündür"],
      refs:[{href:"#law-cayma",label:"Cayma hakkı (TTK m.1430)"},{href:"#oranlar",label:"Vergi avantajı"}]},
-    {c:'birey', i:'shield', t:'Ferdi Kaza Sigortası', d:"Ani ve beklenmedik kazalar sonucu oluşan vefat, sakatlık ve tedavi giderlerini karşılar.",
+    {c:'birey', i:'shield', t:'Ferdi Kaza Sigortası', ph:'hayat-sigorta-trafik-sigortasi.webp', d:"Ani ve beklenmedik kazalar sonucu oluşan vefat, sakatlık ve tedavi giderlerini karşılar.",
      l:["7/24, dünya genelinde geçerli seçenekler","İşe / spora / mesleğe özel paketler","Uygun prim, hızlı hasar süreci"],
      ozet:"Ani ve beklenmedik bir kaza sonucu oluşan vefat, sürekli sakatlık ve tedavi masraflarını karşılayan; günlük hayatta veya belirli bir aktivite/meslek özelinde geçerli olabilen bir teminattır.",
      kapsam:["Kaza sonucu vefat ve sürekli sakatlık teminatı","Tedavi masrafları teminatı (poliçeye göre)","7/24 veya yalnızca iş saatleri gibi kapsam seçenekleri","Spor, meslek veya seyahate özel ek paketler"],
      dikkat:["Hastalık sonucu oluşan durumları kapsamaz, yalnızca kaza kaynaklı riskleri karşılar","Sakatlık oranı tıbbi rapor ile belirlenir ve ödeme bu orana göre yapılır","Bazı yüksek riskli sporlar veya meslekler ek prim ya da istisna gerektirebilir"],
      refs:[{href:"#law-ttk",label:"6102 sayılı TTK — Sigorta Hukuku"}]},
-    {c:'ticari', i:'box', t:'Nakliyat Sigortası', d:"Kara, deniz, hava veya demiryoluyla taşınan yükleri hasar, kayıp ve çalınmaya karşı korur.",
+    {c:'ticari', i:'box', t:'Nakliyat Sigortası', ph:'hayat-sigorta-kasko-sigortasi.webp', d:"Kara, deniz, hava veya demiryoluyla taşınan yükleri hasar, kayıp ve çalınmaya karşı korur.",
      l:["İthalat / ihracat yükleri","Emtia bazında teminat kapsamı","Ticari işletmeler için özelleştirilebilir"],
      ozet:"Kara, deniz, hava veya demiryolu ile taşınan yüklerin; taşıma sırasında hasar, kayıp, çalınma veya kaza gibi risklere karşı güvence altına alınmasını sağlar. İthalat/ihracat yapan işletmeler için sıkça tercih edilir.",
      kapsam:["Taşıma sırasında oluşan fiziksel hasar ve kayıp","Yükleme/boşaltma sırasındaki hasarlar (poliçe şartına göre)","Emtia bazında özelleştirilebilir teminat kapsamı (dar/geniş teminat)","Çok modlu taşımalarda (kara + deniz gibi) tek poliçe ile kapsama"],
      dikkat:["Ambalajlama kusurundan kaynaklanan hasarlar genellikle teminat dışıdır","Teminat kapsamı poliçe bazında (dar/geniş klozlar) büyük farklılık gösterir","Hasar bildirim süresine dikkat edilmesi tazminat sürecini hızlandırır"],
      refs:[{href:"#law-ttk",label:"6102 sayılı TTK — Sigorta Hukuku"}]},
-    {c:'ticari', i:'fire', t:'Yangın Sigortası', d:"İşyeri, konut veya sanayi tesislerini yangın, duman, infilak gibi risklere karşı güvenceye alır.",
+    {c:'ticari', i:'fire', t:'Yangın Sigortası', ph:'hayat-sigorta-konut-sigortasi.webp', d:"İşyeri, konut veya sanayi tesislerini yangın, duman, infilak gibi risklere karşı güvenceye alır.",
      l:["Bina + emtia + demirbaş teminatı","İş durması (kâr kaybı) eklenebilir","Yangın söndürme masrafları dahil"],
      ozet:"İşyeri, konut veya sanayi tesislerini; yangın, yıldırım, infilak, duman gibi risklere karşı güvence altına alan, ticari işletmeler için özellikle önemli bir teminattır. Kâr kaybı gibi ek teminatlarla genişletilebilir.",
      kapsam:["Bina, demirbaş ve emtia (stok) teminatı","Yangın söndürme sırasında oluşan zararlar","İş durması / kâr kaybı ek teminatı","Deprem, sel, hırsızlık gibi ek teminatlarla genişletilebilir paket yapısı"],
      dikkat:["Sigorta bedelinin gerçek değerin altında belirlenmesi (eksik sigorta) kısmi ödemeye yol açabilir","Yüksek riskli faaliyet konusu olan işletmelerde ek koşullar veya prim uygulanabilir","Stok değeri değişken işletmelerde beyan usulü poliçe tercih edilebilir"],
      refs:[{href:"#law-ttk",label:"6102 sayılı TTK — Sigorta Hukuku"}]},
-    {c:'ticari', i:'leaf', t:'Tarım Sigortası', d:"Don, dolu, kuraklık ve hastalık gibi risklere karşı bitkisel ve hayvansal üretimi korur (TARSİM).",
+    {c:'ticari', i:'leaf', t:'Tarım Sigortası', ph:'hayat-sigorta-dask-zorunlu-deprem-sigortasi.webp', d:"Don, dolu, kuraklık ve hastalık gibi risklere karşı bitkisel ve hayvansal üretimi korur (TARSİM).",
      l:["Devlet destekli prim yapısı","5363 sayılı Tarım Sigortaları Kanunu","Bölgesel risk katsayılarına göre fiyatlama"],
      ozet:"TARSİM (Tarım Sigortaları Havuzu) kapsamında, don, dolu, kuraklık, sel, fırtına ve bazı hastalıklar gibi risklere karşı bitkisel üretimi; hastalık ve kaza risklerine karşı da hayvansal üretimi güvence altına alır. Devlet, prim maliyetinin önemli bir kısmına destek sağlar.",
      kapsam:["Bitkisel ürünlerde don, dolu, fırtına, sel, kuraklık gibi risklere karşı teminat","Hayvancılıkta hastalık, kaza ve doğal afet teminatları (ürüne göre değişir)","Devlet destekli prim yapısı — üreticinin ödediği prim payı azalır","Bölgesel risk katsayılarına göre fiyatlama"],
@@ -1094,7 +1480,9 @@ footer{background:var(--navy); color:#C6CEDA; padding:56px 0 0; margin-top:20px;
       '<div class="card-inner">' +
         '<div class="face front">' +
           '<span class="flip-hint" aria-hidden="true">⟲</span>' +
-          '<div class="type-photo photo-cat-' + o.c + '"><span class="photo-icon" aria-hidden="true">' + svg(o.i) + '</span></div>' +
+          '<div class="type-photo photo-cat-' + o.c + '">' +
+            (o.ph ? '<img class="ph" data-src="' + IMGBASE + o.ph + '" alt="" aria-hidden="true">' : '') +
+            '<span class="photo-icon" aria-hidden="true">' + svg(o.i) + '</span></div>' +
           '<div class="face-body">' +
             '<div class="type-icon">' + svg(o.i) + '</div>' +
             '<h3>' + o.t + '</h3>' +
@@ -1333,6 +1721,319 @@ footer{background:var(--navy); color:#C6CEDA; padding:56px 0 0; margin-top:20px;
     var open = faqEl.querySelector('.faq-item.open .faq-a');
     if (open) open.style.maxHeight = open.scrollHeight + 'px';
   });
+
+  /* ---------- 07 · ONLINE SERVİSLER (SBM / Sigortam360) ---------- */
+  var SICONS = {
+    car360:'<circle cx="12" cy="12" r="8.5"/><path d="M12 3.5v3M12 17.5v3M3.5 12h3M17.5 12h3"/><path d="M9 13l2 2 4-4.5"/>',
+    wrench:'<path d="M14.7 6.3a4 4 0 00-5.4 5.4L3 18l3 3 6.3-6.3a4 4 0 005.4-5.4l-2.5 2.5-2.1-2.1z"/>',
+    docs:'<path d="M8 3h7l5 5v13H8z"/><path d="M15 3v5h5"/><path d="M11 12h6M11 16h6"/><path d="M4 7v14h11"/>',
+    crash:'<path d="M12 2l2.4 5.2L20 8l-4 3.8 1 5.7-5-2.8-5 2.8 1-5.7L4 8l5.6-.8z"/><path d="M12 14v6"/>',
+    license:'<rect x="2.5" y="5" width="19" height="14" rx="2"/><circle cx="8" cy="11" r="2.2"/><path d="M13.5 10h5M13.5 14h5M4.5 16c.8-1.6 2-2.4 3.5-2.4s2.7.8 3.5 2.4"/>',
+    pin:'<path d="M12 21s7-5.6 7-11a7 7 0 10-14 0c0 5.4 7 11 7 11z"/><circle cx="12" cy="10" r="2.6"/>',
+    map:'<path d="M9 4L3 6.5v13L9 17l6 3 6-2.5v-13L15 7z"/><path d="M9 4v13M15 7v13"/>',
+    edit:'<path d="M4 20h4l10-10-4-4L4 16z"/><path d="M14 6l4 4"/><path d="M14 20h6"/>',
+    status:'<circle cx="12" cy="12" r="8.5"/><path d="M12 7.5V12l3 2"/>',
+    calendar:'<rect x="3.5" y="5" width="17" height="15.5" rx="2"/><path d="M3.5 10h17M8.5 3v4M15.5 3v4"/><path d="M8.5 14h3"/>',
+    seal:'<path d="M12 3l2.2 1.6 2.7-.3 1 2.5 2.4 1.3-.8 2.6.8 2.6-2.4 1.3-1 2.5-2.7-.3L12 18.5l-2.2-1.6-2.7.3-1-2.5-2.4-1.3.8-2.6-.8-2.6 2.4-1.3 1-2.5 2.7.3z"/><path d="M9.3 11.5l1.9 1.9 3.5-3.9"/>'
+  };
+  function ssvg(n){
+    return '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">' + SICONS[n] + '</svg>';
+  }
+
+  var SBM_LOGIN = 'https://online.sbm.org.tr/ovm-police/cweb/edevlet/login.sbm';
+  var SERVICES = [
+    {i:'car360', v:'v-tramer', badge:'Yeni', t:'Tramer360 — Araç Geçmiş Raporu', ph:'hayat-sigorta-kasko-sigortasi.webp',
+     d:'Bir aracın tüm geçmişini tek bir raporda toplar: hasar kayıtları, değişen parçalar, kaskosuz dönemler ve araç detay bilgileri. İkinci el alım öncesi en kapsamlı doğrulama aracıdır.',
+     how:'e-Devlet girişi · plaka veya şasi no ile',
+     links:[{h:'https://sigortam360.com/', l:'Sigortam360'}]},
+    {i:'wrench', v:'v-hasar', t:'Araç Hasar Sorgu', ph:'hayat-sigorta-kasko-sigortasi.webp',
+     d:'Aracın kayıtlı hasar geçmişini, hangi dönemlerde kaskosuz kaldığını, değiştirilen parçaları ve teknik araç detaylarını görüntüleyin.',
+     how:'e-Devlet girişi · 5664 SMS ile de sorgulanabilir',
+     links:[{h:'https://sigortam360.com/', l:'Sigortam360'},{h:'https://sbm.org.tr/tr/sms-sorgulamalari', l:'SMS ile sorgulama'}]},
+    {i:'docs', v:'v-police', t:'Poliçelerim', ph:'hayat-sigorta-saglik-sigortasi.webp',
+     d:'Adınıza kayıtlı tüm sigorta poliçelerini tek listede görün; güncel durumlarını, başlangıç–bitiş tarihlerini ve teminat detaylarını inceleyin.',
+     how:'e-Devlet girişi · TCKN ile eşleşen tüm poliçeler',
+     links:[{h:'https://www.turkiye.gov.tr/ozel-sigortalarim', l:'e-Devlet: Özel Sigortalarım'},{h:'https://sbm.org.tr/tr/web-sorgulama', l:'SBM web sorgulama'}]},
+    {i:'crash', v:'v-kaza', t:'Kaza Tespit Tutanağı Sorgula', ph:'hayat-sigorta-trafik-sigortasi.webp',
+     d:'Maddi hasarlı kazalarda taraflar arasında tutulan tutanağa ilişkin kusur oranını ve kaza detaylarını görüntüleyin; sonuca itiraz edebilirsiniz.',
+     how:'e-Devlet girişi · tutanak no ile',
+     links:[{h:'https://sbm.org.tr/tr/ktt-sorgulama-ve-itiraz', l:'KTT sorgulama ve itiraz'},{h:'https://sbm.org.tr/tr/mobil-kaza-tutanagi-mkt', l:'Mobil Kaza Tutanağı (MKT)'}]},
+    {i:'license', v:'v-surucu', t:'Sürücü Hasar Sicil Kaydı', ph:'hayat-sigorta-trafik-sigortasi.webp',
+     d:'Sürücü olarak karıştığınız kazaların dökümü, sürücü ceza puanlarınız ve ehliyet bilgilerinizin yer aldığı resmi sicil belgenize erişin.',
+     how:'e-Devlet girişi · belge olarak indirilebilir',
+     links:[{h:'https://sbm.org.tr/tr/surucu-hasar-sicil-kaydi-belgesi', l:'SBM: Sürücü Hasar Sicili'}]},
+    {i:'pin', v:'v-acente', t:'En Yakın Acente Sorgula', ph:'hayat-sigorta-konut-sigortasi.webp',
+     d:'Konumunuza göre size en yakın yetkili sigorta acentesini hızlıca bulun; adres ve iletişim bilgilerini görüntüleyin.',
+     how:'Giriş gerekmez · konum bazlı arama',
+     links:[{h:'https://sigortam360.com/', l:'Sigortam360'}]},
+    {i:'map', v:'v-tramer', t:'Kaza Yoğunluk Haritası', ph:'hayat-sigorta-trafik-sigortasi.webp',
+     d:'Mobil KTT üzerinden girilen kaza tespit tutanaklarının konum verilerine dayanan yoğunluk haritasıyla riskli güzergâhları görün.',
+     how:'Giriş gerekmez · harita üzerinde filtreleme',
+     links:[{h:'https://sbm.org.tr/tr/mobil-kaza-tutanagi-mkt', l:'Mobil KTT hakkında'}]},
+    {i:'edit', v:'v-hasar', t:'Hasar Bilgi Düzeltme (İtiraz)', ph:'hayat-sigorta-kasko-sigortasi.webp',
+     d:'5664 SMS veya Sigortam360 üzerinden aldığınız hasar sorgu sonuçlarında hata olduğunu düşünüyorsanız, kayda resmi itirazda bulunun.',
+     how:'e-Devlet girişi · itiraz talebi oluşturma',
+     links:[{h:'https://sbm.org.tr/tr/tramer-ile-sorgulama', l:'Tramer ile sorgulama'}]},
+    {i:'status', v:'v-hasar', t:'Hasar Bilgi Düzeltme Durum Sorgu', ph:'hayat-sigorta-kasko-sigortasi.webp',
+     d:'Daha önce oluşturduğunuz hasar kaydı itirazının hangi aşamada olduğunu ve sonuçlanıp sonuçlanmadığını takip edin.',
+     how:'e-Devlet girişi · başvuru numarası ile',
+     links:[{h:'https://sbm.org.tr/tr/tramer-ile-sorgulama', l:'Tramer ile sorgulama'}]},
+    {i:'calendar', v:'v-police', t:'Kaza Tarihindeki Poliçe Bilgileri', ph:'hayat-sigorta-saglik-sigortasi.webp',
+     d:'Geçmiş bir kaza tarihinde hangi poliçenin yürürlükte olduğunu, plaka ve kaza tarihi girerek sorgulayın. Hasar talebi süreçlerinde belirleyicidir.',
+     how:'e-Devlet girişi · plaka + kaza tarihi',
+     links:[{h:'https://sbm.org.tr/tr/web-sorgulama', l:'SBM web sorgulama'}]},
+    {i:'seal', v:'v-kaza', t:'Kefalet / Bina Tamamlama Sigortası', ph:'hayat-sigorta-konut-sigortasi.webp',
+     d:'Kefalet senedi ve bina tamamlama sigortasına ilişkin kayıtlarınızı sorgulayın; teminat kapsamı ve geçerlilik durumunu doğrulayın.',
+     how:'e-Devlet girişi · senet bilgisi ile',
+     links:[{h:'https://sigortam360.com/', l:'Sigortam360'}]}
+  ];
+
+  var svcGrid = document.getElementById('svcGrid');
+  if (svcGrid) {
+    SERVICES.forEach(function(s, idx){
+      var c = document.createElement('article');
+      c.className = 'svc-card';
+      c.innerHTML =
+        (s.badge ? '<span class="svc-badge">' + esc0(s.badge) + '</span>' : '') +
+        '<div class="svc-visual ' + s.v + '">' +
+          (s.ph ? '<img class="ph" data-src="' + IMGBASE + s.ph + '" alt="" aria-hidden="true">' : '') +
+          '<span class="ghost" aria-hidden="true">' + ssvg(s.i) + '</span>' + ssvg(s.i) +
+        '</div>' +
+        '<div class="svc-body">' +
+          '<h3>' + esc0(s.t) + '</h3>' +
+          '<p>' + esc0(s.d) + '</p>' +
+          '<div class="svc-links">' +
+            s.links.map(function(l){
+              return '<a href="' + esc0(l.h) + '" target="_blank" rel="noopener">' + esc0(l.l) + ' →</a>';
+            }).join('') +
+          '</div>' +
+          '<div class="svc-how">' +
+            '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="10" width="16" height="10" rx="2"/><path d="M8 10V7a4 4 0 018 0v3"/></svg>' +
+            esc0(s.how) +
+          '</div>' +
+        '</div>';
+      svcGrid.appendChild(c);
+      reveal(c, idx);
+    });
+  }
+
+  /* ---------- 08 · BİLGİ BANKASI ---------- */
+  var KB = [
+    {k:'seddk', b:'kb-b-seddk', icon:'<path d="M3 21h18M5 21V10M19 21V10M12 3L3.5 8h17z"/><path d="M9 21v-7h6v7"/>',
+     n:'SEDDK — Sigortacılık ve Özel Emeklilik Düzenleme ve Denetleme Kurumu',
+     s:'Sektörün başdenetleyicisi. Kanunlar, yönetmelikler, genel şartlar, tarifeler ve kurul kararları.',
+     open:true,
+     items:[
+      ['Sigortacılık — Kanunlar ve KHK','https://www.seddk.gov.tr/tr/mevzuat/sigortacilik/kanunlar-ve-khk'],
+      ['Cumhurbaşkanlığı Kararnameleri ve Kararları','https://www.seddk.gov.tr/tr/mevzuat/sigortacilik/cumhurbaskanligi-kararnameleri-kararlari'],
+      ['Sigortacılık — Yönetmelikler','https://www.seddk.gov.tr/tr/mevzuat/sigortacilik/yonetmelikler'],
+      ['Poliçe Genel Şartları (tüm branşlar)','https://www.seddk.gov.tr/tr/mevzuat/sigortacilik/genel-sartlar'],
+      ['Genelge, Tebliğ ve Sektör Duyuruları','https://www.seddk.gov.tr/tr/mevzuat/sigortacilik/genelge-teblig-ve-sektor-duyurulari'],
+      ['Tarife ve Talimatlar','https://www.seddk.gov.tr/tr/mevzuat/sigortacilik/tarife-ve-talimatlar'],
+      ['Sigortacılık Rehberleri','https://www.seddk.gov.tr/tr/mevzuat/sigortacilik/rehberler'],
+      ['Denetim Rehberleri','https://www.seddk.gov.tr/tr/mevzuat/sigortacilik/denetim-rehberleri'],
+      ['Kurul Kararları','https://www.seddk.gov.tr/tr/mevzuat/kurul-kararlari'],
+      ['İlgili Diğer Mevzuat','https://www.seddk.gov.tr/tr/mevzuat/ilgili-diger-mevzuat'],
+      ['Güncel Duyurular','https://www.seddk.gov.tr/tr/duyurular'],
+      ['Eğitici ve Öğretici Yayınlar','https://seddk.gov.tr/tr/yayinlar/egitici-ve-ogretici-yayinlar'],
+      ['Zorunlu Trafik Sigortası Teminat Limitleri','https://www.seddk.gov.tr/tr/tuketici-kosesi/teminat-limitleri/zorunlu-trafik-sigortasi-limitleri'],
+      ['Bireysel Kredilerle Bağlantılı Sigortalar — SMS Bilgilendirme','https://www.seddk.gov.tr/tr/bireysel-kredilerle-baglantili-sigortalar-kisa-mesaj-bilgilendirme'],
+      ['Özel Sağlık Sigortası — Yeni Dönem Bilgilendirme Rehberi (PDF)','https://seddk.gov.tr/UploadContent/Documents/%C3%96SS_YeniD%C3%B6nemBilgilendirme_Rehberi.pdf'],
+      ['BES ile İstisnai Türk Vatandaşlığı Başvurusu (PDF)','https://www.seddk.gov.tr/upload/yatirimcilarin-BESe-yatirim-yapmak-suretiyle-istisnai-T%C3%BCrk-vatandasligi-....pdf']
+     ]},
+
+    {k:'bes', b:'kb-b-seddk', icon:'<path d="M12 3v18M8 7h6.5a2.75 2.75 0 010 5.5H8"/><path d="M8 12.5h7a2.75 2.75 0 010 5.5H8"/>',
+     n:'Bireysel Emeklilik ve Katılım Sigortacılığı Mevzuatı',
+     s:'BES ve katılım (tekafül) esaslı sigortacılığa ilişkin kanun, yönetmelik ve duyurular.',
+     items:[
+      ['Bireysel Emeklilik — Kanunlar','https://www.seddk.gov.tr/tr/mevzuat/bireysel-emeklilik/kanunlar'],
+      ['Bireysel Emeklilik — Yönetmelikler','https://www.seddk.gov.tr/tr/mevzuat/bireysel-emeklilik/yonetmelikler'],
+      ['Bireysel Emeklilik — Genelge, Tebliğ ve Sektör Duyuruları','https://www.seddk.gov.tr/tr/mevzuat/bireysel-emeklilik/genelge-teblig-ve-sektor-duyurulari'],
+      ['Bireysel Emeklilik — Diğer Duyurular','https://www.seddk.gov.tr/tr/mevzuat/bireysel-emeklilik/diger-duyurular'],
+      ['Katılım Sigortacılığı — Yönetmelikler','https://www.seddk.gov.tr/tr/mevzuat/katilim/yonetmelikler'],
+      ['Katılım — Genelge, Tebliğ ve Sektör Duyuruları','https://www.seddk.gov.tr/tr/mevzuat/katilim/genelge-teblig-ve-sektor-duyurulari'],
+      ['Katılım — Denetim Rehberleri','https://www.seddk.gov.tr/tr/mevzuat/katilim/denetim-rehberleri'],
+      ['Katılım — Diğer Duyurular','https://www.seddk.gov.tr/tr/mevzuat/katilim/diger-duyurular'],
+      ['EGM — Katılımcı Bilgilendirme Rehberi','https://www.egm.org.tr/katilimcilar/katilimci-bilgilendirme-rehberi/']
+     ]},
+
+    {k:'sbm', b:'kb-b-sbm', icon:'<rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 9h18M7 13h5M7 16.5h8"/>',
+     n:'SBM — Sigorta Bilgi ve Gözetim Merkezi',
+     s:'Poliçe, hasar ve kaza kayıtlarının merkezi veri sistemi. Sorgulama ekranları ve kullanım kılavuzları.',
+     items:[
+      ['Web Üzerinden Sorgulama','https://sbm.org.tr/tr/web-sorgulama'],
+      ['SMS Sorgulamaları (5664)','https://sbm.org.tr/tr/sms-sorgulamalari'],
+      ['Tramer ile Sorgulama','https://sbm.org.tr/tr/tramer-ile-sorgulama'],
+      ['KTT Sorgulama ve İtiraz','https://sbm.org.tr/tr/ktt-sorgulama-ve-itiraz'],
+      ['Mobil Kaza Tutanağı (MKT)','https://sbm.org.tr/tr/mobil-kaza-tutanagi-mkt'],
+      ['Sürücü Hasar Sicil Kaydı Belgesi','https://sbm.org.tr/tr/surucu-hasar-sicil-kaydi-belgesi'],
+      ['Sağlık Sigortası Bilgileri Geçişi','https://sbm.org.tr/tr/saglik-sigortasi-bilgileri-gecisi'],
+      ['Sağlık Bilgi Geçişi — Bireysel Başvuru (e-Devlet)','https://online.sbm.org.tr/ovm-police/cweb/edevlet/login.sbm?referrerUri=%2Fovm-police%2Fpublic%2FsigortaliGecis%2Fbireysel%2Flist.sbm'],
+      ['Sağlık Bilgi Geçişi — Kurumsal Başvuru (e-Devlet)','https://online.sbm.org.tr/ovm-police/cweb/edevlet/login.sbm?referrerUri=%2Fovm-police%2Fpublic%2FsigortaliGecis%2Fkurumsal%2Fverify.sbm'],
+      ['Trafik Değer Kaybı Eksper Atama — Kullanım Kılavuzu','https://sbm.org.tr/tr/trafik-deger-kaybi-eksper-atama-kullanim-kilavuzu'],
+      ['Değer Kaybı Eksper Atama Talebi (e-Devlet)','https://online.sbm.org.tr/htm-eksist/cweb/edevlet/login.sbm?referrerUri=%2Fhtm-eksist%2Fpublic%2Ftalep%2Fyeni.sbm'],
+      ['Trafik Sigortası Teklif Yenileme Sorgu (e-Devlet)','https://online.sbm.org.tr/trm-teklif/cweb/edevlet/login.sbm?referrerUri=%2Ftrm-teklif%2Fpublic%2FtrafikTeklifYenileme%2Fsorgu.sbm'],
+      ['Sigortam360 Vatandaş Portalı','https://sigortam360.com/']
+     ]},
+
+    {k:'dask', b:'kb-b-dask', icon:'<path d="M4 11l8-7 8 7M6 10v9h12v-9"/><path d="M2 13.5l3-3M22 13.5l-3-3"/><path d="M10 19v-4.5h4V19"/>',
+     n:'DASK — Doğal Afet Sigortaları Kurumu',
+     s:'Zorunlu Deprem Sigortası tarifeleri, poliçe sorgulama, prim hesaplama ve başvuru rehberi.',
+     items:[
+      ['Tarife ve Primler','https://dask.gov.tr/tr/tarife-ve-primler'],
+      ['Poliçe Sorgulama','https://www.dask.gov.tr/tr/police-sorgulama'],
+      ['Poliçe Prim ve Bedeli Hesaplama','https://www.dask.gov.tr/tr/police-prim-ve-bedeli-hesaplama'],
+      ['9 Adımda Zorunlu Deprem Sigortası','https://www.dask.gov.tr/tr/9-adimda-zds'],
+      ['Gerekli Bilgi ve Belgeler','https://www.dask.gov.tr/tr/gerekli-bilgi-ve-belgeler']
+     ]},
+
+    {k:'tsb', b:'kb-b-tsb', icon:'<path d="M3 13l2-5a2 2 0 012-1h10a2 2 0 012 1l2 5"/><rect x="3" y="13" width="18" height="5" rx="1"/><circle cx="7.5" cy="18" r="1.2"/><circle cx="16.5" cy="18" r="1.2"/>',
+     n:'TSB — Türkiye Sigorta Birliği',
+     s:'Kasko değer listesi, motorlu taşıtlar vergisi tabloları ve sigortacılık kanunları derlemesi.',
+     items:[
+      ['Kasko Değer Listesi','https://www.tsb.org.tr/tr/kasko-deger-listesi'],
+      ['Motorlu Taşıtlar Vergisi','https://www.tsb.org.tr/tr/motorlu-tasitlar-vergisi'],
+      ['Sigortacılık Mevzuatı — Kanunlar','https://www.tsb.org.tr/tr/mevzuat/sigortacilik/kanunlar']
+     ]},
+
+    {k:'tahkim', b:'kb-b-tahkim', icon:'<path d="M12 3v18M5 21h14"/><path d="M12 6l-6 2 3 5a3 3 0 006 0l3-5z" /><path d="M3 13h6M15 13h6"/>',
+     n:'Sigorta Tahkim Komisyonu',
+     s:'Sigortalı–şirket uyuşmazlıklarında mahkeme öncesi alternatif çözüm merci ve dayandığı mevzuat.',
+     items:[
+      ['Mevzuat — Kanunlar','https://www.sigortatahkim.org.tr/sayfa/mevzuat-kanunlar'],
+      ['Mevzuat — Yönetmelikler','https://www.sigortatahkim.org.tr/sayfa/mevzuat-yonetmelikler'],
+      ['Sigorta Tahkim Komisyonu — Ana Sayfa','https://www.sigortatahkim.org.tr']
+     ]},
+
+    {k:'devlet', b:'kb-b-devlet', icon:'<rect x="3" y="4" width="18" height="16" rx="2"/><path d="M8.5 12.5l2.2 2.2 4.8-5.2"/><path d="M3 8h18"/>',
+     n:'e-Devlet Üzerinden Sigorta İşlemleri',
+     s:'Kendi poliçe ve sigorta kayıtlarınıza doğrudan e-Devlet kapısı üzerinden erişim.',
+     items:[
+      ['Özel Sigortalarım (tüm poliçeleriniz)','https://www.turkiye.gov.tr/ozel-sigortalarim'],
+      ['SBM e-Devlet Giriş Ekranı','https://online.sbm.org.tr/ovm-police/cweb/edevlet/login.sbm']
+     ]}
+  ];
+
+  var kbGroups = document.getElementById('kbGroups');
+  var kbSearch = document.getElementById('kbSearch');
+  var kbCount  = document.getElementById('kbCount');
+  var kbEmpty  = document.getElementById('kbEmpty');
+
+  function hostOf(u){
+    try { return u.replace(/^https?:\/\//,'').split('/')[0].replace(/^www\./,''); }
+    catch(e){ return u; }
+  }
+  function kbChevron(){
+    return '<svg class="kb-chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>';
+  }
+
+  function totalKb(){ var n=0; KB.forEach(function(g){ n += g.items.length; }); return n; }
+  var KB_TOTAL = totalKb();
+
+  function renderKb(rawQuery){
+    if (!kbGroups) return;
+    var q  = (rawQuery || '').trim();
+    var ql = trLower(q);
+    kbGroups.innerHTML = '';
+    var shown = 0;
+
+    KB.forEach(function(g){
+      var items = !ql ? g.items : g.items.filter(function(it){
+        return trLower(it[0]).indexOf(ql) !== -1 ||
+               trLower(it[1]).indexOf(ql) !== -1 ||
+               trLower(g.n).indexOf(ql) !== -1;
+      });
+      if (!items.length) return;
+      shown += items.length;
+
+      var wrapEl = document.createElement('div');
+      wrapEl.className = 'kb-group';
+      var expand = !!ql || g.open;
+
+      wrapEl.innerHTML =
+        '<div class="kb-head" role="button" tabindex="0" aria-expanded="' + (expand ? 'true' : 'false') + '">' +
+          '<span class="kb-badge ' + g.b + '" aria-hidden="true">' +
+            '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">' + g.icon + '</svg>' +
+          '</span>' +
+          '<span class="kb-head-text"><b>' + mark(g.n, q) + '</b><span>' + esc(g.s) + '</span></span>' +
+          '<span class="kb-n">' + items.length + '</span>' +
+          kbChevron() +
+        '</div>' +
+        '<div class="kb-body"><div class="kb-list">' +
+          items.map(function(it){
+            return '<a class="kb-item" href="' + esc(it[1]) + '" target="_blank" rel="noopener">' +
+                     '<span class="kb-dot" aria-hidden="true"></span>' +
+                     '<span class="kb-item-text"><b>' + mark(it[0], q) + '</b><span>' + esc(hostOf(it[1])) + '</span></span>' +
+                   '</a>';
+          }).join('') +
+        '</div></div>';
+
+      var head = wrapEl.querySelector('.kb-head');
+      var body = wrapEl.querySelector('.kb-body');
+      function setOpen(on){
+        wrapEl.classList.toggle('open', on);
+        head.setAttribute('aria-expanded', on ? 'true' : 'false');
+        body.style.maxHeight = on ? (body.scrollHeight + 'px') : null;
+      }
+      head.addEventListener('click', function(){ setOpen(!wrapEl.classList.contains('open')); });
+      head.addEventListener('keydown', function(e){
+        if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); setOpen(!wrapEl.classList.contains('open')); }
+      });
+      kbGroups.appendChild(wrapEl);
+      if (expand) setOpen(true);
+    });
+
+    kbEmpty.hidden = shown !== 0;
+    kbCount.textContent = ql
+      ? (shown + ' / ' + KB_TOTAL + ' kaynak eşleşti')
+      : (KB_TOTAL + ' resmi kaynak · ' + KB.length + ' kurum');
+  }
+
+  if (kbGroups) {
+    renderKb('');
+    kbSearch.addEventListener('input', function(){ renderKb(kbSearch.value); });
+    window.addEventListener('resize', function(){
+      kbGroups.querySelectorAll('.kb-group.open .kb-body').forEach(function(b){
+        b.style.maxHeight = b.scrollHeight + 'px';
+      });
+    });
+  }
+
+  /* ---------- görsel yükleyici (hayatsigorta.com.tr) ----------
+     data-src ile tanımlı tüm görseller görünür alana girince yüklenir.
+     Yüklenemezse .ph-fail alır ve altındaki gradient/renk kalıcı olur —
+     asla boş beyaz kutu görünmez. */
+  function bootImages(root){
+    var imgs = (root || document).querySelectorAll('img[data-src]:not([data-bound])');
+    if (!imgs.length) return;
+
+    function load(img){
+      img.setAttribute('data-bound','1');
+      img.addEventListener('load', function(){ img.classList.add('loaded'); });
+      img.addEventListener('error', function(){
+        img.classList.add('ph-fail');
+        var fb = img.parentElement && img.parentElement.querySelector('.fallback');
+        if (fb) fb.hidden = false;
+      });
+      img.loading = 'lazy';
+      img.decoding = 'async';
+      img.referrerPolicy = 'no-referrer-when-downgrade';
+      img.src = img.getAttribute('data-src');
+    }
+
+    if (!('IntersectionObserver' in window)) {
+      Array.prototype.forEach.call(imgs, load);
+      return;
+    }
+    var iio = new IntersectionObserver(function(en){
+      en.forEach(function(e){
+        if (e.isIntersecting) { load(e.target); iio.unobserve(e.target); }
+      });
+    }, {rootMargin:'320px 0px'});
+    Array.prototype.forEach.call(imgs, function(i){ iio.observe(i); });
+  }
+  bootImages();
+
 })();
 </script>
 
