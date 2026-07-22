@@ -387,6 +387,23 @@ section.alt{background:linear-gradient(180deg,rgba(232,225,209,.55),rgba(244,240
 .disclaimer-box>span:first-child{color:var(--rust); font-size:17px; line-height:1;}
 
 /* ============ FAQ ============ */
+.faq-search{
+  position:relative; max-width:520px; margin-bottom:14px;
+}
+.faq-search svg{
+  position:absolute; left:18px; top:50%; transform:translateY(-50%); width:18px; height:18px; color:var(--muted); pointer-events:none;
+}
+.faq-search input{
+  width:100%; font-family:inherit; font-size:14.5px; color:var(--ink); border:none; padding:14px 18px 14px 46px; border-radius:14px;
+  background:linear-gradient(145deg,#EBE5D6,#FAF7F0);
+  box-shadow:inset 5px 5px 11px var(--sh), inset -5px -5px 11px var(--lt);
+}
+.faq-search input::placeholder{color:var(--muted); opacity:.85;}
+.faq-search input:focus{outline:2px solid var(--gold-2); outline-offset:2px;}
+.faq-count{font-size:12.5px; color:var(--muted); margin-bottom:16px;}
+.faq-empty{display:block; font-size:14px; color:var(--muted); background:var(--card); border-radius:14px; padding:20px 22px; max-width:860px;}
+.faq-empty a{color:var(--gold-dark); font-weight:600;}
+.faq mark{background:rgba(214,166,82,.38); color:inherit; border-radius:3px; padding:0 1px;}
 .faq{display:flex; flex-direction:column; gap:12px; max-width:860px;}
 .faq-item{
   border-radius:14px; overflow:hidden;
@@ -626,7 +643,10 @@ footer{background:var(--navy); color:#C6CEDA; padding:56px 0 0; margin-top:20px;
         <a href="#law-6305">6305 · Afet Sigortaları</a>
         <a href="#law-2918">2918 · Karayolları Trafik</a>
         <a href="#law-ttk">6102 · Türk Ticaret Kanunu</a>
+        <a href="#law-5363">5363 · Tarım Sigortaları</a>
+        <a href="#law-kvkk">6698 · Kişisel Verilerin Korunması</a>
         <a href="#law-cayma">Cayma Hakkı</a>
+        <a href="#law-zamanasimi">Zamanaşımı Süreleri</a>
         <a href="#law-tahkim">Sigorta Tahkim Komisyonu</a>
       </div>
       <div>
@@ -650,10 +670,25 @@ footer{background:var(--navy); color:#C6CEDA; padding:56px 0 0; margin-top:20px;
           <h3>Türk Ticaret Kanunu — Sigorta Hukuku Hükümleri</h3>
           <p>Sigorta sözleşmesinin kuruluşu, tarafların bilgilendirme ve beyan yükümlülükleri, rizikonun gerçekleşmesi ve tazminat esasları gibi konuları düzenler. Poliçe metinlerinin dayandığı genel hukuki çerçevedir.</p>
         </div>
+        <div class="law-card" id="law-5363">
+          <span class="tag">21 Haziran 2005 · Kanun No. 5363</span>
+          <h3>Tarım Sigortaları Kanunu (TARSİM)</h3>
+          <p>Bitkisel ve hayvansal üretimde don, dolu, kuraklık, sel ve hastalık gibi risklere karşı devlet destekli sigorta sistemini düzenler. Tarım Sigortaları Havuzu (TARSİM), bu kanun çerçevesinde kurulmuş olup prim maliyetinin bir kısmına devlet katkı sağlar.</p>
+        </div>
+        <div class="law-card" id="law-kvkk">
+          <span class="tag">24 Mart 2016 · Kanun No. 6698</span>
+          <h3>Kişisel Verilerin Korunması Kanunu (KVKK)</h3>
+          <p>Poliçe ve teklif süreçlerinde toplanan kimlik, sağlık ve hasar bilgileriniz gibi kişisel verilerin işlenmesine, saklanmasına ve üçüncü kişilerle paylaşılmasına ilişkin genel çerçeveyi belirler. Sigorta şirketleri ve acenteler bu kanun kapsamında veri sorumlusu sıfatıyla hareket eder.</p>
+        </div>
         <div class="law-card" id="law-cayma">
           <span class="tag">TTK m.1430</span>
           <h3>Cayma Hakkı</h3>
           <p>Sigortalı, poliçenin kurulmasından itibaren diğer sigorta dallarında 15 gün, hayat sigortalarında 30 gün içinde herhangi bir gerekçe göstermeksizin sözleşmeden cayabilir. Sigortacı tarafından gerekli bilgilendirme yapılmamışsa bu süre uzayabilir.</p>
+        </div>
+        <div class="law-card" id="law-zamanasimi">
+          <span class="tag">TTK m.1420, m.1482</span>
+          <h3>Zamanaşımı Süreleri</h3>
+          <p>Sigorta sözleşmesinden doğan istemler, alacağın muaccel olduğu tarihten itibaren 2 yılda; her hâlde rizikonun gerçekleştiği tarihten itibaren 6 yılda zamanaşımına uğrar. Sorumluluk sigortalarında (ör. trafik sigortası) mağdurun sigortacıya yönelteceği istemler için azami süre 10 yıldır.</p>
         </div>
         <div class="law-card" id="law-tahkim">
           <span class="tag">5684 SK m.30</span>
@@ -706,30 +741,46 @@ footer{background:var(--navy); color:#C6CEDA; padding:56px 0 0; margin-top:20px;
     <div class="rate-grid">
       <div class="rate-card">
         <h4>Vergilendirme</h4>
-        <div class="rate-line"><span>BSMV</span><b>%5</b></div>
+        <div class="rate-line"><span>BSMV (kasko, konut, yangın vb.)</span><b>%5</b></div>
+        <div class="rate-line"><span>Hayat sigortası / BES</span><b>BSMV istisna</b></div>
         <div class="rate-line"><span>KDV</span><b>İstisna</b></div>
-        <p class="note">Sigorta poliçeleri KDV'den istisnadır; prim tutarı üzerinden BSMV uygulanır. Oranlar Cumhurbaşkanlığı kararlarıyla değişebilir.</p>
+        <div class="rate-line"><span>DASK primi</span><b>Her türlü vergiden muaf</b></div>
+        <p class="note">6802 sayılı Gider Vergileri Kanunu uyarınca sigorta poliçeleri KDV'den istisnadır; çoğu poliçede prim üzerinden %5 BSMV uygulanır. Hayat sigortası, bireysel emeklilik, sağlık sigortası ve ihracat nakliyat sigortaları BSMV'den istisnadır. Oranlar Cumhurbaşkanlığı kararlarıyla değişebilir.</p>
       </div>
       <div class="rate-card">
-        <h4>Yasal Süreler</h4>
+        <h4>Cayma ve Bildirim Süreleri</h4>
         <div class="rate-line"><span>Cayma (diğer branşlar)</span><b>15 gün</b></div>
         <div class="rate-line"><span>Cayma (hayat sigortası)</span><b>30 gün</b></div>
-        <div class="rate-line"><span>Tahkim başvuru sınırı</span><b>Değişken</b></div>
-        <p class="note">TTK m.1430 uyarınca. Bilgilendirme yapılmamışsa süreler uzayabilir.</p>
+        <div class="rate-line"><span>Riziko bildirimi</span><b>Gecikmeksizin</b></div>
+        <p class="note">TTK m.1430 ve m.1446 uyarınca. Sigortacı tarafından bilgilendirme yapılmamışsa cayma süresi uzayabilir.</p>
+      </div>
+      <div class="rate-card">
+        <h4>Zamanaşımı Süreleri</h4>
+        <div class="rate-line"><span>Genel zamanaşımı</span><b>2 yıl</b></div>
+        <div class="rate-line"><span>Azami süre (rizikodan itibaren)</span><b>6 yıl</b></div>
+        <div class="rate-line"><span>Sorumluluk sigortalarında azami</span><b>10 yıl</b></div>
+        <p class="note">TTK m.1420 ve m.1482 uyarınca. Arabuluculuk veya Sigorta Tahkim Komisyonu'na başvuru zamanaşımını keser.</p>
       </div>
       <div class="rate-card">
         <h4>Trafik — Basamak Sistemi</h4>
         <div class="rate-line"><span>Basamak aralığı</span><b>1–4</b></div>
         <div class="rate-line"><span>Hasarsız yıl</span><b>İndirim</b></div>
         <div class="rate-line"><span>Hasarlı yıl</span><b>Artış</b></div>
-        <p class="note">Prim, sürücünün hasar geçmişine göre basamak sistemiyle belirlenir.</p>
+        <p class="note">Prim, sürücünün hasar geçmişine göre basamak sistemiyle belirlenir; güncel taban/tavan teminat limitleri her yıl yeniden belirlenir.</p>
       </div>
       <div class="rate-card">
         <h4>DASK — Teminat Esası</h4>
         <div class="rate-line"><span>Hesaplama</span><b>m² bazlı</b></div>
         <div class="rate-line"><span>Kapsam</span><b>Yapısal hasar</b></div>
+        <div class="rate-line"><span>Azami alan</span><b>250 m²'ye kadar</b></div>
         <div class="rate-line"><span>Yenileme</span><b>Yıllık</b></div>
-        <p class="note">Teminat tutarı binanın yapı tarzı ve m²'sine göre DASK tarifesinden hesaplanır.</p>
+        <p class="note">Teminat tutarı binanın yapı tarzı ve m²'sine göre DASK tarifesinden hesaplanır; tarife her yıl güncellenir.</p>
+      </div>
+      <div class="rate-card">
+        <h4>Hayat Sigortası — Vergi Avantajı</h4>
+        <div class="rate-line"><span>Gelir vergisi matrahından indirim</span><b>Var</b></div>
+        <div class="rate-line"><span>Üst sınır</span><b>Brüt ücretin %15'i</b></div>
+        <p class="note">GVK m.63 uyarınca, Türkiye'de kâin bir sigorta şirketi nezdinde akdedilen hayat sigortası primleri, brüt ücretin %15'ini ve yıllık brüt asgari ücreti aşmamak kaydıyla vergi matrahından indirilebilir. Güncel tutarlar yıldan yıla değişir; kesin rakam için mali müşavirinize danışın.</p>
       </div>
     </div>
     <div class="disclaimer-box">
@@ -744,9 +795,15 @@ footer{background:var(--navy); color:#C6CEDA; padding:56px 0 0; margin-top:20px;
     <div class="section-head">
       <span class="eyebrow">06 · Sıkça Sorulan Sorular</span>
       <h2>Merak edilenler</h2>
-      <p>Sorulara dokunarak yanıtları açabilirsiniz.</p>
+      <p>Sorulara dokunarak yanıtları açabilirsiniz; aramak için aşağıdaki kutuyu kullanın.</p>
     </div>
+    <div class="faq-search">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
+      <input type="text" id="faqSearch" placeholder="Sorunuzu yazın: örn. kasko, cayma, DASK, hasar…" aria-label="SSS içinde ara">
+    </div>
+    <p class="faq-count" id="faqCount"></p>
     <div class="faq" id="faqList"></div>
+    <p class="faq-empty" id="faqEmpty" hidden>Aramanızla eşleşen bir soru bulunamadı. Farklı bir kelime deneyebilir veya <a href="https://api.whatsapp.com/send?phone=905421793220" target="_blank" rel="noopener">bize WhatsApp'tan sorabilirsiniz</a>.</p>
   </div>
 </section>
 
@@ -1116,16 +1173,36 @@ footer{background:var(--navy); color:#C6CEDA; padding:56px 0 0; margin-top:20px;
     ["Sigorta şirketiyle anlaşmazlık yaşarsam ne yapabilirim?","Öncelikle şirketin müşteri hizmetleri ile görüşün; sonuç alamazsanız Sigorta Tahkim Komisyonu'na veya SEDDK'ya başvurabilirsiniz."],
     ["Tamamlayıcı sağlık sigortası SGK'nın yerini alır mı?","Hayır, SGK'nın yerini almaz; SGK ile birlikte çalışarak özel hastanelerde ödemeniz gereken fark ücretini karşılar."],
     ["Poliçe primim neden yıldan yıla değişebiliyor?","Prim; hasar geçmişi, teminat kapsamı, enflasyon, riziko türü ve poliçe bazındaki genel şartlardaki güncellemelere göre yıldan yıla değişebilir."],
-    ["Acenteniz hangi şirketlerle çalışıyor?","AXA, HDI, Zurich, Quick, Hepiyi ve Doğa Sigorta başta olmak üzere birden fazla şirketin ürünlerini karşılaştırmalı olarak sunuyoruz."]
+    ["Acenteniz hangi şirketlerle çalışıyor?","AXA, HDI, Zurich, Quick, Hepiyi ve Doğa Sigorta başta olmak üzere birden fazla şirketin ürünlerini karşılaştırmalı olarak sunuyoruz."],
+    ["Kasko hasarı yaptırırsam primim ne olur?","Trafik ve kasko primleri basamak (hasarsızlık) sistemine tabidir; hasarlı bir yıl sonrasında bir üst basamağa geçilerek prim artar, hasarsız her yıl ise indirim basamağını iyileştirir. Küçük hasarlarda bazen hasarı kendi ceplerinden karşılamak, uzun vadede daha avantajlı olabilir."],
+    ["Poliçemi süresi dolmadan iptal edersem prim iadesi alır mıyım?","Genellikle evet; kullanılmayan güne karşılık gelen prim, gün esasına göre (kısmi iade) tarafınıza iade edilir. Kesin tutar poliçenin genel şartlarına ve ödeme şekline göre değişir."],
+    ["Eksik sigorta nedir, hasarımı nasıl etkiler?","Sigorta bedeli, malın gerçek değerinin altında belirlenmişse buna 'eksik sigorta' denir. Hasar anında tazminat, sigorta bedeli ile gerçek değer arasındaki orana göre kısmi olarak ödenir; bu nedenle poliçe bedelinin güncel değeri yansıtması önemlidir."],
+    ["Sigorta acentesi ile sigorta şirketi arasındaki fark nedir?","Sigorta şirketi, riski üstlenen ve poliçeyi düzenleyen taraftır. Acente ise şirket adına poliçe satan, teklif karşılaştıran ve hasar sürecinde sigortalıya destek olan aracı kuruluştur; birden fazla şirketin ürününü sunabilir."],
+    ["Poliçe genel şartlarına nereden ulaşabilirim?","Genel şartlar SEDDK tarafından onaylanır ve her poliçe branşı için ayrı ayrı yayımlanır; poliçenizle birlikte size teslim edilir, ayrıca sigorta şirketinizin veya SEDDK'nın internet sitesinden de görüntülenebilir."],
+    ["Yurt dışı seyahatlerim için ayrı bir sağlık sigortası gerekir mi?","Evet. Türkiye'deki sağlık veya tamamlayıcı sağlık sigortaları genellikle yurt dışında geçerli değildir; birçok ülkenin vize başvurusunda da seyahat sağlık sigortası şartı aranır."],
+    ["Sigorta primimi taksitle ödeyebilir miyim?","Çoğu poliçede taksitli ödeme seçeneği sunulur; ancak taksit sayısı ve vade farkı şirkete, branşa ve ödeme yöntemine (kredi kartı, banka vb.) göre değişir."],
+    ["Poliçemi kaybettim, yenisini nasıl alabilirim?","Poliçe kaybı hak kaybına yol açmaz; sigorta şirketiniz veya acenteniz sistemdeki kayıttan poliçenizin bir suretini yeniden düzenleyebilir."]
   ];
   var faqEl = document.getElementById('faqList');
-  FAQS.forEach(function(f, i){
+  var faqSearch = document.getElementById('faqSearch');
+  var faqCount = document.getElementById('faqCount');
+  var faqEmpty = document.getElementById('faqEmpty');
+
+  function trLower(s){ return String(s).toLocaleLowerCase('tr-TR'); }
+  function escRe(s){ return s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'); }
+  function mark(text, q){
+    if (!q) return esc(text);
+    var safe = esc(text);
+    var re = new RegExp('(' + escRe(esc(q)) + ')', 'ig');
+    return safe.replace(re, '<mark>$1</mark>');
+  }
+
+  function buildFaqItem(f, i, q){
     var item = document.createElement('div');
     item.className = 'faq-item';
     item.innerHTML =
-      '<button class="faq-q" aria-expanded="false" aria-controls="fa'+i+'"><span>' + f[0] + '</span><span class="plus" aria-hidden="true">+</span></button>' +
-      '<div class="faq-a" id="fa'+i+'" role="region"><p>' + f[1] + '</p></div>';
-    faqEl.appendChild(item);
+      '<button class="faq-q" aria-expanded="false" aria-controls="fa'+i+'"><span>' + mark(f[0], q) + '</span><span class="plus" aria-hidden="true">+</span></button>' +
+      '<div class="faq-a" id="fa'+i+'" role="region"><p>' + mark(f[1], q) + '</p></div>';
     var btn = item.querySelector('.faq-q');
     var ans = item.querySelector('.faq-a');
     btn.addEventListener('click', function(){
@@ -1141,7 +1218,24 @@ footer{background:var(--navy); color:#C6CEDA; padding:56px 0 0; margin-top:20px;
         btn.setAttribute('aria-expanded','true');
       }
     });
-  });
+    return item;
+  }
+
+  function renderFaq(rawQuery){
+    var q = (rawQuery || '').trim();
+    var ql = trLower(q);
+    var filtered = !ql ? FAQS : FAQS.filter(function(f){
+      return trLower(f[0]).indexOf(ql) !== -1 || trLower(f[1]).indexOf(ql) !== -1;
+    });
+    faqEl.innerHTML = '';
+    filtered.forEach(function(f, i){ faqEl.appendChild(buildFaqItem(f, i, q)); });
+    faqEl.style.display = filtered.length ? '' : 'none';
+    faqEmpty.hidden = filtered.length !== 0;
+    faqCount.textContent = ql ? (filtered.length + ' / ' + FAQS.length + ' soru eşleşti') : (FAQS.length + ' soru');
+  }
+  renderFaq('');
+  faqSearch.addEventListener('input', function(){ renderFaq(faqSearch.value); });
+
   window.addEventListener('resize', function(){
     var open = faqEl.querySelector('.faq-item.open .faq-a');
     if (open) open.style.maxHeight = open.scrollHeight + 'px';
