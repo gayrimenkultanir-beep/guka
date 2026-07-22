@@ -893,6 +893,63 @@ footer{background:var(--navy); color:#C6CEDA; padding:56px 0 0; margin-top:20px;
   drawer.querySelectorAll('a').forEach(function(a){ a.addEventListener('click', closeD); });
   document.addEventListener('keydown', function(e){ if(e.key === 'Escape' && drawer.classList.contains('open')) closeD(); });
 
+  /* ---------- type detail modal (bilgi bankası) ---------- */
+  var typeModal = document.getElementById('typeModal');
+  var typeModalBody = document.getElementById('typeModalBody');
+  var typeModalPanel = document.getElementById('typeModalPanel');
+  var typeModalClose = document.getElementById('typeModalClose');
+  var modalLastFocused = null;
+
+  function esc0(s){ return String(s == null ? '' : s).replace(/[&<>"']/g, function(m){
+    return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m];
+  }); }
+
+  window.openTypeModal = function(o){
+    modalLastFocused = document.activeElement;
+    typeModalBody.innerHTML =
+      '<div class="tmd-icon">' + svg(o.i) + '</div>' +
+      '<h2 id="tmdTitle">' + esc0(o.t) + '</h2>' +
+      '<p class="tmd-tagline">' + esc0(o.d) + '</p>' +
+      '<div class="tmd-section"><h4>Genel Bakış</h4><p>' + esc0(o.ozet) + '</p></div>' +
+      '<div class="tmd-section"><h4>Neleri Kapsar</h4><ul class="tmd-list">' +
+        o.kapsam.map(function(x){ return '<li>' + esc0(x) + '</li>'; }).join('') +
+      '</ul></div>' +
+      '<div class="tmd-section"><h4>Dikkat Edilmesi Gerekenler</h4><ul class="tmd-list tmd-caution">' +
+        o.dikkat.map(function(x){ return '<li>' + esc0(x) + '</li>'; }).join('') +
+      '</ul></div>' +
+      (o.refs && o.refs.length ?
+        '<div class="tmd-section"><h4>İlgili Mevzuat &amp; Kaynaklar</h4><div class="tmd-refs">' +
+          o.refs.map(function(r){ return '<a href="' + esc0(r.href) + '">' + esc0(r.label) + ' →</a>'; }).join('') +
+        '</div></div>' : '') +
+      '<div class="tmd-actions">' +
+        '<a class="primary" href="' + WA + '" target="_blank" rel="noopener">WhatsApp\'tan Teklif Al</a>' +
+        '<a class="ghost" href="#" data-close>Kapat</a>' +
+      '</div>';
+
+    typeModal.classList.add('open');
+    typeModal.setAttribute('aria-hidden','false');
+    document.body.classList.add('modal-lock');
+    typeModalPanel.scrollTop = 0;
+    if (location.hash !== o.u) history.replaceState(null, '', o.u);
+
+    typeModalBody.querySelectorAll('.tmd-refs a').forEach(function(a){
+      a.addEventListener('click', function(){ closeTypeModal(); });
+    });
+    var kapatBtn = typeModalBody.querySelector('[data-close]');
+    if (kapatBtn) kapatBtn.addEventListener('click', function(e){ e.preventDefault(); closeTypeModal(); });
+    typeModalClose.focus();
+  };
+
+  function closeTypeModal(){
+    typeModal.classList.remove('open');
+    typeModal.setAttribute('aria-hidden','true');
+    document.body.classList.remove('modal-lock');
+    if (location.hash.indexOf('#detay-') === 0) history.replaceState(null, '', location.pathname + location.search);
+    if (modalLastFocused && modalLastFocused.focus) modalLastFocused.focus();
+  }
+  typeModal.querySelectorAll('[data-close]').forEach(function(el){ el.addEventListener('click', closeTypeModal); });
+  document.addEventListener('keydown', function(e){ if (e.key === 'Escape' && typeModal.classList.contains('open')) closeTypeModal(); });
+
   /* ---------- reveal observer ---------- */
   var io = null;
   if ('IntersectionObserver' in window) {
@@ -990,6 +1047,20 @@ footer{background:var(--navy); color:#C6CEDA; padding:56px 0 0; margin-top:20px;
   ];
   var CATS = [{k:'all',n:'Tümü'},{k:'saglik',n:'Sağlık'},{k:'arac',n:'Araç'},{k:'konut',n:'Konut'},{k:'birey',n:'Bireysel'},{k:'ticari',n:'Ticari'}];
 
+  /* ---------- slug + detail-link setup ---------- */
+  var TR_MAP = {'ç':'c','Ç':'c','ğ':'g','Ğ':'g','ı':'i','İ':'i','ö':'o','Ö':'o','ş':'s','Ş':'s','ü':'u','Ü':'u'};
+  function slugifyTr(str){
+    var s = str.replace(/[çÇğĞıİöÖşŞüÜ]/g, function(ch){ return TR_MAP[ch] || ch; });
+    return s.toLocaleLowerCase('tr-TR').replace(/[^a-z0-9]+/g,'-').replace(/^-+|-+$/g,'');
+  }
+  TYPES.forEach(function(o){ o.slug = slugifyTr(o.t); o.u = '#detay-' + o.slug; });
+
+  if (location.hash.indexOf('#detay-') === 0) {
+    var initSlug = location.hash.slice(8);
+    var initType = TYPES.filter(function(t){ return t.slug === initSlug; })[0];
+    if (initType) window.openTypeModal(initType);
+  }
+
   var grid = document.getElementById('typeGrid');
   var chips = document.getElementById('chips');
 
@@ -1026,6 +1097,9 @@ footer{background:var(--navy); color:#C6CEDA; padding:56px 0 0; margin-top:20px;
 
     var front = card.querySelector('.face.front');
     card.querySelectorAll('a').forEach(function(a){ a.addEventListener('click', function(e){ e.stopPropagation(); }); });
+    card.querySelectorAll('.go, .face.back .ghost').forEach(function(a){
+      a.addEventListener('click', function(e){ e.preventDefault(); openTypeModal(o); });
+    });
     function flip(){ card.classList.toggle('flipped'); front.style.transform=''; }
     card.addEventListener('click', flip);
     card.addEventListener('keydown', function(e){ if(e.key==='Enter'||e.key===' '){ e.preventDefault(); flip(); } });
