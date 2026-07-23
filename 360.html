@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>360° Görsel Görüntüleyici</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body {
+    width: 100%; height: 100%;
+    background: #0a0a0f;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    overflow: hidden;
+  }
+  #viewer-container {
+    position: relative;
+    width: 100%; height: 100%;
+  }
+  canvas { display: block; touch-action: none; }
+
+  #dropzone {
+    position: absolute; inset: 0;
+    display: flex; align-items: center; justify-content: center;
+    flex-direction: column;
+    gap: 18px;
+    z-index: 10;
+    background: radial-gradient(circle at 50% 40%, #1c1c28 0%, #0a0a0f 100%);
+    transition: opacity .3s ease;
+  }
+  #dropzone.hidden { opacity: 0; pointer-events: none; }
+  .dz-box {
+    border: 2px dashed #4a4a63;
+    border-radius: 16px;
+    padding: 48px 56px;
+    text-align: center;
+    color: #cfcfe0;
+    cursor: pointer;
+    transition: border-color .2s, background .2s;
+    max-width: 90%;
+  }
+  .dz-box:hover, .dz-box.dragover {
+    border-color: #8b8bff;
+    background: rgba(139,139,255,0.06);
+  }
+  .dz-icon { font-size: 48px; margin-bottom: 12px; }
+  .dz-title { font-size: 20px; font-weight: 600; margin-bottom: 6px; color: #fff; }
+  .dz-sub { font-size: 14px; color: #8a8aa3; }
+  #fileInput { display: none; }
+
+  #topbar {
+    position: absolute; top: 0; left: 0; right: 0;
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 14px 18px;
+    background: linear-gradient(to bottom, rgba(0,0,0,0.55), transparent);
+    z-index: 5;
+    opacity: 0; pointer-events: none;
+    transition: opacity .3s ease;
+  }
+  #topbar.visible { opacity: 1; pointer-events: auto; }
+  #topbar button {
+    background: rgba(255,255,255,0.1);
+    border: 1px solid rgba(255,255,255,0.15);
+    color: #fff;
+    padding: 9px 16px;
+    border-radius: 10px;
+    font-size: 14px;
+    cursor: pointer;
+    backdrop-filter: blur(6px);
+    transition: background .2s;
+  }
+  #topbar button:hover { background: rgba(255,255,255,0.2); }
+  #filename {
+    color: #cfcfe0; font-size: 13px; opacity: .85;
+    max-width: 50%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+  }
+
+  #hint {
+    position: absolute; bottom: 22px; left: 50%; transform: translateX(-50%);
+    color: rgba(255,255,255,0.6);
+    font-size: 13px;
+    background: rgba(0,0,0,0.35);
+    padding: 8px 16px;
+    border-radius: 20px;
+    z-index: 5;
+    opacity: 0;
+    transition: opacity .4s ease;
+    pointer-events: none;
+    backdrop-filter: blur(4px);
+  }
+  #hint.visible { opacity: 1; }
+
+  #vrBtn {
+    position: absolute;
+    bottom: 22px; right: 22px;
+    z-index: 6;
+    background: linear-gradient(135deg, #6d6dff, #8b5cf6);
+    color: #fff;
+    border: none;
+    padding: 12px 22px;
+    border-radius: 30px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    display: none;
+    align-items: center;
+    gap: 8px;
+    box-shadow: 0 6px 20px rgba(109,109,255,0.4);
+    transition: transform .2s, box-shadow .2s;
+  }
+  #vrBtn.show { display: inline-flex; }
+  #vrBtn:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(109,109,255,0.55); }
+  #vrBtn:disabled { opacity: .5; cursor: not-allowed; transform: none; }
+
+  #vrNotice {
+    position: absolute;
+    bottom: 70px; right: 22px;
+    z-index: 6;
+    max-width: 260px;
+    background: rgba(20,20,30,0.9);
+    color: #cfcfe0;
+    font-size: 12px;
+    padding: 10px 14px;
+    border-radius: 10px;
+    display: none;
+    line-height: 1.5;
+    backdrop-filter: blur(6px);
+  }
+  #vrNotice.show { display: block; }
+
+  #loading {
+    position: absolute; inset: 0;
+    display: none;
+    align-items: center; justify-content: center;
+    background: rgba(10,10,15,0.85);
+    z-index: 20;
+    color: #cfcfe0; font-size: 15px;
+    flex-direction: column; gap: 14px;
+  }
+  #loading.visible { display: flex; }
+  .spinner {
+    width: 38px; height: 38px;
+    border: 3px solid rgba(255,255,255,0.15);
+    border-top-color: #8b8bff;
+    border-radius: 50%;
+    animation: spin 0.9s linear infinite;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+</style>
+</head>
+<body>
+
+<div id="viewer-container">
+  <div id="dropzone">
+    <div class="dz-box" id="dzBox">
+      <div class="dz-icon">🌐</div>
+      <div class="dz-title">360° Görsel Seç</div>
+      <div class="dz-sub">Tıkla ve masaüstünden bir panorama (equirectangular) görsel seç<br>veya sürükleyip bırak</div>
+    </div>
+    <input type="file" id="fileInput">
+  </div>
+
+  <div id="topbar">
+    <span id="filename"></span>
+    <button id="changeBtn">Başka Görsel Seç</button>
+  </div>
+
+  <div id="hint">Sürükleyerek etrafa bak · Tekerlek/pinch ile yakınlaştır</div>
+
+  <button id="vrBtn">🥽 VR'da Görüntüle</button>
+  <div id="vrNotice"></div>
+
+  <div id="loading">
+    <div class="spinner"></div>
+    <div>Yükleniyor...</div>
+  </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script>
+let scene, camera, renderer, sphere, sphereMaterial;
+let isDragging = false;
+let prevX = 0, prevY = 0;
+let lon = 0, lat = 0;
+let targetLon = 0, targetLat = 0;
+let fov = 75;
+
+const container = document.getElementById('viewer-container');
+const dropzone = document.getElementById('dropzone');
+const dzBox = document.getElementById('dzBox');
+const fileInput = document.getElementById('fileInput');
+const topbar = document.getElementById('topbar');
+const filenameEl = document.getElementById('filename');
+const changeBtn = document.getElementById('changeBtn');
+const hint = document.getElementById('hint');
+const loading = document.getElementById('loading');
+const vrBtn = document.getElementById('vrBtn');
+const vrNotice = document.getElementById('vrNotice');
+let xrSession = null;
+
+function initThree() {
+  scene = new THREE.Scene();
+  camera = new THREE.PerspectiveCamera(fov, container.clientWidth / container.clientHeight, 0.1, 1000);
+
+  renderer = new THREE.WebGLRenderer({ antialias: true });
+  renderer.setPixelRatio(window.devicePixelRatio);
+  renderer.setSize(container.clientWidth, container.clientHeight);
+  renderer.xr.enabled = true;
+  container.appendChild(renderer.domElement);
+
+  const geometry = new THREE.SphereGeometry(500, 60, 40);
+  geometry.scale(-1, 1, 1); // içten görüntüle
+
+  sphereMaterial = new THREE.MeshBasicMaterial();
+  sphere = new THREE.Mesh(geometry, sphereMaterial);
+  scene.add(sphere);
+
+  renderer.setAnimationLoop(animate);
+}
+
+function loadPanorama(url) {
+  loading.classList.add('visible');
+  const loader = new THREE.TextureLoader();
+  loader.load(
+    url,
+    function (texture) {
+      texture.colorSpace = THREE.SRGBColorSpace || THREE.sRGBEncoding;
+      sphereMaterial.map = texture;
+      sphereMaterial.needsUpdate = true;
+      loading.classList.remove('visible');
+      dropzone.classList.add('hidden');
+      topbar.classList.add('visible');
+      hint.classList.add('visible');
+      setTimeout(() => hint.classList.remove('visible'), 3500);
+      checkVRSupport();
+    },
+    undefined,
+    function (err) {
+      loading.classList.remove('visible');
+      alert('Görsel yüklenemedi. Lütfen geçerli bir 360° (equirectangular) görsel seçin.');
+    }
+  );
+}
+
+function handleFile(file) {
+  if (!file) return;
+  // .GOV gibi bazı 360 kamera dosyaları uzantısı farklı olsa da içerik olarak
+  // normal bir resimdir (JPEG/PNG). Tarayıcı MIME tipini tanımasa bile
+  // yüklemeyi deniyoruz; gerçekten resim değilse aşağıda hata gösterilecek.
+  filenameEl.textContent = file.name;
+  const url = URL.createObjectURL(file);
+  loadPanorama(url);
+}
+
+dzBox.addEventListener('click', () => fileInput.click());
+changeBtn.addEventListener('click', () => fileInput.click());
+
+fileInput.addEventListener('change', (e) => {
+  if (e.target.files && e.target.files[0]) handleFile(e.target.files[0]);
+});
+
+['dragover', 'dragenter'].forEach(evt => {
+  dzBox.addEventListener(evt, (e) => {
+    e.preventDefault();
+    dzBox.classList.add('dragover');
+  });
+});
+['dragleave', 'drop'].forEach(evt => {
+  dzBox.addEventListener(evt, (e) => {
+    e.preventDefault();
+    dzBox.classList.remove('dragover');
+  });
+});
+dzBox.addEventListener('drop', (e) => {
+  e.preventDefault();
+  const file = e.dataTransfer.files[0];
+  if (file) handleFile(file);
+});
+window.addEventListener('dragover', (e) => e.preventDefault());
+window.addEventListener('drop', (e) => e.preventDefault());
+
+function onPointerDown(e) {
+  isDragging = true;
+  const p = e.touches ? e.touches[0] : e;
+  prevX = p.clientX;
+  prevY = p.clientY;
+}
+function onPointerMove(e) {
+  if (!isDragging) return;
+  const p = e.touches ? e.touches[0] : e;
+  const dx = p.clientX - prevX;
+  const dy = p.clientY - prevY;
+  prevX = p.clientX;
+  prevY = p.clientY;
+  targetLon -= dx * 0.15;
+  targetLat += dy * 0.15;
+  targetLat = Math.max(-85, Math.min(85, targetLat));
+}
+function onPointerUp() { isDragging = false; }
+
+function onWheel(e) {
+  e.preventDefault();
+  fov += e.deltaY * 0.03;
+  fov = Math.max(30, Math.min(100, fov));
+  camera.fov = fov;
+  camera.updateProjectionMatrix();
+}
+
+// Pinch zoom (mobil)
+let lastPinchDist = null;
+function getPinchDist(touches) {
+  const dx = touches[0].clientX - touches[1].clientX;
+  const dy = touches[0].clientY - touches[1].clientY;
+  return Math.sqrt(dx * dx + dy * dy);
+}
+function onTouchStart(e) {
+  if (e.touches.length === 2) {
+    lastPinchDist = getPinchDist(e.touches);
+  } else if (e.touches.length === 1) {
+    onPointerDown(e);
+  }
+}
+function onTouchMove(e) {
+  if (e.touches.length === 2) {
+    e.preventDefault();
+    const dist = getPinchDist(e.touches);
+    if (lastPinchDist) {
+      const delta = lastPinchDist - dist;
+      fov += delta * 0.08;
+      fov = Math.max(30, Math.min(100, fov));
+      camera.fov = fov;
+      camera.updateProjectionMatrix();
+    }
+    lastPinchDist = dist;
+  } else if (e.touches.length === 1) {
+    onPointerMove(e);
+  }
+}
+function onTouchEnd(e) {
+  lastPinchDist = null;
+  onPointerUp();
+}
+
+// --- WebXR VR desteği ---
+function checkVRSupport() {
+  if (!window.isSecureContext) {
+    vrNotice.textContent = 'VR modu yalnızca HTTPS veya localhost üzerinden çalışır. Bu dosyayı doğrudan çift tıklayarak açtıysan (file://), VR butonu görünmeyecektir. Bir yerel sunucu ile aç veya web sunucusuna yükle.';
+    vrNotice.classList.add('show');
+    return;
+  }
+  if (!('xr' in navigator)) {
+    vrNotice.textContent = 'Tarayıcın WebXR desteklemiyor. Meta Quest tarayıcısı veya Chrome (Android) kullanmayı dene.';
+    vrNotice.classList.add('show');
+    return;
+  }
+  navigator.xr.isSessionSupported('immersive-vr').then((supported) => {
+    if (supported) {
+      vrBtn.classList.add('show');
+      vrNotice.classList.remove('show');
+    } else {
+      vrNotice.textContent = 'Bu cihaz/tarayıcı immersive VR oturumunu desteklemiyor.';
+      vrNotice.classList.add('show');
+    }
+  }).catch(() => {
+    vrNotice.textContent = 'VR desteği kontrol edilirken bir hata oluştu.';
+    vrNotice.classList.add('show');
+  });
+}
+
+async function toggleVR() {
+  if (xrSession) {
+    xrSession.end();
+    return;
+  }
+  try {
+    const session = await navigator.xr.requestSession('immersive-vr', {
+      optionalFeatures: ['local-floor', 'bounded-floor']
+    });
+    xrSession = session;
+    vrBtn.textContent = '⏻ VR\'dan Çık';
+    session.addEventListener('end', () => {
+      xrSession = null;
+      vrBtn.textContent = '🥽 VR\'da Görüntüle';
+    });
+    await renderer.xr.setSession(session);
+  } catch (err) {
+    alert('VR oturumu başlatılamadı: ' + err.message);
+  }
+}
+vrBtn.addEventListener('click', toggleVR);
+
+function animate() {
+  if (!renderer.xr.isPresenting) {
+    lon += (targetLon - lon) * 0.1;
+    lat += (targetLat - lat) * 0.1;
+    const phi = THREE.MathUtils.degToRad(90 - lat);
+    const theta = THREE.MathUtils.degToRad(lon);
+    const target = new THREE.Vector3(
+      500 * Math.sin(phi) * Math.cos(theta),
+      500 * Math.cos(phi),
+      500 * Math.sin(phi) * Math.sin(theta)
+    );
+    camera.lookAt(target);
+  }
+  renderer.render(scene, camera);
+}
+
+window.addEventListener('resize', () => {
+  camera.aspect = container.clientWidth / container.clientHeight;
+  camera.updateProjectionMatrix();
+  renderer.setSize(container.clientWidth, container.clientHeight);
+});
+
+initThree();
+
+container.addEventListener('mousedown', onPointerDown);
+window.addEventListener('mousemove', onPointerMove);
+window.addEventListener('mouseup', onPointerUp);
+container.addEventListener('wheel', onWheel, { passive: false });
+container.addEventListener('touchstart', onTouchStart, { passive: false });
+container.addEventListener('touchmove', onTouchMove, { passive: false });
+container.addEventListener('touchend', onTouchEnd);
+</script>
+</body>
+</html>
