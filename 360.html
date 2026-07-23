@@ -127,6 +127,37 @@
   }
   #vrNotice.show { display: block; }
 
+  #gyroBtn {
+    position: absolute;
+    bottom: 22px; right: 190px;
+    z-index: 6;
+    background: rgba(255,255,255,0.1);
+    border: 1px solid rgba(255,255,255,0.2);
+    color: #fff;
+    padding: 12px 20px;
+    border-radius: 30px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    display: none;
+    align-items: center;
+    gap: 8px;
+    backdrop-filter: blur(6px);
+    transition: background .2s, transform .2s;
+  }
+  #gyroBtn.show { display: inline-flex; }
+  #gyroBtn.active {
+    background: linear-gradient(135deg, #22c55e, #16a34a);
+    border-color: transparent;
+  }
+  #gyroBtn:hover { transform: translateY(-2px); }
+
+  @media (max-width: 640px) {
+    #vrBtn { right: 16px; bottom: 74px; }
+    #gyroBtn { right: 16px; bottom: 16px; }
+    #vrNotice { right: 16px; bottom: 122px; }
+  }
+
   #loading {
     position: absolute; inset: 0;
     display: none;
@@ -167,6 +198,7 @@
   <div id="hint">Sürükleyerek etrafa bak · Tekerlek/pinch ile yakınlaştır</div>
 
   <button id="vrBtn">🥽 VR'da Görüntüle</button>
+  <button id="gyroBtn">🧭 Jiroskop ile Bak</button>
   <div id="vrNotice"></div>
 
   <div id="loading">
@@ -195,7 +227,11 @@ const hint = document.getElementById('hint');
 const loading = document.getElementById('loading');
 const vrBtn = document.getElementById('vrBtn');
 const vrNotice = document.getElementById('vrNotice');
+const gyroBtn = document.getElementById('gyroBtn');
 let xrSession = null;
+let gyroActive = false;
+let gyroQuaternion = new THREE.Quaternion();
+let screenOrientAngle = 0;
 
 function initThree() {
   scene = new THREE.Scene();
@@ -232,6 +268,7 @@ function loadPanorama(url) {
       hint.classList.add('visible');
       setTimeout(() => hint.classList.remove('visible'), 3500);
       checkVRSupport();
+      checkGyroSupport();
     },
     undefined,
     function (err) {
@@ -388,8 +425,84 @@ async function toggleVR() {
 }
 vrBtn.addEventListener('click', toggleVR);
 
+// --- Jiroskop ile bakış (Cardboard / telefon için, WebXR gerektirmez) ---
+function checkGyroSupport() {
+  if (window.DeviceOrientationEvent) {
+    gyroBtn.classList.add('show');
+  }
+}
+
+const GYRO_ZEE = new THREE.Vector3(0, 0, 1);
+const GYRO_EULER = new THREE.Euler();
+const GYRO_Q0 = new THREE.Quaternion();
+const GYRO_Q1 = new THREE.Quaternion(-Math.sqrt(0.5), 0, 0, Math.sqrt(0.5)); // -90° X ekseni
+
+function setObjectQuaternion(quaternion, alpha, beta, gamma, orient) {
+  GYRO_EULER.set(beta, alpha, -gamma, 'YXZ');
+  quaternion.setFromEuler(GYRO_EULER);
+  quaternion.multiply(GYRO_Q1);
+  quaternion.multiply(GYRO_Q0.setFromAxisAngle(GYRO_ZEE, -orient));
+}
+
+let deviceAlpha = 0, deviceBeta = 0, deviceGamma = 0;
+
+function onDeviceOrientation(e) {
+  deviceAlpha = THREE.MathUtils.degToRad(e.alpha || 0);
+  deviceBeta = THREE.MathUtils.degToRad(e.beta || 0);
+  deviceGamma = THREE.MathUtils.degToRad(e.gamma || 0);
+}
+
+function onScreenOrientationChange() {
+  screenOrientAngle = THREE.MathUtils.degToRad(
+    (screen.orientation && screen.orientation.angle) || window.orientation || 0
+  );
+}
+
+async function enableGyro() {
+  // iOS 13+ izin akışı
+  if (typeof DeviceOrientationEvent !== 'undefined' &&
+      typeof DeviceOrientationEvent.requestPermission === 'function') {
+    try {
+      const res = await DeviceOrientationEvent.requestPermission();
+      if (res !== 'granted') {
+        alert('Jiroskop izni verilmedi.');
+        return;
+      }
+    } catch (err) {
+      alert('Jiroskop izni istenirken hata oluştu: ' + err.message);
+      return;
+    }
+  }
+  window.addEventListener('deviceorientation', onDeviceOrientation);
+  window.addEventListener('orientationchange', onScreenOrientationChange);
+  onScreenOrientationChange();
+  gyroActive = true;
+  gyroBtn.classList.add('active');
+  gyroBtn.textContent = '✅ Jiroskop Aktif';
+}
+
+function disableGyro() {
+  window.removeEventListener('deviceorientation', onDeviceOrientation);
+  window.removeEventListener('orientationchange', onScreenOrientationChange);
+  gyroActive = false;
+  gyroBtn.classList.remove('active');
+  gyroBtn.textContent = '🧭 Jiroskop ile Bak';
+}
+
+gyroBtn.addEventListener('click', () => {
+  if (gyroActive) {
+    disableGyro();
+  } else {
+    enableGyro();
+  }
+});
+
 function animate() {
-  if (!renderer.xr.isPresenting) {
+  if (renderer.xr.isPresenting) {
+    // WebXR kendi kamera kontrolünü yapıyor
+  } else if (gyroActive) {
+    setObjectQuaternion(camera.quaternion, deviceAlpha, deviceBeta, deviceGamma, screenOrientAngle);
+  } else {
     lon += (targetLon - lon) * 0.1;
     lat += (targetLat - lat) * 0.1;
     const phi = THREE.MathUtils.degToRad(90 - lat);
