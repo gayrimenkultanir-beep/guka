@@ -1,0 +1,936 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<title>Bülent İşcan — Heykeltraş | bisanat</title>
+<meta name="description" content="Bülent İşcan — Hiperrealist heykeltraş. Topkapı Sarayı, Milli Saraylar, Çanakkale Deniz Müzesi ve 10 ülkede 100'e yakın müze projesi.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,400;9..144,500;9..144,600;9..144,700&family=Fraunces:ital,opsz,wght@1,9..144,400&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --stone:#efe8da;
+    --stone-2:#e4dbc8;
+    --ink:#1a1815;
+    --ink-soft:#3a352d;
+    --sage:#6f7c62;
+    --sage-dark:#454f3c;
+    --bronze:#707c3e;
+    --bronze-bright:#a8bb5c;
+    --paper:#faf7ef;
+    --line: rgba(26,24,21,.14);
+    --shadow: rgba(15,13,10,.55);
+    --radius: 2px;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    background:var(--stone);
+    color:var(--ink);
+    font-family:'Inter',sans-serif;
+    font-size:16px;
+    line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+    overflow-x:hidden;
+  }
+  ::selection{background:var(--bronze); color:var(--paper);}
+  h1,h2,h3,h4{
+    font-family:'Fraunces', serif;
+    font-weight:600;
+    letter-spacing:-0.01em;
+    margin:0;
+    color:var(--ink);
+  }
+  a{color:inherit;}
+  img{display:block; max-width:100%;}
+  .mono{
+    font-family:'IBM Plex Mono', monospace;
+    text-transform:uppercase;
+    letter-spacing:.14em;
+    font-size:.72rem;
+    color:var(--sage-dark);
+  }
+  .wrap{max-width:1240px; margin:0 auto; padding:0 6vw;}
+  @media(min-width:1400px){.wrap{padding:0 4vw;}}
+
+  /* ---------- reveal-on-scroll ---------- */
+  .reveal{
+    opacity:0;
+    transform: perspective(1200px) rotateX(8deg) translateY(46px);
+    transform-origin: 50% 100%;
+    transition: opacity .9s cubic-bezier(.16,.8,.24,1), transform .9s cubic-bezier(.16,.8,.24,1);
+    will-change: transform, opacity;
+  }
+  .reveal.in{ opacity:1; transform:none; }
+  @media (prefers-reduced-motion: reduce){
+    .reveal{ transition:none; transform:none; opacity:1; }
+  }
+
+  /* ---------- NAV ---------- */
+  header{
+    position:fixed; top:0; left:0; right:0; z-index:100;
+    display:flex; align-items:center; justify-content:space-between;
+    padding:18px 6vw;
+    background:linear-gradient(to bottom, rgba(19,18,15,.72), rgba(19,18,15,0));
+    transition: background .4s ease, padding .4s ease, backdrop-filter .4s ease;
+  }
+  header.scrolled{
+    background:rgba(250,247,239,.92);
+    backdrop-filter: blur(10px);
+    padding:10px 6vw;
+    box-shadow:0 1px 0 var(--line);
+  }
+  .brand{display:flex; align-items:center; gap:12px; text-decoration:none;}
+  .brand img{height:34px; width:auto; filter:brightness(0) invert(1); transition:filter .4s;}
+  header.scrolled .brand img{filter:none;}
+  .brand-text{font-family:'Fraunces',serif; font-size:1.05rem; color:#fff; transition:color .4s;}
+  header.scrolled .brand-text{color:var(--ink);}
+  nav.links{display:flex; gap:34px; align-items:center;}
+  nav.links a{
+    font-family:'IBM Plex Mono',monospace; font-size:.72rem; letter-spacing:.12em; text-transform:uppercase;
+    text-decoration:none; color:#f2ede0; opacity:.86; position:relative; padding-bottom:4px;
+    transition:opacity .3s, color .3s;
+  }
+  header.scrolled nav.links a{color:var(--ink-soft);}
+  nav.links a::after{
+    content:''; position:absolute; left:0; bottom:0; width:0; height:1px; background:var(--bronze);
+    transition:width .3s ease;
+  }
+  nav.links a:hover{opacity:1;}
+  nav.links a:hover::after{width:100%;}
+  .lang-switch{display:flex; gap:6px; font-family:'IBM Plex Mono',monospace; font-size:.68rem;}
+  .lang-switch button{
+    background:none; border:1px solid rgba(255,255,255,.4); color:#f2ede0; cursor:pointer;
+    padding:3px 9px; letter-spacing:.08em; transition:.3s;
+  }
+  header.scrolled .lang-switch button{ border-color:var(--line); color:var(--ink-soft);}
+  .lang-switch button.active{ background:var(--bronze); border-color:var(--bronze); color:#fff;}
+  .navburger{display:none;}
+
+  /* ---------- HERO ---------- */
+  .hero{
+    position:relative; height:100svh; min-height:640px; overflow:hidden;
+    display:flex; align-items:flex-end;
+    background:#0f0d0a;
+  }
+  .hero-media{
+    position:absolute; inset:-4%;
+    will-change:transform;
+  }
+  .hero-media img{
+    width:100%; height:100%; object-fit:cover; object-position:50% 22%;
+    transform:scale(1.08);
+  }
+  .hero-scrim{
+    position:absolute; inset:0;
+    background:
+      radial-gradient(ellipse at 30% 30%, rgba(0,0,0,0) 0%, rgba(10,9,7,.35) 55%, rgba(8,7,5,.86) 100%),
+      linear-gradient(to top, rgba(8,7,5,.95) 0%, rgba(8,7,5,.35) 42%, rgba(8,7,5,.15) 65%);
+    pointer-events:none;
+  }
+  .hero-spot{
+    position:absolute; inset:0; pointer-events:none; mix-blend-mode:screen; opacity:.5;
+    background: radial-gradient(340px 340px at var(--mx,50%) var(--my,40%), rgba(168,187,92,.28), transparent 65%);
+  }
+  .hero-inner{
+    position:relative; z-index:2; width:100%;
+    padding:0 6vw 70px;
+    display:flex; justify-content:space-between; align-items:flex-end; gap:40px;
+  }
+  .hero-eyebrow{
+    display:flex; align-items:center; gap:10px; margin-bottom:20px; color:var(--bronze-bright);
+  }
+  .hero-eyebrow .rule{width:36px; height:1px; background:var(--bronze-bright);}
+  .hero h1{
+    font-size:clamp(3rem, 9vw, 7.4rem);
+    line-height:.92;
+    color:#faf7ef;
+    text-shadow:0 6px 40px rgba(0,0,0,.5);
+  }
+  .hero h1 em{font-style:italic; font-weight:400; color:var(--bronze-bright);}
+  .hero-sub{
+    font-family:'Fraunces',serif; font-style:italic; font-weight:400;
+    font-size:clamp(1.05rem,2vw,1.5rem); color:#e8e1d0; margin-top:18px; max-width:36ch;
+  }
+  .placard{
+    background:rgba(12,11,9,.55);
+    border:1px solid rgba(168,187,92,.4);
+    backdrop-filter:blur(6px);
+    padding:20px 24px;
+    min-width:260px;
+    transform: perspective(700px) rotateY(-4deg);
+    box-shadow: 12px 18px 40px rgba(0,0,0,.45);
+  }
+  .placard .mono{color:var(--bronze-bright); opacity:.85;}
+  .placard-row{display:flex; justify-content:space-between; gap:14px; padding:7px 0; border-bottom:1px dashed rgba(255,255,255,.14); font-size:.86rem; color:#efe9da;}
+  .placard-row:last-child{border-bottom:none;}
+  .placard-row b{font-weight:500; color:#fff; text-align:right; font-family:'Fraunces',serif;}
+  .scrollcue{
+    position:absolute; left:6vw; bottom:26px; z-index:2; display:flex; align-items:center; gap:10px;
+    color:#d8d0bd; font-family:'IBM Plex Mono',monospace; font-size:.68rem; letter-spacing:.14em; text-transform:uppercase;
+  }
+  .scrollcue .line{width:1px; height:38px; background:linear-gradient(to bottom, var(--bronze-bright), transparent); animation:cue 2.2s infinite;}
+  @keyframes cue{0%{transform:scaleY(0); transform-origin:top;}50%{transform:scaleY(1); transform-origin:top;}50.01%{transform-origin:bottom;}100%{transform:scaleY(0); transform-origin:bottom;}}
+
+  /* ---------- SEAL / MEDALLION ---------- */
+  .seal-wrap{
+    position:relative; z-index:5;
+    width:132px; height:132px; margin:-66px auto 0;
+    perspective:900px;
+  }
+  .seal{
+    width:100%; height:100%; position:relative;
+    animation: spin 26s linear infinite;
+    transform-style:preserve-3d;
+  }
+  @keyframes spin{ to{ transform:rotateY(360deg);} }
+  .seal svg{position:absolute; inset:0; width:100%; height:100%;}
+  .seal-face{
+    position:absolute; inset:8px; border-radius:50%;
+    background:radial-gradient(circle at 35% 30%, #c3d189, var(--bronze) 60%, #3c4423 100%);
+    display:flex; align-items:center; justify-content:center;
+    box-shadow: inset 0 2px 6px rgba(255,255,255,.5), inset 0 -6px 14px rgba(0,0,0,.5), 0 14px 30px rgba(0,0,0,.4);
+  }
+  .seal-face img{width:52%; filter:brightness(0) invert(1); opacity:.92;}
+  @media (prefers-reduced-motion: reduce){ .seal{animation:none;} }
+
+  /* ---------- SECTION SCAFFOLDING ---------- */
+  section{position:relative; padding:118px 0;}
+  .section-head{
+    display:flex; justify-content:space-between; align-items:flex-end; gap:30px;
+    margin-bottom:60px; flex-wrap:wrap;
+  }
+  .section-head h2{font-size:clamp(2.1rem,4vw,3.4rem); max-width:14ch;}
+  .section-head p{max-width:38ch; color:var(--ink-soft); font-size:.98rem;}
+  .num-eyebrow{display:flex; align-items:center; gap:10px; margin-bottom:14px;}
+  .num-eyebrow .rule{width:36px; height:1px; background:var(--bronze);}
+
+  /* ---------- ABOUT ---------- */
+  .about{background:var(--paper);}
+  .about-grid{display:grid; grid-template-columns:.8fr 1.2fr; gap:70px; align-items:center;}
+  .about-photo{ perspective:1400px; }
+  .about-photo .tframe{
+    position:relative; border:1px solid var(--line); padding:14px; background:var(--stone);
+  }
+  .about-photo img{ width:100%; height:560px; object-fit:cover; object-position:50% 20%;}
+  .about-photo .tframe::before{
+    content:''; position:absolute; inset:0; border:1px solid var(--bronze); margin:6px; pointer-events:none; opacity:.5;
+  }
+  .about-cap{margin-top:14px;}
+  .about-cap .name{font-family:'Fraunces',serif; font-style:italic; color:var(--ink);}
+  .about p.lede{font-size:1.28rem; font-family:'Fraunces',serif; font-weight:400; line-height:1.5; color:var(--ink); margin-bottom:22px;}
+  .about p{color:var(--ink-soft); margin:0 0 16px;}
+  .stat-row{display:grid; grid-template-columns:repeat(4,1fr); gap:20px; margin-top:44px; padding-top:36px; border-top:1px solid var(--line);}
+  .stat b{display:block; font-family:'Fraunces',serif; font-size:2.3rem; color:var(--sage-dark); line-height:1;}
+  .stat span{font-size:.78rem; color:var(--ink-soft);}
+
+  /* ---------- MARQUEE ---------- */
+  .marquee-band{
+    background:var(--ink); color:var(--stone); padding:26px 0; overflow:hidden;
+    border-top:1px solid rgba(168,187,92,.3); border-bottom:1px solid rgba(168,187,92,.3);
+  }
+  .marquee-track{display:flex; white-space:nowrap; width:max-content; animation:mq 46s linear infinite;}
+  .marquee-band:hover .marquee-track{ animation-play-state:paused; }
+  .marquee-track span{
+    font-family:'Fraunces',serif; font-style:italic; font-size:1.3rem; padding:0 34px; opacity:.85;
+    display:flex; align-items:center; gap:34px;
+  }
+  .marquee-track span::after{content:'✦'; font-style:normal; color:var(--bronze-bright); font-size:.8rem;}
+  @keyframes mq{ from{transform:translateX(0);} to{transform:translateX(-50%);} }
+
+  /* ---------- TILT CARDS / GALLERY ---------- */
+  .tilt-card{
+    position:relative; perspective:1000px;
+  }
+  .tilt-inner{
+    position:relative; will-change:transform; transition:transform .12s ease-out, box-shadow .3s;
+    transform-style:preserve-3d;
+  }
+  .tilt-card .shine{
+    position:absolute; inset:0; z-index:3; pointer-events:none; opacity:0; transition:opacity .3s;
+    background:radial-gradient(circle at var(--px,50%) var(--py,50%), rgba(255,255,255,.28), transparent 55%);
+    mix-blend-mode:overlay;
+  }
+  .tilt-card:hover .shine{opacity:1;}
+
+  .proof-strip{
+    display:flex; gap:26px; overflow-x:auto; padding-bottom:26px; scroll-snap-type:x proximity;
+    -ms-overflow-style:none; scrollbar-width:thin; scrollbar-color:var(--bronze) transparent;
+  }
+  .proof-card{
+    flex:0 0 auto; width:min(74vw,420px); scroll-snap-align:start;
+    background:var(--paper); border:1px solid var(--line);
+  }
+  .proof-card .imgbox{overflow:hidden; aspect-ratio:4/3;}
+  .proof-card img{width:100%; height:100%; object-fit:cover; transition:transform .6s cubic-bezier(.2,.7,.2,1);}
+  .proof-card:hover img{transform:scale(1.05);}
+  .proof-meta{padding:16px 18px 20px; border-top:2px solid var(--bronze);}
+  .proof-meta .tag{display:inline-block; margin-bottom:8px;}
+  .proof-meta h4{font-size:1.15rem; margin-bottom:4px;}
+  .proof-meta .loc{font-size:.86rem; color:var(--ink-soft);}
+  .proof-hint{display:flex; gap:6px; align-items:center; margin-top:10px; font-size:.72rem; color:var(--sage-dark); font-family:'IBM Plex Mono',monospace; letter-spacing:.06em;}
+  .proof-hint .dot{width:6px; height:6px; border-radius:50%; background:var(--bronze);}
+
+  .gallery{
+    display:grid; grid-template-columns:repeat(3,1fr); gap:26px;
+  }
+  .gallery .tilt-card:nth-child(3n+1){grid-row:span 2;}
+  .gcard{ position:relative; overflow:hidden; background:#111; cursor:pointer; }
+  .gallery .tilt-card:nth-child(3n+1) .gcard{aspect-ratio:3/4;}
+  .gallery .tilt-card:not(:nth-child(3n+1)) .gcard{aspect-ratio:1/1;}
+  .gcard img{width:100%; height:100%; object-fit:cover; transform:translateZ(0) scale(1.02); transition:transform .7s cubic-bezier(.2,.7,.2,1), filter .4s;}
+  .tilt-card:hover .gcard img{transform:scale(1.11);}
+  .gcard::after{
+    content:''; position:absolute; inset:0; background:linear-gradient(to top, rgba(10,9,7,.92) 0%, rgba(10,9,7,0) 45%);
+  }
+  .gcap{position:absolute; left:0; right:0; bottom:0; padding:18px 20px; z-index:2; color:#fff;}
+  .gcap .mono{color:var(--bronze-bright); margin-bottom:4px;}
+  .gcap h4{color:#fff; font-size:1.08rem;}
+
+  /* ---------- LIGHTBOX ---------- */
+  .lightbox{
+    position:fixed; inset:0; z-index:999; background:rgba(8,7,5,.94);
+    display:flex; align-items:center; justify-content:center; padding:5vw;
+    opacity:0; pointer-events:none; transition:opacity .3s;
+  }
+  .lightbox.open{opacity:1; pointer-events:auto;}
+  .lightbox img{max-width:min(1000px,90vw); max-height:82vh; object-fit:contain; box-shadow:0 30px 80px rgba(0,0,0,.6);}
+  .lightbox .lb-cap{color:#f2ede0; text-align:center; margin-top:16px; font-family:'Fraunces',serif; font-style:italic;}
+  .lightbox .lb-close{position:absolute; top:26px; right:30px; color:#fff; background:none; border:1px solid rgba(255,255,255,.4); width:40px; height:40px; cursor:pointer; font-size:1.2rem;}
+
+  /* ---------- TIMELINE (international) ---------- */
+  .intl{background:var(--ink); color:var(--stone);}
+  .intl .section-head h2, .intl .num-eyebrow .rule{color:var(--stone);}
+  .intl .section-head p{color:#c9c2ae;}
+  .intl .num-eyebrow{color:var(--bronze-bright);}
+  .tl{ position:relative; max-width:820px; margin:0 auto; padding-left:26px; border-left:1px solid rgba(168,187,92,.4);}
+  .tl-item{position:relative; padding:0 0 40px 30px;}
+  .tl-item:last-child{padding-bottom:0;}
+  .tl-item::before{
+    content:''; position:absolute; left:-36px; top:4px; width:11px; height:11px; border-radius:50%;
+    background:var(--bronze-bright); box-shadow:0 0 0 5px rgba(168,187,92,.18);
+  }
+  .tl-year{font-family:'IBM Plex Mono',monospace; color:var(--bronze-bright); font-size:.82rem; letter-spacing:.1em;}
+  .tl-item h4{color:#fff; font-size:1.32rem; margin-top:6px; font-weight:500;}
+
+  /* ---------- ARCHIVE (accordion lists: museums, film/tv/ads) ---------- */
+  .archive-grid{display:grid; grid-template-columns:1fr 1fr; gap:60px;}
+  .archive-col h3{font-size:1.5rem; margin-bottom:22px; display:flex; align-items:baseline; gap:10px;}
+  .archive-col h3 .count{font-family:'IBM Plex Mono',monospace; font-size:.7rem; color:var(--bronze); font-weight:400; letter-spacing:.06em;}
+  details.yr{border-bottom:1px solid var(--line);}
+  details.yr summary{
+    list-style:none; cursor:pointer; display:flex; justify-content:space-between; align-items:center;
+    padding:14px 2px; font-family:'Fraunces',serif; font-size:1.15rem;
+  }
+  details.yr summary::-webkit-details-marker{display:none;}
+  details.yr summary .plus{
+    font-family:'IBM Plex Mono',monospace; color:var(--bronze); border:1px solid var(--bronze); width:22px; height:22px;
+    display:flex; align-items:center; justify-content:center; font-size:.9rem; flex:0 0 auto; transition:transform .3s;
+  }
+  details.yr[open] summary .plus{transform:rotate(45deg);}
+  details.yr .yr-list{margin:0 0 16px; padding:0 0 0 2px; list-style:none; font-size:.92rem; color:var(--ink-soft);}
+  details.yr .yr-list li{padding:6px 0; border-top:1px dotted var(--line);}
+  details.yr .yr-list li:first-child{border-top:none;}
+
+  .credits-col{margin-bottom:34px;}
+  .credits-col summary{font-family:'IBM Plex Mono',monospace; text-transform:uppercase; letter-spacing:.1em; font-size:.78rem; color:var(--sage-dark);}
+  .credits-col .yr-list{columns:2; column-gap:26px;}
+  @media(max-width:640px){.credits-col .yr-list{columns:1;}}
+
+  /* ---------- CONTACT ---------- */
+  .contact{background:var(--paper); border-top:1px solid var(--line);}
+  .contact-grid{display:grid; grid-template-columns:1.2fr .8fr; gap:60px; align-items:start;}
+  .contact h2{font-size:clamp(2.3rem,5vw,4.2rem); max-width:12ch;}
+  .contact-info{margin-top:30px; display:grid; gap:16px;}
+  .contact-info a, .contact-info div{
+    display:flex; gap:14px; align-items:baseline; font-size:1.05rem; text-decoration:none; color:var(--ink);
+    border-bottom:1px solid transparent; width:fit-content;
+  }
+  .contact-info a:hover{border-color:var(--bronze); color:var(--sage-dark);}
+  .contact-card{
+    background:var(--ink); color:var(--stone); padding:38px; position:relative; overflow:hidden;
+  }
+  .contact-card::before{content:''; position:absolute; inset:0; background:radial-gradient(circle at 80% 0%, rgba(168,187,92,.25), transparent 60%);}
+  .contact-card h4{color:#fff; margin-bottom:14px; font-size:1.3rem; position:relative;}
+  .contact-card p{color:#cdc6b2; font-size:.92rem; position:relative;}
+  .btn{
+    display:inline-flex; align-items:center; gap:10px; margin-top:22px; padding:13px 26px;
+    background:var(--bronze); color:#fff; text-decoration:none; font-family:'IBM Plex Mono',monospace;
+    font-size:.76rem; letter-spacing:.1em; text-transform:uppercase; position:relative; transition:background .3s;
+  }
+  .btn:hover{background:var(--bronze-bright);}
+
+  footer{
+    background:var(--ink); color:#8b8672; padding:34px 0; text-align:center;
+    font-family:'IBM Plex Mono',monospace; font-size:.7rem; letter-spacing:.04em;
+  }
+  footer .brand{justify-content:center; margin-bottom:14px;}
+  footer .brand img{height:26px; filter:brightness(0) invert(1); opacity:.8;}
+  footer .brand-text{color:#cdc6b2;}
+  footer p{max-width:640px; margin:0 auto; line-height:1.7;}
+
+  /* ---------- responsive ---------- */
+  @media(max-width:980px){
+    nav.links{display:none;}
+    .about-grid, .archive-grid, .contact-grid{grid-template-columns:1fr;}
+    .about-photo img{height:400px;}
+    .gallery{grid-template-columns:repeat(2,1fr);}
+    .gallery .tilt-card:nth-child(3n+1){grid-row:auto;}
+    .gallery .tilt-card:nth-child(3n+1) .gcard{aspect-ratio:1/1;}
+    .stat-row{grid-template-columns:repeat(2,1fr); row-gap:26px;}
+  }
+  @media(max-width:600px){
+    .gallery{grid-template-columns:1fr;}
+    .hero-inner{flex-direction:column; align-items:flex-start;}
+    .placard{transform:none; width:100%;}
+    section{padding:80px 0;}
+  }
+</style>
+</head>
+<body>
+
+<!-- ================= NAV ================= -->
+<header id="siteHeader">
+  <a href="#top" class="brand">
+    <img src="images/logo.png" alt="bisanat">
+    <span class="brand-text">BÜLENT İŞCAN</span>
+  </a>
+  <nav class="links">
+    <a href="#hakkimizda" data-tr="Hakkımızda" data-en="About">Hakkımızda</a>
+    <a href="#gercekci" data-tr="Hiperrealizm" data-en="Hyperrealism">Hiperrealizm</a>
+    <a href="#eserler" data-tr="Eserler" data-en="Works">Eserler</a>
+    <a href="#muzeler" data-tr="Müzeler" data-en="Museums">Müzeler</a>
+    <a href="#iletisim" data-tr="İletişim" data-en="Contact">İletişim</a>
+  </nav>
+  <div class="lang-switch">
+    <button data-lang="tr" class="active">TR</button>
+    <button data-lang="en">EN</button>
+  </div>
+</header>
+
+<!-- ================= HERO ================= -->
+<div class="hero" id="top">
+  <div class="hero-media" id="heroMedia">
+    <img src="images/hero-harem.jpg" alt="Bülent İşcan heykeli — Harem Ağası, Topkapı Sarayı">
+  </div>
+  <div class="hero-scrim"></div>
+  <div class="hero-spot" id="heroSpot"></div>
+
+  <div class="hero-inner">
+    <div>
+      <div class="hero-eyebrow mono"><span class="rule"></span><span data-tr="HEYKELTRAŞ · SANAT YÖNETMENİ" data-en="SCULPTOR · ART DIRECTOR">HEYKELTRAŞ · SANAT YÖNETMENİ</span></div>
+      <h1 data-tr="Taşa değil,<br>hayata<br><em>can veriyor.</em>" data-en="He doesn't sculpt<br>stone — he<br><em>breathes life.</em>">Taşa değil,<br>hayata<br><em>can veriyor.</em></h1>
+      <p class="hero-sub" data-tr="1972 Tekirdağ doğumlu ressam ve heykeltraş Bülent İşcan; 90'ı aşkın müzede, 10 ülkede sergilenen hiperrealist figürleriyle tarihi yeniden canlandırıyor." data-en="Born in Tekirdağ in 1972, painter and sculptor Bülent İşcan brings history back to life through hyper-realistic figures shown in 90+ museums across 10 countries.">1972 Tekirdağ doğumlu ressam ve heykeltraş Bülent İşcan; 90'ı aşkın müzede, 10 ülkede sergilenen hiperrealist figürleriyle tarihi yeniden canlandırıyor.</p>
+    </div>
+
+    <div class="placard reveal">
+      <div class="mono" data-tr="ESER ETİKETİ" data-en="OBJECT LABEL">ESER ETİKETİ</div>
+      <div class="placard-row"><span data-tr="Eser" data-en="Object">Eser</span><b>Harem Ağası</b></div>
+      <div class="placard-row"><span data-tr="Konum" data-en="Location">Konum</span><b>Topkapı Sarayı</b></div>
+      <div class="placard-row"><span data-tr="Yöntem" data-en="Method">Yöntem</span><b data-tr="Hiperrealist heykel" data-en="Hyper-realistic sculpture">Hiperrealist heykel</b></div>
+      <div class="placard-row"><span data-tr="Sanatçı" data-en="Artist">Sanatçı</span><b>Bülent İşcan</b></div>
+    </div>
+  </div>
+
+  <div class="scrollcue"><span class="line"></span><span data-tr="Aşağı Kaydır" data-en="Scroll">Aşağı Kaydır</span></div>
+</div>
+
+<div class="seal-wrap reveal">
+  <div class="seal">
+    <svg viewBox="0 0 132 132"><path id="sealArc" d="M 66,66 m -50,0 a 50,50 0 1,1 100,0 a 50,50 0 1,1 -100,0" fill="none"/>
+      <text font-family="IBM Plex Mono" font-size="8.4" letter-spacing="3" fill="#5a4327">
+        <textPath href="#sealArc" startOffset="0%">BİSANAT • BÜLENT İŞCAN • EST. 1972 • HYPERREALIZM • </textPath>
+      </text>
+    </svg>
+    <div class="seal-face"><img src="images/logo.png" alt=""></div>
+  </div>
+</div>
+
+<!-- ================= ABOUT ================= -->
+<section class="about" id="hakkimizda">
+  <div class="wrap about-grid">
+    <div class="about-photo reveal tilt-card">
+      <div class="tilt-inner">
+        <div class="tframe">
+          <img src="images/portrait-submarine.jpg" alt="Bülent İşcan — TCG Uluçalireis Denizaltı Sergisi heykeli, Çanakkale Deniz Müzesi">
+        </div>
+        <div class="about-cap mono">
+          <span class="name" data-tr="Denizaltı Subayı" data-en="Submarine Officer">Denizaltı Subayı</span> — TCG Uluçalireis, Çanakkale Deniz Müzesi
+        </div>
+      </div>
+    </div>
+
+    <div class="reveal">
+      <div class="num-eyebrow"><span class="rule"></span><span class="mono" data-tr="SANATÇI" data-en="THE ARTIST">SANATÇI</span></div>
+      <h2 style="margin-bottom:26px;" data-tr="Resimden heykele, atölyeden set dekoruna." data-en="From painting to sculpture, from the studio to the film set.">Resimden heykele, atölyeden set dekoruna.</h2>
+      <p class="lede" data-tr="“Yaratıcılığı resimle sınırlı kalmadı; malzeme ve materyalle sınır tanımayan bir tasarım tutkusu ekledi.”" data-en="“His creativity was never limited to painting — he added to it an unbound passion for material and design.”">"Yaratıcılığı resimle sınırlı kalmadı; malzeme ve materyalle sınır tanımayan bir tasarım tutkusu ekledi."</p>
+      <p data-tr="1972'de Tekirdağ'da doğan Bülent İşcan, Marmara Üniversitesi Güzel Sanatlar Fakültesi Resim Bölümü mezunudur. Mezuniyetinin ardından resim yeteneğine heykel ve hiperrealist tasarımı ekledi; bugün Türkiye'nin en prestijli müzelerindeki figüratif heykellerde onun imzası bulunuyor." data-en="Born in Tekirdağ in 1972, Bülent İşcan graduated from Marmara University's Faculty of Fine Arts, Painting Department. After graduation he added sculpture and hyper-realistic design to his painting practice; today his signature is found on figurative sculptures in many of Turkey's most prestigious museums.">1972'de Tekirdağ'da doğan Bülent İşcan, Marmara Üniversitesi Güzel Sanatlar Fakültesi Resim Bölümü mezunudur. Mezuniyetinin ardından resim yeteneğine heykel ve hiperrealist tasarımı ekledi; bugün Türkiye'nin en prestijli müzelerindeki figüratif heykellerde onun imzası bulunuyor.</p>
+      <p data-tr="Bunun yanında sinema, dizi, TV reklamı ve fotoğraf sektörüne yirmi yılı aşkın süredir dekor, aksesuar ve maket üretiyor — gerçeğe en yakın görünümü sahneye taşıma çabası, onu bugün heykel alanındaki hiperrealist yaklaşımına taşıdı." data-en="Alongside this, for more than twenty years he has produced sets, props and models for cinema, television series, TV commercials and photography — the effort to bring the closest possible likeness to the screen is what carried him toward hyper-realism in sculpture.">Bunun yanında sinema, dizi, TV reklamı ve fotoğraf sektörüne yirmi yılı aşkın süredir dekor, aksesuar ve maket üretiyor — gerçeğe en yakın görünümü sahneye taşıma çabası, onu bugün heykel alanındaki hiperrealist yaklaşımına taşıdı.</p>
+
+      <div class="stat-row">
+        <div class="stat"><b>1972</b><span data-tr="Tekirdağ doğumlu" data-en="Born in Tekirdağ">Tekirdağ doğumlu</span></div>
+        <div class="stat"><b>90+</b><span data-tr="Yurt içi müze projesi" data-en="Museums in Turkey">Yurt içi müze projesi</span></div>
+        <div class="stat"><b>10</b><span data-tr="Ülkede sergilenen eser" data-en="Countries exhibited">Ülkede sergilenen eser</span></div>
+        <div class="stat"><b>20+</b><span data-tr="Yıl sinema / TV deneyimi" data-en="Years in film / TV">Yıl sinema / TV deneyimi</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= MARQUEE ================= -->
+<div class="marquee-band">
+  <div class="marquee-track" id="marqueeTrack">
+    <span>Topkapı Sarayı Müzesi</span><span>Milli Saraylar Başkanlığı</span><span>Çanakkale Deniz Müzesi</span><span>Macao Science Center</span><span>Royal Academy of Sciences — Katar</span><span>Koç Müzesi</span><span>Yıldız Sarayı Müzesi</span><span>Muslim Heritage — Kuveyt</span><span>Milli Saraylar Resim Müzesi</span><span>İstanbul Deniz Müzesi</span>
+  </div>
+</div>
+
+<!-- ================= HYPERREALISM PROOF ================= -->
+<section id="gercekci">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <div>
+        <div class="num-eyebrow"><span class="rule"></span><span class="mono" data-tr="HİPERREALİZM" data-en="HYPERREALISM">HİPERREALİZM</span></div>
+        <h2 data-tr="Gerçek mi, heykel mi?" data-en="Real, or sculpture?">Gerçek mi, heykel mi?</h2>
+      </div>
+      <p data-tr="Bülent İşcan, hiperrealizmin dünyadaki nadir temsilcilerinden biri. Her eser; ten, saç ve kumaşın gerçeğine en yakın dokusunu yakalayana dek defalarca kıyaslanarak şekillenir." data-en="Bülent İşcan is one of the world's rare hyper-realist sculptors. Every piece is shaped through repeated comparison with reference, until skin, hair and fabric reach their closest possible likeness.">Bülent İşcan, hiperrealizmin dünyadaki nadir temsilcilerinden biri. Her eser; ten, saç ve kumaşın gerçeğine en yakın dokusunu yakalayana dek defalarca kıyaslanarak şekillenir.</p>
+      </div>
+    </div>
+
+    <div class="proof-strip reveal" id="proofStrip">
+      <!-- cards injected identically in HTML for content/SEO -->
+      <div class="proof-card tilt-card"><div class="tilt-inner"><div class="imgbox"><img src="images/cmp-abdulmecid.jpg" alt="Abdülmecid Efendi — referans tablo ve heykel karşılaştırması"></div><div class="proof-meta"><span class="mono tag">01</span><h4>Abdülmecid Efendi</h4><div class="loc">Milli Saraylar Resim Müzesi</div><div class="proof-hint"><span class="dot"></span><span data-tr="Sol: Referans tablo · Sağ: Heykel" data-en="Left: Reference painting · Right: Sculpture">Sol: Referans tablo · Sağ: Heykel</span></div></div></div></div>
+
+      <div class="proof-card tilt-card"><div class="tilt-inner"><div class="imgbox"><img src="images/cmp-roman.jpg" alt="Romalı Savaşçı karşılaştırması"></div><div class="proof-meta"><span class="mono tag">02</span><h4 data-tr="Romalı Savaşçı" data-en="Roman Warrior">Romalı Savaşçı</h4><div class="loc">Adana Arkeoloji Müzesi</div><div class="proof-hint"><span class="dot"></span><span data-tr="Sol: İllüstrasyon · Sağ: Heykel" data-en="Left: Illustration · Right: Sculpture">Sol: İllüstrasyon · Sağ: Heykel</span></div></div></div></div>
+
+      <div class="proof-card tilt-card"><div class="tilt-inner"><div class="imgbox"><img src="images/cmp-prehistoric.jpg" alt="Tarih Öncesi İnsan karşılaştırması"></div><div class="proof-meta"><span class="mono tag">03</span><h4 data-tr="Tarih Öncesi İnsan" data-en="Prehistoric Human">Tarih Öncesi İnsan</h4><div class="loc">Hatay Arkeoloji Müzesi</div><div class="proof-hint"><span class="dot"></span><span data-tr="İki açıdan aynı heykel" data-en="Same sculpture, two angles">İki açıdan aynı heykel</span></div></div></div></div>
+
+      <div class="proof-card tilt-card"><div class="tilt-inner"><div class="imgbox"><img src="images/cmp-submarine.jpg" alt="TCG Uluçalireis Denizaltı Sergisi karşılaştırması"></div><div class="proof-meta"><span class="mono tag">04</span><h4 data-tr="Denizaltı Subayı" data-en="Submarine Officer">Denizaltı Subayı</h4><div class="loc">Çanakkale Deniz Müzesi</div><div class="proof-hint"><span class="dot"></span><span data-tr="Sahne içinde iki kare" data-en="Two frames, same scene">Sahne içinde iki kare</span></div></div></div></div>
+
+      <div class="proof-card tilt-card"><div class="tilt-inner"><div class="imgbox"><img src="images/cmp-ataturk1915.jpg" alt="Mustafa Kemal Atatürk 1915 heykeli karşılaştırması"></div><div class="proof-meta"><span class="mono tag">05</span><h4>Mustafa Kemal Atatürk, 1915</h4><div class="loc">Koç Müzesi, İstanbul</div><div class="proof-hint"><span class="dot"></span><span data-tr="Tarihi otomobil sahnesi" data-en="Historic automobile scene">Tarihi otomobil sahnesi</span></div></div></div></div>
+
+      <div class="proof-card tilt-card"><div class="tilt-inner"><div class="imgbox"><img src="images/cmp-hospital.jpg" alt="1915 Hilal-i Ahmer Yaralı Hastanesi karşılaştırması"></div><div class="proof-meta"><span class="mono tag">06</span><h4 data-tr="Hilal-i Ahmer Hastanesi" data-en="Red Crescent Hospital">Hilal-i Ahmer Hastanesi</h4><div class="loc">Alçıtepe, Çanakkale Tarihi Alanı</div><div class="proof-hint"><span class="dot"></span><span data-tr="Çok figürlü canlandırma" data-en="Multi-figure diorama">Çok figürlü canlandırma</span></div></div></div></div>
+
+      <div class="proof-card tilt-card"><div class="tilt-inner"><div class="imgbox"><img src="images/cmp-qatar.jpg" alt="Katar Kraliyet Bilimleri Akademisi karşılaştırması"></div><div class="proof-meta"><span class="mono tag">07</span><h4 data-tr="Kraliyet Bilimleri Akademisi" data-en="Royal Academy of Sciences">Kraliyet Bilimleri Akademisi</h4><div class="loc">Katar</div><div class="proof-hint"><span class="dot"></span><span data-tr="Yurt dışı proje" data-en="International project">Yurt dışı proje</span></div></div></div></div>
+    </div>
+  </div>
+</div>
+</section>
+
+<!-- ================= GALLERY ================= -->
+<section id="eserler" style="background:var(--stone-2);">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <div>
+        <div class="num-eyebrow"><span class="rule"></span><span class="mono" data-tr="SEÇKİ" data-en="SELECTED WORKS">SEÇKİ</span></div>
+        <h2 data-tr="Tasarım / Heykel" data-en="Design / Sculpture">Tasarım / Heykel</h2>
+      </div>
+      <p data-tr="Topkapı Sarayı'ndan Macao'ya, Çanakkale siperlerinden bir mağara insanına — her figür, ait olduğu döneme özgü malzeme ve dokuyla yeniden kurulur." data-en="From Topkapı Palace to Macao, from the trenches of Gallipoli to a cave dweller — every figure is rebuilt with the material and texture of its own era.">Topkapı Sarayı'ndan Macao'ya, Çanakkale siperlerinden bir mağara insanına — her figür, ait olduğu döneme özgü malzeme ve dokuyla yeniden kurulur.</p>
+    </div>
+
+    <div class="gallery" id="galleryGrid">
+      <div class="tilt-card reveal"><div class="tilt-inner"><div class="gcard"><img src="images/roman-warrior.jpg" alt="Romalı Savaşçı heykeli"><div class="shine"></div><div class="gcap"><div class="mono">Adana Arkeoloji Müzesi</div><h4 data-tr="Romalı Savaşçı" data-en="Roman Warrior">Romalı Savaşçı</h4></div></div></div></div>
+
+      <div class="tilt-card reveal"><div class="tilt-inner"><div class="gcard"><img src="images/chef-kitchen.jpg" alt="Aşçı heykeli, Topkapı Sarayı Mutfakları"><div class="shine"></div><div class="gcap"><div class="mono">Topkapı Sarayı</div><h4 data-tr="Aşçı" data-en="Chef">Aşçı</h4></div></div></div></div>
+
+      <div class="tilt-card reveal"><div class="tilt-inner"><div class="gcard"><img src="images/scribe-writing.jpg" alt="Kütüphaneci heykeli, 3. Ahmed Kütüphanesi"><div class="shine"></div><div class="gcap"><div class="mono">3. Ahmed Kütüphanesi</div><h4 data-tr="Kütüphaneci" data-en="Librarian">Kütüphaneci</h4></div></div></div></div>
+
+      <div class="tilt-card reveal"><div class="tilt-inner"><div class="gcard"><img src="images/qatar-globe.jpg" alt="Kraliyet Bilimleri Akademisi sergisi, Katar"><div class="shine"></div><div class="gcap"><div class="mono">Katar</div><h4 data-tr="Bilim Akademisi Sergisi" data-en="Academy of Sciences Exhibit">Bilim Akademisi Sergisi</h4></div></div></div></div>
+
+      <div class="tilt-card reveal"><div class="tilt-inner"><div class="gcard"><img src="images/macao-scale.jpg" alt="Zheng He sergisi, Macao Bilim Merkezi"><div class="shine"></div><div class="gcap"><div class="mono">Macao Science Center</div><h4>Zheng He</h4></div></div></div></div>
+
+      <div class="tilt-card reveal"><div class="tilt-inner"><div class="gcard"><img src="images/caveman.jpg" alt="Tarih Öncesi İnsan heykeli, Hatay Arkeoloji Müzesi"><div class="shine"></div><div class="gcap"><div class="mono">Hatay Arkeoloji Müzesi</div><h4 data-tr="Tarih Öncesi İnsan" data-en="Prehistoric Human">Tarih Öncesi İnsan</h4></div></div></div></div>
+
+      <div class="tilt-card reveal"><div class="tilt-inner"><div class="gcard"><img src="images/ataturk-car.jpg" alt="Mustafa Kemal Atatürk heykeli, 1915, Koç Müzesi"><div class="shine"></div><div class="gcap"><div class="mono">Koç Müzesi</div><h4>Mustafa Kemal Atatürk, 1915</h4></div></div></div></div>
+
+      <div class="tilt-card reveal"><div class="tilt-inner"><div class="gcard"><img src="images/soldier-mehmetcik.jpg" alt="Mehmetçik heykeli, Çanakkale Tarihi Alanı"><div class="shine"></div><div class="gcap"><div class="mono" data-tr="4,5 metre · Çanakkale" data-en="4.5 m · Gallipoli">4,5 metre · Çanakkale</div><h4>Mehmetçik</h4></div></div></div></div>
+
+      <div class="tilt-card reveal"><div class="tilt-inner"><div class="gcard"><img src="images/busts-grid.jpg" alt="Portre büstleri, atölye çalışmaları"><div class="shine"></div><div class="gcap"><div class="mono" data-tr="Atölye" data-en="Studio">Atölye</div><h4 data-tr="Portre Büstleri" data-en="Portrait Busts">Portre Büstleri</h4></div></div></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= INTERNATIONAL TIMELINE ================= -->
+<section class="intl">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <div>
+        <div class="num-eyebrow"><span class="rule"></span><span class="mono" data-tr="10 ÜLKE" data-en="10 COUNTRIES">10 ÜLKE</span></div>
+        <h2 data-tr="Yurt dışı müze çalışmaları" data-en="International museum works">Yurt dışı müze çalışmaları</h2>
+      </div>
+      <p data-tr="2012'den bu yana Türkiye sınırlarının ötesinde: Körfez'den Uzak Doğu'ya, Balkanlar'dan Avrupa'ya." data-en="Since 2012, beyond Turkey's borders: from the Gulf to the Far East, from the Balkans to Europe.">2012'den bu yana Türkiye sınırlarının ötesinde: Körfez'den Uzak Doğu'ya, Balkanlar'dan Avrupa'ya.</p>
+    </div>
+
+    <div class="tl reveal">
+      <div class="tl-item"><div class="tl-year">2024</div><h4>Atatürk'ün Evi Müzesi — Rotterdam, Hollanda</h4></div>
+      <div class="tl-item"><div class="tl-year">2024</div><h4>Jeddah — Suudi Arabistan</h4></div>
+      <div class="tl-item"><div class="tl-year">2021</div><h4>Atatürk'ün Evi Müzesi — Selanik, Yunanistan</h4></div>
+      <div class="tl-item"><div class="tl-year">2019</div><h4>Macao Science Centre — Çin</h4></div>
+      <div class="tl-item"><div class="tl-year">2019</div><h4>Tatweer Science Centre — Suudi Arabistan</h4></div>
+      <div class="tl-item"><div class="tl-year">2018</div><h4>The Mechanics of Banu Musa, Muslim Heritage — Kuveyt</h4></div>
+      <div class="tl-item"><div class="tl-year">2018</div><h4>Gence Nuri Paşa Müzesi — Azerbaycan</h4></div>
+      <div class="tl-item"><div class="tl-year">2017</div><h4>Royal Sciences Academy — Amman, Ürdün</h4></div>
+      <div class="tl-item"><div class="tl-year">2013</div><h4>İçişleri Bakanlığı Sergi Merkezi — Türkmenistan</h4></div>
+      <div class="tl-item"><div class="tl-year">2012</div><h4>Space Centre Museum — Azerbaycan</h4></div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= ARCHIVE: MUSEUMS + SCREEN CREDITS ================= -->
+<section id="muzeler">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <div>
+        <div class="num-eyebrow"><span class="rule"></span><span class="mono" data-tr="ARŞİV · 2005—2025" data-en="ARCHIVE · 2005—2025">ARŞİV · 2005—2025</span></div>
+        <h2 data-tr="Yirmi yıllık üretim" data-en="Twenty years of work">Yirmi yıllık üretim</h2>
+      </div>
+      <p data-tr="Yurt içi müze projeleri yıllara göre; sinema, dizi ve reklam dekor/aksesuar çalışmaları aşağıda." data-en="Domestic museum projects by year; film, TV series and advertising set/prop work below.">Yurt içi müze projeleri yıllara göre; sinema, dizi ve reklam dekor/aksesuar çalışmaları aşağıda.</p>
+    </div>
+
+    <div class="archive-grid">
+      <!-- MUSEUMS BY YEAR -->
+      <div class="archive-col reveal">
+        <h3 data-tr="Yurt İçi Müze Çalışmaları" data-en="Museums in Turkey"><span class="count">91 PROJE</span></h3>
+
+        <details class="yr" open>
+          <summary>2025 <span class="plus">+</span></summary>
+          <ul class="yr-list">
+            <li>Topkapı Sarayı Müzesi — Şehzadeler ve Cüceler Bölümü</li>
+            <li>İstanbul Tersanesi Komutanlığı — Savarona Gemi Müzesi</li>
+            <li>Çanakkale Deniz Müzesi — Kartal İstimbotu Müzesi</li>
+          </ul>
+        </details>
+
+        <details class="yr">
+          <summary>2024 <span class="plus">+</span></summary>
+          <ul class="yr-list">
+            <li>Topkapı Sarayı Müzesi — Harem, Mutfak, Gözdeler Bölümleri</li>
+            <li>Cizre Müzesi</li>
+            <li>Yıldız Sarayı Müzesi</li>
+            <li>Çanakkale Deniz Müzesi — Nusret Mayın Gemisi Müzesi</li>
+            <li>Elazığ Kent Müzesi</li>
+            <li>Trabzon Kent Müzesi — Kostaki Konağı</li>
+            <li>Afyonkarahisar Müzesi</li>
+            <li>Çanakkale Tarihi Alan Tanıtım Merkezi — "Mehmetçik" Heykeli</li>
+            <li>Denizli Kent Müzesi</li>
+          </ul>
+        </details>
+
+        <details class="yr">
+          <summary>2023 <span class="plus">+</span></summary>
+          <ul class="yr-list">
+            <li>TCG Uluç Ali Reis Denizaltı Müzesi</li>
+            <li>Niğde Kent Müzesi</li>
+            <li>Koç Müzesi, Hasköy</li>
+            <li>Topkapı Sarayı Müzesi — Cariyeler Bölümü</li>
+            <li>Namazgah Tabyası Müzesi, Çanakkale Tarihi Alan Başkanlığı</li>
+            <li>İzmir Arkeoloji Müzesi</li>
+            <li>"Siper Canlandırması", Alçıtepe — Çanakkale</li>
+            <li>İznik Arkeoloji Müzesi</li>
+          </ul>
+        </details>
+
+        <details class="yr">
+          <summary>2022 <span class="plus">+</span></summary>
+          <ul class="yr-list">
+            <li>Bursa Osmanlı Evi Müzesi</li>
+            <li>Afyonkarahisar Arkeoloji Müzesi</li>
+            <li>Kırşehir Arkeoloji Müzesi</li>
+            <li>İstanbul Deniz Müzesi — Piri Reis Sergisi</li>
+            <li>Kilis Müzesi — Alaeddin Yavaşca Evi</li>
+            <li>Iğdır — Kazım Karabekir Sergisi</li>
+            <li>Çanakkale Tanıtım Merkezi — Hint Askerleri</li>
+            <li>Çanakkale Deniz Müzesi — Piri Reis Bölümü</li>
+            <li>İznik Nilüfer Hatun İmareti Müzesi</li>
+            <li>Cibali Karakolu Müzesi</li>
+            <li>İzmit Atatürk Evi Müzesi</li>
+          </ul>
+        </details>
+
+        <details class="yr">
+          <summary>2021 <span class="plus">+</span></summary>
+          <ul class="yr-list">
+            <li>Topkapı Sarayı Müzesi — Mutfak ve Ağalar Koğuşu Bölümü</li>
+            <li>Alçıtepe Yaralı Hastanesi, Çanakkale Alan Başkanlığı</li>
+            <li>Topkapı Sarayı Müzesi — Harem Bölümü</li>
+            <li>Kilis Müzesi</li>
+            <li>Uşak Kent Tarihi Müzesi</li>
+          </ul>
+        </details>
+
+        <details class="yr">
+          <summary>2016 — 2020 <span class="plus">+</span></summary>
+          <ul class="yr-list">
+            <li>2020 — Milli Saraylar Resim Müzesi, Dolmabahçe</li>
+            <li>2020 — Erzurum Arkeoloji Müzesi</li>
+            <li>2020 — İstanbul Sinema Müzesi, Atlas Pasajı</li>
+            <li>2020 — Kütahya Müzesi</li>
+            <li>2020 — Çanakkale Tarihi Alan Başkanlığı, Gezici Müze</li>
+            <li>2020 — Tarsus Arkeoloji Müzesi</li>
+            <li>2020 — Amasra Bartın Arkeoloji Müzesi</li>
+            <li>2019 — Edirne Hıdırlık Tabyaları Tarih Müzesi</li>
+            <li>2019 — TİEM Türk İslam Eserleri Etnografya Müzesi</li>
+            <li>2019 — İstanbul Kazım Karabekir Vakfı Müzesi</li>
+            <li>2019 — İstanbul Cezeri Müzesi</li>
+            <li>2019 — Kabatepe Tanıtım Merkezi, Çanakkale</li>
+            <li>2019 — Tunceli Müzesi</li>
+            <li>2018 — Fındıklı Sahil Yolu Sergisi, Rize</li>
+            <li>2018 — Erzurum Atatürk Evi Müzesi</li>
+            <li>2018 — Ahmet Gazi Türbesi Müzesi, Beçin — Muğla</li>
+            <li>2018 — Alçıtepe Yaralı Hastanesi Sergi Alanı, Çanakkale</li>
+            <li>2018 — Eskişehir Eti Şehir ve Göç Müzesi</li>
+            <li>2018 — Topkapı Sarayı Mutfaklar Bölümü Sergisi</li>
+            <li>2017 — Topkapı Sarayı, 3. Ahmet Kütüphanesi</li>
+            <li>2017 — Kayseri Atatürk Müzesi</li>
+            <li>2017 — Adana Arkeoloji Müzesi</li>
+            <li>2017 — Kilitbahir Kalesi Müzesi, Çanakkale</li>
+            <li>2017 — Hamidiye Tabyaları Çanakkale Tarih Müzesi</li>
+            <li>2017 — Kabatepe Tanıtım Merkezi, Çanakkale</li>
+            <li>2017 — Türvak Sinema Müzesi</li>
+            <li>2016 — Biruni Üniversitesi Sergisi</li>
+            <li>2016 — Ahlat Müzesi, Bitlis</li>
+            <li>2016 — Gaziantep Belediyesi Meydan Park Sergisi</li>
+            <li>2016 — Edirne Uzunköprü Atatürk Kültür Merkezi</li>
+            <li>2016 — Kırklareli Türk Ocağı Müzesi</li>
+            <li>2016 — Gaziantep Hamam Müzesi</li>
+            <li>2016 — Trabzon Etnografya Müzesi</li>
+            <li>2016 — Konya Selçuklu Müzesi</li>
+          </ul>
+        </details>
+
+        <details class="yr">
+          <summary>2005 — 2015 <span class="plus">+</span></summary>
+          <ul class="yr-list">
+            <li>2015 — Kayseri Milli Mücadele Müzesi</li>
+            <li>2015 — Çanakkale Simülasyon Merkezi Müzesi</li>
+            <li>2015 — Hoca Paşa Kültür Merkezi</li>
+            <li>2015 — Şişli Atatürk Müzesi</li>
+            <li>2015 — Konya Zindankale Anadolu Selçuklu Müzesi</li>
+            <li>2015 — Trabzon Kent Müzesi</li>
+            <li>2015 — Gaziantep Hamam Müzesi</li>
+            <li>2015 — Hatay Mutfak Müzesi</li>
+            <li>2015 — İzmir Atatürk Müzesi</li>
+            <li>2014 — Türvak Sinema Müzesi</li>
+            <li>2014 — Adana Etnografya Müzesi</li>
+            <li>2014 — Şanlıurfa Arkeoloji ve Mozaik Müzesi</li>
+            <li>2013 — Edirne Uzunköprü Müzesi</li>
+            <li>2013 — Bitlis Ahlat Müzesi</li>
+            <li>2013 — Hatay Arkeoloji Müzesi</li>
+            <li>2012 — Aşiyan Müzesi</li>
+            <li>2011 — Galata Mevlevihanesi Müzesi</li>
+            <li>2010 — Galatasaray Spor Kulübü Müzesi</li>
+            <li>2009 — Mardin Sakıp Sabancı Kent Müzesi</li>
+            <li>2008 — Kuvai Milliye Müzesi, Aydın</li>
+            <li>2005 — Fenerbahçe Spor Kulübü Müzesi</li>
+          </ul>
+        </details>
+      </div>
+
+      <!-- SCREEN CREDITS -->
+      <div class="archive-col reveal">
+        <h3 data-tr="Sinema, Dizi ve Reklam" data-en="Film, TV &amp; Advertising"><span class="count" data-tr="DEKOR / AKSESUAR" data-en="SET / PROPS">DEKOR / AKSESUAR</span></h3>
+
+        <details class="yr credits-col" open>
+          <summary data-tr="Sinema Filmleri (seçki)" data-en="Feature Films (selected)">Sinema Filmleri (seçki)</summary>
+          <ul class="yr-list">
+            <li>Pek Yakında (2014) — Yön. Cem Yılmaz</li>
+            <li>Mahmut ile Meryem (2013)</li>
+            <li>Çanakkale Savaşı (2012)</li>
+            <li>Eve Dönüş (2012)</li>
+            <li>Eyvah Eyvah 2 (2010)</li>
+            <li>Av Mevsimi (2010) — Yön. Yavuz Turgul</li>
+            <li>Veda (2009) — Yön. Zülfü Livaneli</li>
+            <li>Gönül Yarası (2004) — Yön. Yavuz Turgul</li>
+            <li>Abdülhamit Düşerken (2002)</li>
+            <li>Komser Şekspir (2000)</li>
+          </ul>
+        </details>
+
+        <details class="yr credits-col">
+          <summary data-tr="Dizi Çalışmaları (seçki)" data-en="TV Series (selected)">Dizi Çalışmaları (seçki)</summary>
+          <ul class="yr-list">
+            <li>Kurt Seyt ve Şura (2013)</li>
+            <li>Muhteşem Yüzyıl (2012)</li>
+            <li>Fatmagül'ün Suçu Ne? (2012)</li>
+            <li>Kurtlar Vadisi Pusu (2007)</li>
+            <li>Ihlamurlar Altında (2007)</li>
+            <li>Acı Hayat (2006)</li>
+            <li>Avrupa Yakası (2005)</li>
+            <li>Hürrem Sultan (2002)</li>
+          </ul>
+        </details>
+
+        <details class="yr credits-col">
+          <summary data-tr="TV Reklamları (seçki)" data-en="TV Commercials (selected)">TV Reklamları (seçki)</summary>
+          <ul class="yr-list">
+            <li>Pepsi</li><li>Vodafone</li><li>Mercedes</li><li>Denizbank</li>
+            <li>İkea</li><li>Nescafe</li><li>Akbank</li><li>Turkcell</li>
+            <li>Colgate</li><li>Omo</li><li>Beko</li><li>Ülker</li>
+          </ul>
+        </details>
+
+        <details class="yr credits-col">
+          <summary data-tr="Fotoğraf Çekimleri (seçki)" data-en="Photo Productions (selected)">Fotoğraf Çekimleri (seçki)</summary>
+          <ul class="yr-list">
+            <li>Arçelik</li><li>Ülker</li><li>Turkcell</li><li>Boyner</li>
+            <li>Tadım</li><li>YKM</li><li>Domestos</li><li>Calve</li>
+          </ul>
+        </details>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= CONTACT ================= -->
+<section class="contact" id="iletisim">
+  <div class="wrap contact-grid">
+    <div class="reveal">
+      <div class="num-eyebrow"><span class="rule"></span><span class="mono" data-tr="İLETİŞİM" data-en="CONTACT">İLETİŞİM</span></div>
+      <h2 data-tr="Bir sonraki eseri birlikte kuralım." data-en="Let's build the next piece together.">Bir sonraki eseri birlikte kuralım.</h2>
+      <div class="contact-info">
+        <a href="mailto:iscan.senay@gmail.com">✉ &nbsp;iscan.senay@gmail.com</a>
+        <a href="tel:+905302021012">☎ &nbsp;+90 530 202 10 12</a>
+        <a href="https://www.bulentiscan.com" target="_blank" rel="noopener">↗ &nbsp;www.bulentiscan.com</a>
+        <div>⌂ &nbsp;İçerenköy Mah. İspirli Canip Sok. Palmiye Apt. No:26/B, 34752 Ataşehir / İstanbul</div>
+      </div>
+    </div>
+
+    <div class="contact-card reveal">
+      <h4 data-tr="Müze &amp; kurumsal projeler" data-en="Museum &amp; institutional projects">Müze &amp; kurumsal projeler</h4>
+      <p data-tr="Diorama, figüratif heykel, silikon/reçine uygulama, tarihi canlandırma ve sergi tasarımı için atölyeyle doğrudan görüşün." data-en="Get in direct touch with the studio for dioramas, figurative sculpture, silicone/resin work, historical re-enactment and exhibition design.">Diorama, figüratif heykel, silikon/reçine uygulama, tarihi canlandırma ve sergi tasarımı için atölyeyle doğrudan görüşün.</p>
+      <a class="btn" href="mailto:iscan.senay@gmail.com" data-tr="Proje Görüşmesi Başlat" data-en="Start a Project Conversation">Proje Görüşmesi Başlat</a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div class="brand"><img src="images/logo.png" alt="bisanat"><span class="brand-text">bisanat — Bülent İşcan</span></div>
+    <p data-tr="Bu sitede yer alan tüm eserler, fotoğraflar ve tasarımlar telif hakkı ile korunmaktadır; yazılı izin olmaksızın çoğaltılamaz veya dağıtılamaz. © 2025 Bülent İşcan." data-en="All works, photographs and designs on this site are protected by copyright and may not be reproduced or distributed without written permission. © 2025 Bülent İşcan.">
+      Bu sitede yer alan tüm eserler, fotoğraflar ve tasarımlar telif hakkı ile korunmaktadır; yazılı izin olmaksızın çoğaltılamaz veya dağıtılamaz. © 2025 Bülent İşcan.
+    </p>
+  </div>
+</footer>
+
+<!-- ================= LIGHTBOX ================= -->
+<div class="lightbox" id="lightbox">
+  <button class="lb-close" id="lbClose">✕</button>
+  <div>
+    <img id="lbImg" src="" alt="">
+    <div class="lb-cap" id="lbCap"></div>
+  </div>
+</div>
+
+<script>
+(function(){
+  "use strict";
+  var reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  /* ---- header scroll state ---- */
+  var header = document.getElementById('siteHeader');
+  function onScroll(){
+    if(window.scrollY > 60){ header.classList.add('scrolled'); }
+    else{ header.classList.remove('scrolled'); }
+  }
+  document.addEventListener('scroll', onScroll, {passive:true});
+  onScroll();
+
+  /* ---- language toggle ---- */
+  var langBtns = document.querySelectorAll('.lang-switch button');
+  langBtns.forEach(function(btn){
+    btn.addEventListener('click', function(){
+      var lang = btn.dataset.lang;
+      langBtns.forEach(function(b){ b.classList.toggle('active', b===btn); });
+      document.documentElement.lang = lang;
+      document.querySelectorAll('[data-tr]').forEach(function(el){
+        var val = lang === 'en' ? el.dataset.en : el.dataset.tr;
+        if(val !== undefined){ el.innerHTML = val; }
+      });
+    });
+  });
+
+  /* ---- scroll reveal ---- */
+  var reveals = document.querySelectorAll('.reveal');
+  if('IntersectionObserver' in window && !reduceMotion){
+    var io = new IntersectionObserver(function(entries){
+      entries.forEach(function(entry){
+        if(entry.isIntersecting){
+          entry.target.classList.add('in');
+          io.unobserve(entry.target);
+        }
+      });
+    }, {threshold:.14, rootMargin:'0px 0px -6% 0px'});
+    reveals.forEach(function(el){ io.observe(el); });
+  } else {
+    reveals.forEach(function(el){ el.classList.add('in'); });
+  }
+
+  /* ---- hero parallax + spotlight ---- */
+  var hero = document.querySelector('.hero');
+  var heroMedia = document.getElementById('heroMedia');
+  var heroSpot = document.getElementById('heroSpot');
+  if(hero && !reduceMotion && window.matchMedia('(hover:hover)').matches){
+    hero.addEventListener('mousemove', function(e){
+      var r = hero.getBoundingClientRect();
+      var px = (e.clientX - r.left)/r.width;   // 0..1
+      var py = (e.clientY - r.top)/r.height;
+      var mx = (px-.5)*2, my = (py-.5)*2;      // -1..1
+      heroMedia.style.transform = 'translate3d(' + (-mx*14) + 'px,' + (-my*10) + 'px,0) scale(1.02)';
+      heroSpot.style.setProperty('--mx', (px*100)+'%');
+      heroSpot.style.setProperty('--my', (py*100)+'%');
+    });
+    hero.addEventListener('mouseleave', function(){
+      heroMedia.style.transform = 'translate3d(0,0,0) scale(1)';
+    });
+  }
+
+  /* ---- generic 3D tilt for .tilt-card ---- */
+  if(!reduceMotion && window.matchMedia('(hover:hover)').matches){
+    document.querySelectorAll('.tilt-card').forEach(function(card){
+      var inner = card.querySelector('.tilt-inner');
+      var shine = card.querySelector('.shine');
+      if(!inner) return;
+      var maxTilt = 9;
+      card.addEventListener('mousemove', function(e){
+        var r = card.getBoundingClientRect();
+        var px = (e.clientX - r.left)/r.width;
+        var py = (e.clientY - r.top)/r.height;
+        var rx = (0.5-py)*maxTilt*2;
+        var ry = (px-0.5)*maxTilt*2;
+        inner.style.transform = 'perspective(900px) rotateX('+rx+'deg) rotateY('+ry+'deg) translateZ(6px)';
+        if(shine){ shine.style.setProperty('--px',(px*100)+'%'); shine.style.setProperty('--py',(py*100)+'%'); }
+      });
+      card.addEventListener('mouseleave', function(){
+        inner.style.transform = 'perspective(900px) rotateX(0) rotateY(0) translateZ(0)';
+      });
+    });
+  }
+
+  /* ---- lightbox for gallery cards ---- */
+  var lb = document.getElementById('lightbox');
+  var lbImg = document.getElementById('lbImg');
+  var lbCap = document.getElementById('lbCap');
+  document.querySelectorAll('#galleryGrid .gcard').forEach(function(card){
+    card.addEventListener('click', function(){
+      var img = card.querySelector('img');
+      var title = card.querySelector('.gcap h4');
+      var loc = card.querySelector('.gcap .mono');
+      lbImg.src = img.src;
+      lbImg.alt = img.alt;
+      lbCap.textContent = (title? title.textContent:'') + (loc? ' — ' + loc.textContent : '');
+      lb.classList.add('open');
+    });
+  });
+  document.getElementById('lbClose').addEventListener('click', function(){ lb.classList.remove('open'); });
+  lb.addEventListener('click', function(e){ if(e.target===lb){ lb.classList.remove('open'); } });
+  document.addEventListener('keydown', function(e){ if(e.key==='Escape'){ lb.classList.remove('open'); } });
+
+  /* ---- marquee: duplicate content for seamless loop ---- */
+  var track = document.getElementById('marqueeTrack');
+  if(track){ track.innerHTML += track.innerHTML; }
+
+})();
+</script>
+</body>
+</html>
