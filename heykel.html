@@ -60,6 +60,78 @@
   ::selection{background:var(--bronze-2); color:var(--paper);}
   /* thin gilt hairline used under eyebrows / heads */
   .gilt-rule{height:2px; border:0; background:var(--gilt-grad); opacity:.85;}
+
+  /* ================= SPLASH / INTRO ================= */
+  .splash{
+    position:fixed; inset:0; z-index:2000;
+    display:flex; flex-direction:column; align-items:center; justify-content:center; gap:34px;
+    background:
+      radial-gradient(1100px 700px at 50% 32%, rgba(63,90,69,.22), transparent 60%),
+      radial-gradient(700px 500px at 50% 100%, rgba(138,106,47,.16), transparent 60%),
+      linear-gradient(160deg,#141109 0%,#0c0b08 60%,#080705 100%);
+    overflow:hidden;
+    transition:transform 1s cubic-bezier(.76,0,.24,1), opacity .6s ease .5s;
+  }
+  /* faint parchment tooth over splash */
+  .splash::before{
+    content:''; position:absolute; inset:0; opacity:.5; pointer-events:none;
+    background-image:
+      radial-gradient(rgba(216,182,103,.06) 1px, transparent 1px),
+      radial-gradient(rgba(216,182,103,.04) 1px, transparent 1px);
+    background-size:24px 24px,24px 24px; background-position:0 0,12px 12px;
+  }
+  /* dust motes */
+  .splash .mote{position:absolute; border-radius:50%; background:radial-gradient(circle,#e7c877,transparent 70%); opacity:0; animation:mote 6s ease-in-out infinite;}
+  @keyframes mote{0%{opacity:0; transform:translateY(20px) scale(.6);}30%{opacity:.5;}70%{opacity:.35;}100%{opacity:0; transform:translateY(-40px) scale(1);}}
+
+  body.splash-active{overflow:hidden;}
+  .splash.done{transform:translateY(-100%); opacity:0; pointer-events:none;}
+
+  /* logo crest: full logo PNG with decorative spinning gilt ring halo */
+  .splash-crest{
+    position:relative; width:min(340px,80vw); aspect-ratio:1/1;
+    display:flex; align-items:center; justify-content:center;
+    opacity:0; transform:scale(.82);
+    animation:splashSealIn 1.1s cubic-bezier(.16,.8,.24,1) .15s forwards;
+  }
+  .splash-crest .ring{position:absolute; inset:0; animation:spin 30s linear infinite;}
+  .splash-crest svg{position:absolute; inset:0; width:100%; height:100%;}
+  .splash-crest::before{
+    content:''; position:absolute; inset:14%; border-radius:50%;
+    background:radial-gradient(circle at 50% 42%, rgba(231,200,119,.14), transparent 62%);
+  }
+  .splash-logo{
+    position:relative; width:60%; height:auto; object-fit:contain;
+    filter:brightness(0) invert(1); opacity:0;
+    animation:splashUp 1s cubic-bezier(.16,.8,.24,1) .55s forwards;
+    z-index:2;
+  }
+  @keyframes splashSealIn{to{opacity:1; transform:scale(1);}}
+  .splash-tag{
+    font-family:'Fraunces',serif; font-style:italic; color:#b9b19c; font-size:1rem; text-align:center;
+    opacity:0; animation:splashUp .9s ease 1s forwards;
+  }
+  @keyframes splashUp{to{opacity:1; transform:none;}}
+
+  .splash-bar{
+    width:min(240px,54vw); height:2px; background:rgba(216,182,103,.18); overflow:hidden; border-radius:2px;
+    opacity:0; animation:splashUp .6s ease 1.1s forwards;
+  }
+  .splash-bar i{display:block; height:100%; width:0; background:var(--gilt-grad); box-shadow:0 0 10px rgba(231,200,119,.5);
+    animation:splashBar 1.7s cubic-bezier(.6,.05,.2,1) 1.15s forwards;}
+  @keyframes splashBar{to{width:100%;}}
+
+  .splash-skip{
+    position:absolute; bottom:26px; right:28px; z-index:3;
+    font-family:'IBM Plex Mono',monospace; font-size:.68rem; letter-spacing:.14em; text-transform:uppercase;
+    color:#8f886f; background:none; border:1px solid rgba(216,182,103,.28);
+    padding:8px 16px; cursor:pointer; border-radius:3px; opacity:0; transition:color .3s,border-color .3s;
+    animation:splashUp .6s ease 1.4s forwards; -webkit-tap-highlight-color:transparent;
+  }
+  .splash-skip:hover{color:var(--gilt); border-color:var(--gilt);}
+  @media (prefers-reduced-motion: reduce){
+    .splash *{animation-duration:.01ms !important; animation-delay:0ms !important;}
+  }
   h1,h2,h3,h4{
     font-family:'Fraunces', serif;
     font-weight:600;
@@ -387,19 +459,19 @@
   }
   .figure{
     position:relative; overflow:hidden; border-radius:var(--radius); cursor:pointer;
-    background:#0c0b08;
+    background:radial-gradient(120% 90% at 50% 16%, #26221a 0%, #16130e 60%, #0d0b08 100%);
     box-shadow:0 30px 60px -30px rgba(0,0,0,.8), inset 0 0 0 1px rgba(231,200,119,.16);
   }
   .figure.tall{grid-row:span 2;}
   .figure img{
-    width:100%; height:100%; object-fit:cover; object-position:50% 32%;
-    transform:scale(1.04); transition:transform .8s cubic-bezier(.2,.7,.2,1), filter .6s;
-    filter:saturate(.96) contrast(1.02);
+    width:100%; height:100%; object-fit:contain; object-position:50% 26%;
+    padding:16px 16px 96px; transform:scale(1); transition:transform .8s cubic-bezier(.2,.7,.2,1), filter .6s;
+    filter:saturate(1) contrast(1.02) drop-shadow(0 20px 30px rgba(0,0,0,.5));
   }
-  .figure:hover img{transform:scale(1.12); filter:saturate(1.05) contrast(1.05);}
+  .figure:hover img{transform:scale(1.05);}
   .figure::after{
-    content:''; position:absolute; inset:0;
-    background:linear-gradient(to top, rgba(8,7,5,.92) 0%, rgba(8,7,5,.15) 46%, rgba(8,7,5,.4) 100%);
+    content:''; position:absolute; left:0; right:0; bottom:0; height:46%;
+    background:linear-gradient(to top, rgba(8,7,5,.96) 0%, rgba(8,7,5,.55) 55%, transparent 100%);
   }
   /* gilt sweep on hover */
   .figure .glint{
@@ -471,21 +543,31 @@
   }
   .gallery .tilt-card:nth-child(3n+1){grid-row:span 2;}
   .gcard{ position:relative; overflow:hidden; background:#111; cursor:pointer; border-radius:var(--radius);
+    display:flex; flex-direction:column;
     box-shadow:0 22px 44px -22px rgba(20,16,9,.6), inset 0 0 0 1px rgba(231,200,119,.14);}
-  .gallery .tilt-card:nth-child(3n+1) .gcard{aspect-ratio:3/4;}
-  .gallery .tilt-card:not(:nth-child(3n+1)) .gcard{aspect-ratio:1/1;}
-  .gcard img{width:100%; height:100%; object-fit:cover; transform:translateZ(0) scale(1.02); transition:transform .7s cubic-bezier(.2,.7,.2,1), filter .4s;}
-  .tilt-card:hover .gcard img{transform:scale(1.11);}
-  .gcard::after{
-    content:''; position:absolute; inset:0; background:linear-gradient(to top, rgba(10,9,7,.92) 0%, rgba(10,9,7,0) 45%);
+  /* image stage: full figure visible (contain) on a soft museum backdrop */
+  .gcard .gstage{
+    position:relative; flex:1 1 auto; min-height:0; overflow:hidden;
+    background:
+      radial-gradient(120% 90% at 50% 18%, #26221a 0%, #17140f 60%, #100e0a 100%);
   }
-  .gcap{position:absolute; left:0; right:0; bottom:0; padding:18px 20px; z-index:2; color:#fff;
-    transform:translateY(6px); transition:transform .5s cubic-bezier(.2,.7,.2,1);}
-  .tilt-card:hover .gcap{transform:translateY(0);}
+  .gallery .tilt-card:nth-child(3n+1) .gcard{aspect-ratio:3/4;}
+  .gallery .tilt-card:not(:nth-child(3n+1)) .gcard{aspect-ratio:4/5;}
+  .gcard img{
+    position:absolute; inset:0; width:100%; height:100%;
+    object-fit:contain; object-position:50% 42%; padding:14px 14px 0;
+    transform:translateZ(0) scale(1); transition:transform .6s cubic-bezier(.2,.7,.2,1), filter .4s;
+    filter:drop-shadow(0 18px 26px rgba(0,0,0,.45));
+  }
+  .tilt-card:hover .gcard img{transform:scale(1.045);}
+  .gcard::after{display:none;}
+  .gcap{position:relative; flex:0 0 auto; padding:16px 18px 18px; z-index:2; color:#fff;
+    background:linear-gradient(180deg, rgba(20,17,11,.65), rgba(14,12,9,.96));
+    border-top:1px solid rgba(231,200,119,.16);}
   .gcap .mono{color:var(--gilt); margin-bottom:4px;}
-  .gcap h4{color:#fff; font-size:1.08rem;}
-  .gcap::before{content:''; display:block; width:0; height:2px; background:var(--gilt-grad); margin-bottom:10px; transition:width .5s cubic-bezier(.2,.7,.2,1);}
-  .tilt-card:hover .gcap::before{width:40px;}
+  .gcap h4{color:#fff; font-size:1.06rem; line-height:1.2;}
+  .gcap::before{content:''; display:block; width:28px; height:2px; background:var(--gilt-grad); margin-bottom:9px; transition:width .5s cubic-bezier(.2,.7,.2,1);}
+  .tilt-card:hover .gcap::before{width:46px;}
 
   /* ---------- LIGHTBOX ---------- */
   .lightbox{
@@ -583,7 +665,7 @@
     .about-photo .tframe img{height:440px;}
     .gallery{grid-template-columns:repeat(2,1fr);}
     .gallery .tilt-card:nth-child(3n+1){grid-row:auto;}
-    .gallery .tilt-card:nth-child(3n+1) .gcard{aspect-ratio:1/1;}
+    .gallery .tilt-card:nth-child(3n+1) .gcard{aspect-ratio:4/5;}
     .stat-row{grid-template-columns:repeat(2,1fr); row-gap:26px;}
     .section-head{margin-bottom:44px;}
     .contact-card{padding:30px;}
@@ -626,7 +708,33 @@
   }
 </style>
 </head>
-<body>
+<body class="splash-active">
+
+<!-- ================= SPLASH / INTRO ================= -->
+<div class="splash" id="splash">
+  <div class="mote" style="left:20%; top:60%; width:5px; height:5px; animation-delay:.2s;"></div>
+  <div class="mote" style="left:34%; top:70%; width:3px; height:3px; animation-delay:1.4s;"></div>
+  <div class="mote" style="left:64%; top:64%; width:6px; height:6px; animation-delay:.8s;"></div>
+  <div class="mote" style="left:78%; top:72%; width:4px; height:4px; animation-delay:2s;"></div>
+  <div class="mote" style="left:50%; top:78%; width:4px; height:4px; animation-delay:2.6s;"></div>
+
+  <div class="splash-crest">
+    <div class="ring">
+      <svg viewBox="0 0 340 340"><path id="splashArc" d="M 170,170 m -150,0 a 150,150 0 1,1 300,0 a 150,150 0 1,1 -300,0" fill="none"/>
+        <text font-family="IBM Plex Mono" font-size="11" letter-spacing="5.5" fill="#c79b4a">
+          <textPath href="#splashArc" startOffset="0%">BİSANAT • BÜLENT İŞCAN • EST. 1972 • HYPERREALIZM • HEYKEL • SANAT • </textPath>
+        </text>
+      </svg>
+    </div>
+    <img class="splash-logo" src="images/logo.png" alt="bisanat — Bülent İşcan">
+  </div>
+
+  <div class="splash-tag" data-tr="Hiperrealist heykel · Sanat yönetmenliği" data-en="Hyper-realistic sculpture · Art direction">Hiperrealist heykel · Sanat yönetmenliği</div>
+
+  <div class="splash-bar"><i></i></div>
+
+  <button class="splash-skip" id="splashSkip" data-tr="Geç ✕" data-en="Skip ✕">Geç ✕</button>
+</div>
 
 <!-- ================= NAV ================= -->
 <header id="siteHeader">
@@ -842,55 +950,55 @@
     </div>
 
     <div class="gallery" id="galleryGrid">
-      <div class="tilt-card reveal"><div class="tilt-inner"><div class="gcard"><img src="images/roman-warrior.jpg" alt="Romalı Savaşçı heykeli"><div class="shine"></div><div class="gcap"><div class="mono">Adana Arkeoloji Müzesi</div><h4 data-tr="Romalı Savaşçı" data-en="Roman Warrior">Romalı Savaşçı</h4></div></div></div></div>
+      <div class="tilt-card reveal"><div class="tilt-inner"><div class="gcard"><div class="gstage"><img src="images/roman-warrior.jpg" alt="Romalı Savaşçı heykeli"><div class="shine"></div></div><div class="gcap"><div class="mono">Adana Arkeoloji Müzesi</div><h4 data-tr="Romalı Savaşçı" data-en="Roman Warrior">Romalı Savaşçı</h4></div></div></div></div>
 
-      <div class="tilt-card reveal"><div class="tilt-inner"><div class="gcard"><img src="images/chef-kitchen.jpg" alt="Aşçı heykeli, Topkapı Sarayı Mutfakları"><div class="shine"></div><div class="gcap"><div class="mono">Topkapı Sarayı</div><h4 data-tr="Aşçı" data-en="Chef">Aşçı</h4></div></div></div></div>
+      <div class="tilt-card reveal"><div class="tilt-inner"><div class="gcard"><div class="gstage"><img src="images/chef-kitchen.jpg" alt="Aşçı heykeli, Topkapı Sarayı Mutfakları"><div class="shine"></div></div><div class="gcap"><div class="mono">Topkapı Sarayı</div><h4 data-tr="Aşçı" data-en="Chef">Aşçı</h4></div></div></div></div>
 
-      <div class="tilt-card reveal"><div class="tilt-inner"><div class="gcard"><img src="images/scribe-writing.jpg" alt="Kütüphaneci heykeli, 3. Ahmed Kütüphanesi"><div class="shine"></div><div class="gcap"><div class="mono">3. Ahmed Kütüphanesi</div><h4 data-tr="Kütüphaneci" data-en="Librarian">Kütüphaneci</h4></div></div></div></div>
+      <div class="tilt-card reveal"><div class="tilt-inner"><div class="gcard"><div class="gstage"><img src="images/scribe-writing.jpg" alt="Kütüphaneci heykeli, 3. Ahmed Kütüphanesi"><div class="shine"></div></div><div class="gcap"><div class="mono">3. Ahmed Kütüphanesi</div><h4 data-tr="Kütüphaneci" data-en="Librarian">Kütüphaneci</h4></div></div></div></div>
 
-      <div class="tilt-card reveal"><div class="tilt-inner"><div class="gcard"><img src="images/qatar-globe.jpg" alt="Kraliyet Bilimleri Akademisi sergisi, Katar"><div class="shine"></div><div class="gcap"><div class="mono">Katar</div><h4 data-tr="Bilim Akademisi Sergisi" data-en="Academy of Sciences Exhibit">Bilim Akademisi Sergisi</h4></div></div></div></div>
+      <div class="tilt-card reveal"><div class="tilt-inner"><div class="gcard"><div class="gstage"><img src="images/qatar-globe.jpg" alt="Kraliyet Bilimleri Akademisi sergisi, Katar"><div class="shine"></div></div><div class="gcap"><div class="mono">Katar</div><h4 data-tr="Bilim Akademisi Sergisi" data-en="Academy of Sciences Exhibit">Bilim Akademisi Sergisi</h4></div></div></div></div>
 
-      <div class="tilt-card reveal"><div class="tilt-inner"><div class="gcard"><img src="images/macao-scale.jpg" alt="Zheng He sergisi, Macao Bilim Merkezi"><div class="shine"></div><div class="gcap"><div class="mono">Macao Science Center</div><h4>Zheng He</h4></div></div></div></div>
+      <div class="tilt-card reveal"><div class="tilt-inner"><div class="gcard"><div class="gstage"><img src="images/macao-scale.jpg" alt="Zheng He sergisi, Macao Bilim Merkezi"><div class="shine"></div></div><div class="gcap"><div class="mono">Macao Science Center</div><h4>Zheng He</h4></div></div></div></div>
 
-      <div class="tilt-card reveal"><div class="tilt-inner"><div class="gcard"><img src="images/caveman.jpg" alt="Tarih Öncesi İnsan heykeli, Hatay Arkeoloji Müzesi"><div class="shine"></div><div class="gcap"><div class="mono">Hatay Arkeoloji Müzesi</div><h4 data-tr="Tarih Öncesi İnsan" data-en="Prehistoric Human">Tarih Öncesi İnsan</h4></div></div></div></div>
+      <div class="tilt-card reveal"><div class="tilt-inner"><div class="gcard"><div class="gstage"><img src="images/caveman.jpg" alt="Tarih Öncesi İnsan heykeli, Hatay Arkeoloji Müzesi"><div class="shine"></div></div><div class="gcap"><div class="mono">Hatay Arkeoloji Müzesi</div><h4 data-tr="Tarih Öncesi İnsan" data-en="Prehistoric Human">Tarih Öncesi İnsan</h4></div></div></div></div>
 
-      <div class="tilt-card reveal"><div class="tilt-inner"><div class="gcard"><img src="images/ataturk-car.jpg" alt="Mustafa Kemal Atatürk heykeli, 1915, Koç Müzesi"><div class="shine"></div><div class="gcap"><div class="mono">Koç Müzesi</div><h4>Mustafa Kemal Atatürk, 1915</h4></div></div></div></div>
+      <div class="tilt-card reveal"><div class="tilt-inner"><div class="gcard"><div class="gstage"><img src="images/ataturk-car.jpg" alt="Mustafa Kemal Atatürk heykeli, 1915, Koç Müzesi"><div class="shine"></div></div><div class="gcap"><div class="mono">Koç Müzesi</div><h4>Mustafa Kemal Atatürk, 1915</h4></div></div></div></div>
 
-      <div class="tilt-card reveal"><div class="tilt-inner"><div class="gcard"><img src="images/soldier-mehmetcik.jpg" alt="Mehmetçik heykeli, Çanakkale Tarihi Alanı"><div class="shine"></div><div class="gcap"><div class="mono" data-tr="4,5 metre · Çanakkale" data-en="4.5 m · Gallipoli">4,5 metre · Çanakkale</div><h4>Mehmetçik</h4></div></div></div></div>
+      <div class="tilt-card reveal"><div class="tilt-inner"><div class="gcard"><div class="gstage"><img src="images/soldier-mehmetcik.jpg" alt="Mehmetçik heykeli, Çanakkale Tarihi Alanı"><div class="shine"></div></div><div class="gcap"><div class="mono" data-tr="4,5 metre · Çanakkale" data-en="4.5 m · Gallipoli">4,5 metre · Çanakkale</div><h4>Mehmetçik</h4></div></div></div></div>
 
-      <div class="tilt-card reveal"><div class="tilt-inner"><div class="gcard"><img src="images/busts-grid.jpg" alt="Portre büstleri, atölye çalışmaları"><div class="shine"></div><div class="gcap"><div class="mono" data-tr="Atölye" data-en="Studio">Atölye</div><h4 data-tr="Portre Büstleri" data-en="Portrait Busts">Portre Büstleri</h4></div></div></div></div>
+      <div class="tilt-card reveal"><div class="tilt-inner"><div class="gcard"><div class="gstage"><img src="images/busts-grid.jpg" alt="Portre büstleri, atölye çalışmaları"><div class="shine"></div></div><div class="gcap"><div class="mono" data-tr="Atölye" data-en="Studio">Atölye</div><h4 data-tr="Portre Büstleri" data-en="Portrait Busts">Portre Büstleri</h4></div></div></div></div>
 
-      <div class="tilt-card reveal"><div class="tilt-inner"><div class="gcard"><img src="images/pdf-harem-agasi.jpg" alt="Harem Ağası heykeli, Topkapı Sarayı"><div class="shine"></div><div class="gcap"><div class="mono">Topkapı Sarayı</div><h4 data-tr="Harem Ağası" data-en="Chief Harem Eunuch">Harem Ağası</h4></div></div></div></div>
+      <div class="tilt-card reveal"><div class="tilt-inner"><div class="gcard"><div class="gstage"><img src="images/pdf-harem-agasi.jpg" alt="Harem Ağası heykeli, Topkapı Sarayı"><div class="shine"></div></div><div class="gcap"><div class="mono">Topkapı Sarayı</div><h4 data-tr="Harem Ağası" data-en="Chief Harem Eunuch">Harem Ağası</h4></div></div></div></div>
 
-      <div class="tilt-card reveal"><div class="tilt-inner"><div class="gcard"><img src="images/pdf-akagalar.jpg" alt="Akağalar, Babüssade Kapısı, Topkapı Sarayı"><div class="shine"></div><div class="gcap"><div class="mono">Babüssade Kapısı</div><h4 data-tr="Akağalar" data-en="Chief Eunuch">Akağalar</h4></div></div></div></div>
+      <div class="tilt-card reveal"><div class="tilt-inner"><div class="gcard"><div class="gstage"><img src="images/pdf-akagalar.jpg" alt="Akağalar, Babüssade Kapısı, Topkapı Sarayı"><div class="shine"></div></div><div class="gcap"><div class="mono">Babüssade Kapısı</div><h4 data-tr="Akağalar" data-en="Chief Eunuch">Akağalar</h4></div></div></div></div>
 
-      <div class="tilt-card reveal"><div class="tilt-inner"><div class="gcard"><img src="images/pdf-cariye.jpg" alt="Cariye heykeli, Harem, Topkapı Sarayı"><div class="shine"></div><div class="gcap"><div class="mono">Harem · Topkapı Sarayı</div><h4 data-tr="Cariye" data-en="Concubine">Cariye</h4></div></div></div></div>
+      <div class="tilt-card reveal"><div class="tilt-inner"><div class="gcard"><div class="gstage"><img src="images/pdf-cariye.jpg" alt="Cariye heykeli, Harem, Topkapı Sarayı"><div class="shine"></div></div><div class="gcap"><div class="mono">Harem · Topkapı Sarayı</div><h4 data-tr="Cariye" data-en="Concubine">Cariye</h4></div></div></div></div>
 
-      <div class="tilt-card reveal"><div class="tilt-inner"><div class="gcard"><img src="images/pdf-asci-mutfak.jpg" alt="Aşçı, Topkapı Sarayı Mutfakları"><div class="shine"></div><div class="gcap"><div class="mono">Mutfaklar Bölümü</div><h4 data-tr="Aşçı" data-en="Chef">Aşçı</h4></div></div></div></div>
+      <div class="tilt-card reveal"><div class="tilt-inner"><div class="gcard"><div class="gstage"><img src="images/pdf-asci-mutfak.jpg" alt="Aşçı, Topkapı Sarayı Mutfakları"><div class="shine"></div></div><div class="gcap"><div class="mono">Mutfaklar Bölümü</div><h4 data-tr="Aşçı" data-en="Chef">Aşçı</h4></div></div></div></div>
 
-      <div class="tilt-card reveal"><div class="tilt-inner"><div class="gcard"><img src="images/pdf-hattat.jpg" alt="Hattat / yazı yazan Osmanlı figürü"><div class="shine"></div><div class="gcap"><div class="mono" data-tr="Türk-İslam Eserleri" data-en="Turkish & Islamic Arts">Türk-İslam Eserleri</div><h4 data-tr="Hattat" data-en="Calligrapher">Hattat</h4></div></div></div></div>
+      <div class="tilt-card reveal"><div class="tilt-inner"><div class="gcard"><div class="gstage"><img src="images/pdf-hattat.jpg" alt="Hattat / yazı yazan Osmanlı figürü"><div class="shine"></div></div><div class="gcap"><div class="mono" data-tr="Türk-İslam Eserleri" data-en="Turkish & Islamic Arts">Türk-İslam Eserleri</div><h4 data-tr="Hattat" data-en="Calligrapher">Hattat</h4></div></div></div></div>
 
-      <div class="tilt-card reveal"><div class="tilt-inner"><div class="gcard"><img src="images/pdf-etnografya-kadin.jpg" alt="Osmanlı kadını, Türk ve İslam Eserleri Müzesi"><div class="shine"></div><div class="gcap"><div class="mono">Türk ve İslam Eserleri Müzesi</div><h4 data-tr="Etnografya Figürü" data-en="Ethnography Figure">Etnografya Figürü</h4></div></div></div></div>
+      <div class="tilt-card reveal"><div class="tilt-inner"><div class="gcard"><div class="gstage"><img src="images/pdf-etnografya-kadin.jpg" alt="Osmanlı kadını, Türk ve İslam Eserleri Müzesi"><div class="shine"></div></div><div class="gcap"><div class="mono">Türk ve İslam Eserleri Müzesi</div><h4 data-tr="Etnografya Figürü" data-en="Ethnography Figure">Etnografya Figürü</h4></div></div></div></div>
 
-      <div class="tilt-card reveal"><div class="tilt-inner"><div class="gcard"><img src="images/pdf-adana-etno.jpg" alt="Yöresel kadın, Adana Etnografya Müzesi"><div class="shine"></div><div class="gcap"><div class="mono">Adana Etnografya Müzesi</div><h4 data-tr="Yöresel Kadın" data-en="Anatolian Woman">Yöresel Kadın</h4></div></div></div></div>
+      <div class="tilt-card reveal"><div class="tilt-inner"><div class="gcard"><div class="gstage"><img src="images/pdf-adana-etno.jpg" alt="Yöresel kadın, Adana Etnografya Müzesi"><div class="shine"></div></div><div class="gcap"><div class="mono">Adana Etnografya Müzesi</div><h4 data-tr="Yöresel Kadın" data-en="Anatolian Woman">Yöresel Kadın</h4></div></div></div></div>
 
-      <div class="tilt-card reveal"><div class="tilt-inner"><div class="gcard"><img src="images/pdf-ataturk-1931.jpg" alt="Mustafa Kemal Atatürk 1931, Denizli Kent Müzesi"><div class="shine"></div><div class="gcap"><div class="mono">Denizli Kent Müzesi</div><h4>Mustafa Kemal Atatürk, 1931</h4></div></div></div></div>
+      <div class="tilt-card reveal"><div class="tilt-inner"><div class="gcard"><div class="gstage"><img src="images/pdf-ataturk-1931.jpg" alt="Mustafa Kemal Atatürk 1931, Denizli Kent Müzesi"><div class="shine"></div></div><div class="gcap"><div class="mono">Denizli Kent Müzesi</div><h4>Mustafa Kemal Atatürk, 1931</h4></div></div></div></div>
 
-      <div class="tilt-card reveal"><div class="tilt-inner"><div class="gcard"><img src="images/pdf-ataturk-asker.jpg" alt="Mustafa Kemal Atatürk, asker portresi 1915"><div class="shine"></div><div class="gcap"><div class="mono" data-tr="Portre · 1915" data-en="Portrait · 1915">Portre · 1915</div><h4>Mustafa Kemal Atatürk</h4></div></div></div></div>
+      <div class="tilt-card reveal"><div class="tilt-inner"><div class="gcard"><div class="gstage"><img src="images/pdf-ataturk-asker.jpg" alt="Mustafa Kemal Atatürk, asker portresi 1915"><div class="shine"></div></div><div class="gcap"><div class="mono" data-tr="Portre · 1915" data-en="Portrait · 1915">Portre · 1915</div><h4>Mustafa Kemal Atatürk</h4></div></div></div></div>
 
-      <div class="tilt-card reveal"><div class="tilt-inner"><div class="gcard"><img src="images/pdf-sinema-adile.jpg" alt="Adile Naşit heykeli, İstanbul Sinema Müzesi"><div class="shine"></div><div class="gcap"><div class="mono">İstanbul Sinema Müzesi</div><h4 data-tr="Adile Naşit" data-en="Turkish Cinema Star">Adile Naşit</h4></div></div></div></div>
+      <div class="tilt-card reveal"><div class="tilt-inner"><div class="gcard"><div class="gstage"><img src="images/pdf-sinema-adile.jpg" alt="Adile Naşit heykeli, İstanbul Sinema Müzesi"><div class="shine"></div></div><div class="gcap"><div class="mono">İstanbul Sinema Müzesi</div><h4 data-tr="Adile Naşit" data-en="Turkish Cinema Star">Adile Naşit</h4></div></div></div></div>
 
-      <div class="tilt-card reveal"><div class="tilt-inner"><div class="gcard"><img src="images/pdf-sinema-star.jpg" alt="Türk sineması yıldızı heykeli, İstanbul Sinema Müzesi"><div class="shine"></div><div class="gcap"><div class="mono">İstanbul Sinema Müzesi</div><h4 data-tr="Sinema Yıldızı" data-en="Movie Star">Sinema Yıldızı</h4></div></div></div></div>
+      <div class="tilt-card reveal"><div class="tilt-inner"><div class="gcard"><div class="gstage"><img src="images/pdf-sinema-star.jpg" alt="Türk sineması yıldızı heykeli, İstanbul Sinema Müzesi"><div class="shine"></div></div><div class="gcap"><div class="mono">İstanbul Sinema Müzesi</div><h4 data-tr="Sinema Yıldızı" data-en="Movie Star">Sinema Yıldızı</h4></div></div></div></div>
 
-      <div class="tilt-card reveal"><div class="tilt-inner"><div class="gcard"><img src="images/pdf-cocuk-hasta.jpg" alt="Yaralı çocuk figürü, hastane canlandırması"><div class="shine"></div><div class="gcap"><div class="mono" data-tr="Hilal-i Ahmer · Çanakkale" data-en="Red Crescent · Gallipoli">Hilal-i Ahmer · Çanakkale</div><h4 data-tr="Yaralı Çocuk" data-en="Wounded Child">Yaralı Çocuk</h4></div></div></div></div>
+      <div class="tilt-card reveal"><div class="tilt-inner"><div class="gcard"><div class="gstage"><img src="images/pdf-cocuk-hasta.jpg" alt="Yaralı çocuk figürü, hastane canlandırması"><div class="shine"></div></div><div class="gcap"><div class="mono" data-tr="Hilal-i Ahmer · Çanakkale" data-en="Red Crescent · Gallipoli">Hilal-i Ahmer · Çanakkale</div><h4 data-tr="Yaralı Çocuk" data-en="Wounded Child">Yaralı Çocuk</h4></div></div></div></div>
 
-      <div class="tilt-card reveal"><div class="tilt-inner"><div class="gcard"><img src="images/pdf-ipek-yolu.jpg" alt="Tüccarlar / İpek Yolu sahnesi, Suudi Arabistan sergisi"><div class="shine"></div><div class="gcap"><div class="mono" data-tr="Suudi Arabistan" data-en="Saudi Arabia">Suudi Arabistan</div><h4 data-tr="İpek Yolu Sahnesi" data-en="Silk Road Scene">İpek Yolu Sahnesi</h4></div></div></div></div>
+      <div class="tilt-card reveal"><div class="tilt-inner"><div class="gcard"><div class="gstage"><img src="images/pdf-ipek-yolu.jpg" alt="Tüccarlar / İpek Yolu sahnesi, Suudi Arabistan sergisi"><div class="shine"></div></div><div class="gcap"><div class="mono" data-tr="Suudi Arabistan" data-en="Saudi Arabia">Suudi Arabistan</div><h4 data-tr="İpek Yolu Sahnesi" data-en="Silk Road Scene">İpek Yolu Sahnesi</h4></div></div></div></div>
 
-      <div class="tilt-card reveal"><div class="tilt-inner"><div class="gcard"><img src="images/pdf-zheng-he.jpg" alt="Zheng He kompozisyonu, Macao Bilim Merkezi"><div class="shine"></div><div class="gcap"><div class="mono">Macao Science Center</div><h4>Zheng He</h4></div></div></div></div>
+      <div class="tilt-card reveal"><div class="tilt-inner"><div class="gcard"><div class="gstage"><img src="images/pdf-zheng-he.jpg" alt="Zheng He kompozisyonu, Macao Bilim Merkezi"><div class="shine"></div></div><div class="gcap"><div class="mono">Macao Science Center</div><h4>Zheng He</h4></div></div></div></div>
 
-      <div class="tilt-card reveal"><div class="tilt-inner"><div class="gcard"><img src="images/pdf-bilim-terazi.jpg" alt="Bilim / terazi sahnesi, Macao Bilim Merkezi"><div class="shine"></div><div class="gcap"><div class="mono">Macao Science Center</div><h4 data-tr="Bilim Sahnesi" data-en="Science Scene">Bilim Sahnesi</h4></div></div></div></div>
+      <div class="tilt-card reveal"><div class="tilt-inner"><div class="gcard"><div class="gstage"><img src="images/pdf-bilim-terazi.jpg" alt="Bilim / terazi sahnesi, Macao Bilim Merkezi"><div class="shine"></div></div><div class="gcap"><div class="mono">Macao Science Center</div><h4 data-tr="Bilim Sahnesi" data-en="Science Scene">Bilim Sahnesi</h4></div></div></div></div>
 
-      <div class="tilt-card reveal"><div class="tilt-inner"><div class="gcard"><img src="images/pdf-heykel-yapim.jpg" alt="Atölyede heykel yapım aşaması"><div class="shine"></div><div class="gcap"><div class="mono" data-tr="Atölye" data-en="Studio">Atölye</div><h4 data-tr="Yapım Aşaması" data-en="Work in Progress">Yapım Aşaması</h4></div></div></div></div>
+      <div class="tilt-card reveal"><div class="tilt-inner"><div class="gcard"><div class="gstage"><img src="images/pdf-heykel-yapim.jpg" alt="Atölyede heykel yapım aşaması"><div class="shine"></div></div><div class="gcap"><div class="mono" data-tr="Atölye" data-en="Studio">Atölye</div><h4 data-tr="Yapım Aşaması" data-en="Work in Progress">Yapım Aşaması</h4></div></div></div></div>
 
     </div>
 
@@ -1195,6 +1303,28 @@
 (function(){
   "use strict";
   var reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  /* ---- splash intro ---- */
+  (function(){
+    var splash = document.getElementById('splash');
+    if(!splash){ document.body.classList.remove('splash-active'); return; }
+    var dismissed = false;
+    function dismiss(){
+      if(dismissed) return; dismissed = true;
+      splash.classList.add('done');
+      document.body.classList.remove('splash-active');
+      window.scrollTo(0,0);
+      setTimeout(function(){ if(splash && splash.parentNode){ splash.parentNode.removeChild(splash); } }, 1200);
+    }
+    var hold = reduceMotion ? 400 : 3200;
+    var timer = setTimeout(dismiss, hold);
+    var skip = document.getElementById('splashSkip');
+    if(skip){ skip.addEventListener('click', function(){ clearTimeout(timer); dismiss(); }); }
+    splash.addEventListener('click', function(e){ if(e.target===splash){ clearTimeout(timer); dismiss(); } });
+    document.addEventListener('keydown', function(e){ if(e.key==='Escape' || e.key==='Enter'){ clearTimeout(timer); dismiss(); } });
+    window.addEventListener('load', function(){ /* ensure top on load */ if(!dismissed) window.scrollTo(0,0); });
+  })();
+
 
   /* ---- header scroll state ---- */
   var header = document.getElementById('siteHeader');
