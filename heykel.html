@@ -61,6 +61,27 @@
   /* thin gilt hairline used under eyebrows / heads */
   .gilt-rule{height:2px; border:0; background:var(--gilt-grad); opacity:.85;}
 
+  /* ---- floating WhatsApp button ---- */
+  .wa-fab{
+    position:fixed; right:22px; bottom:22px; z-index:1500;
+    width:56px; height:56px; border-radius:50%;
+    background:#25d366; display:flex; align-items:center; justify-content:center;
+    box-shadow:0 10px 26px -6px rgba(37,211,102,.55), 0 6px 16px rgba(0,0,0,.35);
+    transform:translateY(18px) scale(.85); opacity:0; pointer-events:none;
+    transition:transform .4s cubic-bezier(.16,.8,.24,1), opacity .4s, box-shadow .3s;
+    -webkit-tap-highlight-color:transparent;
+  }
+  .wa-fab.show{opacity:1; transform:none; pointer-events:auto;}
+  .wa-fab:hover{box-shadow:0 14px 32px -6px rgba(37,211,102,.7), 0 6px 16px rgba(0,0,0,.4); transform:translateY(-2px) scale(1.04);}
+  .wa-fab svg{width:30px; height:30px; fill:#fff;}
+  .wa-fab::after{
+    content:''; position:absolute; inset:0; border-radius:50%; border:2px solid #25d366;
+    animation:waPulse 2.4s ease-out infinite;
+  }
+  @keyframes waPulse{0%{transform:scale(1); opacity:.55;}70%{transform:scale(1.5); opacity:0;}100%{opacity:0;}}
+  @media (prefers-reduced-motion: reduce){ .wa-fab::after{animation:none;} }
+  @media(max-width:600px){ .wa-fab{right:16px; bottom:16px; width:52px; height:52px;} }
+
   /* ================= SPLASH / INTRO ================= */
   .splash{
     position:fixed; inset:0; z-index:2000;
@@ -97,12 +118,13 @@
   .splash-crest .ring{position:absolute; inset:0; animation:spin 30s linear infinite;}
   .splash-crest svg{position:absolute; inset:0; width:100%; height:100%;}
   .splash-crest::before{
-    content:''; position:absolute; inset:14%; border-radius:50%;
-    background:radial-gradient(circle at 50% 42%, rgba(231,200,119,.14), transparent 62%);
+    content:''; position:absolute; inset:26%; border-radius:50%;
+    background:radial-gradient(circle at 38% 32%, #f4dd9a 0%, #d8b667 42%, #b58e3e 72%, #8a6a2f 100%);
+    box-shadow: inset 0 3px 8px rgba(255,255,255,.55), inset 0 -12px 22px rgba(80,55,18,.5), 0 20px 40px rgba(0,0,0,.5);
   }
   .splash-logo{
-    position:relative; width:60%; height:auto; object-fit:contain;
-    filter:brightness(0) invert(1); opacity:0;
+    position:relative; width:38%; height:auto; object-fit:contain;
+    filter:none; opacity:0;
     animation:splashUp 1s cubic-bezier(.16,.8,.24,1) .55s forwards;
     z-index:2;
   }
@@ -202,8 +224,9 @@
     box-shadow:0 1px 0 var(--line);
   }
   .brand{display:flex; align-items:center; gap:12px; text-decoration:none;}
-  .brand img{height:34px; width:auto; filter:brightness(0) invert(1); transition:filter .4s;}
-  header.scrolled .brand img{filter:none;}
+  .brand img{height:34px; width:auto; filter:none; transition:filter .4s;
+    -webkit-filter:drop-shadow(0 1px 3px rgba(255,255,255,.35));}
+  header.scrolled .brand img{filter:none; -webkit-filter:none;}
   .brand-text{font-family:'Fraunces',serif; font-size:1.05rem; color:#fff; transition:color .4s;}
   header.scrolled .brand-text{color:var(--ink);}
   nav.links{display:flex; gap:34px; align-items:center;}
@@ -526,10 +549,14 @@
     border:1px solid var(--line-2); border-radius:var(--radius);
     box-shadow:var(--emboss); overflow:hidden;
   }
-  .proof-card .imgbox{overflow:hidden; aspect-ratio:4/3; position:relative;
-    box-shadow: inset 0 -18px 30px -22px rgba(20,16,9,.55);}
-  .proof-card img{width:100%; height:100%; object-fit:cover; transition:transform .6s cubic-bezier(.2,.7,.2,1);}
-  .proof-card:hover img{transform:scale(1.06);}
+  .proof-card .imgbox{overflow:hidden; aspect-ratio:3/4; position:relative;
+    background:radial-gradient(120% 90% at 50% 16%, #f6f1e6 0%, #ece3d1 58%, #e2d8c2 100%);
+    box-shadow: inset 0 -14px 26px -20px rgba(90,70,35,.28);}
+  .proof-card img{position:absolute; inset:0; width:100%; height:100%;
+    object-fit:contain; object-position:50% 42%; padding:12px 12px 0;
+    transition:transform .6s cubic-bezier(.2,.7,.2,1);
+    filter:drop-shadow(0 14px 22px rgba(60,45,20,.26));}
+  .proof-card:hover img{transform:scale(1.04);}
   .proof-meta{padding:16px 18px 20px; border-top:2px solid transparent; border-image:var(--gilt-grad) 1;}
   .proof-meta .tag{display:inline-block; margin-bottom:8px;}
   .proof-meta h4{font-size:1.15rem; margin-bottom:4px;}
@@ -540,32 +567,34 @@
 
   .gallery{
     display:grid; grid-template-columns:repeat(3,1fr); gap:26px;
+    align-items:start;
   }
-  .gallery .tilt-card:nth-child(3n+1){grid-row:span 2;}
-  .gcard{ position:relative; overflow:hidden; background:#111; cursor:pointer; border-radius:var(--radius);
+  .gcard{ position:relative; overflow:hidden; background:var(--paper); cursor:pointer; border-radius:var(--radius);
     display:flex; flex-direction:column;
-    box-shadow:0 22px 44px -22px rgba(20,16,9,.6), inset 0 0 0 1px rgba(231,200,119,.14);}
-  /* image stage: full figure visible (contain) on a soft museum backdrop */
+    box-shadow:0 22px 44px -24px rgba(20,16,9,.4), inset 0 0 0 1px rgba(20,16,9,.08);}
+  /* image stage: full figure visible (contain) on a soft cream museum backdrop */
   .gcard .gstage{
     position:relative; flex:1 1 auto; min-height:0; overflow:hidden;
     background:
-      radial-gradient(120% 90% at 50% 18%, #26221a 0%, #17140f 60%, #100e0a 100%);
+      radial-gradient(120% 90% at 50% 16%, #f6f1e6 0%, #ece3d1 58%, #e2d8c2 100%);
+    box-shadow: inset 0 -14px 26px -18px rgba(90,70,35,.28);
   }
-  .gallery .tilt-card:nth-child(3n+1) .gcard{aspect-ratio:3/4;}
-  .gallery .tilt-card:not(:nth-child(3n+1)) .gcard{aspect-ratio:4/5;}
+  /* every card identical shape → clean, aligned rows */
+  .gallery .gcard{aspect-ratio:4/5;}
   .gcard img{
     position:absolute; inset:0; width:100%; height:100%;
     object-fit:contain; object-position:50% 42%; padding:14px 14px 0;
     transform:translateZ(0) scale(1); transition:transform .6s cubic-bezier(.2,.7,.2,1), filter .4s;
-    filter:drop-shadow(0 18px 26px rgba(0,0,0,.45));
+    filter:drop-shadow(0 16px 24px rgba(60,45,20,.28));
   }
   .tilt-card:hover .gcard img{transform:scale(1.045);}
   .gcard::after{display:none;}
-  .gcap{position:relative; flex:0 0 auto; padding:16px 18px 18px; z-index:2; color:#fff;
-    background:linear-gradient(180deg, rgba(20,17,11,.65), rgba(14,12,9,.96));
-    border-top:1px solid rgba(231,200,119,.16);}
-  .gcap .mono{color:var(--gilt); margin-bottom:4px;}
-  .gcap h4{color:#fff; font-size:1.06rem; line-height:1.2;}
+  .gcap{position:relative; flex:0 0 auto; min-height:74px; padding:15px 18px 16px; z-index:2; color:var(--ink);
+    display:flex; flex-direction:column; justify-content:center;
+    background:linear-gradient(180deg, #faf7ef, #f1ead9);
+    border-top:1px solid rgba(20,16,9,.1);}
+  .gcap .mono{color:var(--bronze); margin-bottom:4px;}
+  .gcap h4{color:var(--ink); font-size:1.04rem; line-height:1.18;}
   .gcap::before{content:''; display:block; width:28px; height:2px; background:var(--gilt-grad); margin-bottom:9px; transition:width .5s cubic-bezier(.2,.7,.2,1);}
   .tilt-card:hover .gcap::before{width:46px;}
 
@@ -629,6 +658,7 @@
     border-bottom:1px solid transparent; width:fit-content;
   }
   .contact-info a:hover{border-color:var(--bronze-2); color:var(--bronze);}
+  .contact-info a.wa-link:hover{border-color:#25d366; color:#1da851;}
   .contact-card{
     background:var(--ink); color:var(--stone); padding:38px; position:relative; overflow:hidden;
   }
@@ -664,8 +694,6 @@
     .about-grid{gap:44px;}
     .about-photo .tframe img{height:440px;}
     .gallery{grid-template-columns:repeat(2,1fr);}
-    .gallery .tilt-card:nth-child(3n+1){grid-row:auto;}
-    .gallery .tilt-card:nth-child(3n+1) .gcard{aspect-ratio:4/5;}
     .stat-row{grid-template-columns:repeat(2,1fr); row-gap:26px;}
     .section-head{margin-bottom:44px;}
     .contact-card{padding:30px;}
@@ -674,7 +702,7 @@
     .showcase-grid{grid-template-columns:1fr;}
     .showcase-grid .figure, .showcase-grid .figure.tall{grid-row:auto; aspect-ratio:4/5;}
     .gallery{grid-template-columns:1fr;}
-    .gallery .gcard, .gallery .tilt-card:not(:nth-child(3n+1)) .gcard{aspect-ratio:4/5;}
+    .gallery .gcard{aspect-ratio:4/5;}
     .hero-inner{flex-direction:column; align-items:flex-start; gap:26px; padding-bottom:90px;}
     .placard{transform:none; width:100%; min-width:0;}
     section{padding:70px 0;}
@@ -1268,6 +1296,7 @@
       <div class="contact-info">
         <a href="mailto:iscan.senay@gmail.com">✉ &nbsp;iscan.senay@gmail.com</a>
         <a href="tel:+905302021012">☎ &nbsp;+90 530 202 10 12</a>
+        <a href="https://wa.me/905302021012" target="_blank" rel="noopener" class="wa-link" data-tr="WhatsApp&apos;tan yazın" data-en="Message on WhatsApp">✆ &nbsp;WhatsApp&apos;tan yazın</a>
         <a href="https://www.bulentiscan.com" target="_blank" rel="noopener">↗ &nbsp;www.bulentiscan.com</a>
         <div>⌂ &nbsp;İçerenköy Mah. İspirli Canip Sok. Palmiye Apt. No:26/B, 34752 Ataşehir / İstanbul</div>
       </div>
@@ -1276,7 +1305,7 @@
     <div class="contact-card reveal">
       <h4 data-tr="Müze &amp; kurumsal projeler" data-en="Museum &amp; institutional projects">Müze &amp; kurumsal projeler</h4>
       <p data-tr="Diorama, figüratif heykel, silikon/reçine uygulama, tarihi canlandırma ve sergi tasarımı için atölyeyle doğrudan görüşün." data-en="Get in direct touch with the studio for dioramas, figurative sculpture, silicone/resin work, historical re-enactment and exhibition design.">Diorama, figüratif heykel, silikon/reçine uygulama, tarihi canlandırma ve sergi tasarımı için atölyeyle doğrudan görüşün.</p>
-      <a class="btn" href="mailto:iscan.senay@gmail.com" data-tr="Proje Görüşmesi Başlat" data-en="Start a Project Conversation">Proje Görüşmesi Başlat</a>
+      <a class="btn" href="https://wa.me/905302021012?text=Merhaba%2C%20bir%20m%C3%BCze%2Fheykel%20projesi%20i%C3%A7in%20g%C3%B6r%C3%BC%C5%9Fmek%20istiyorum." target="_blank" rel="noopener" data-tr="WhatsApp&apos;tan Görüşün" data-en="Chat on WhatsApp">WhatsApp&apos;tan Görüşün</a>
     </div>
   </div>
 </section>
@@ -1289,6 +1318,11 @@
     </p>
   </div>
 </footer>
+
+<!-- ================= FLOATING WHATSAPP ================= -->
+<a class="wa-fab" id="waFab" href="https://wa.me/905302021012?text=Merhaba%2C%20bir%20m%C3%BCze%2Fheykel%20projesi%20i%C3%A7in%20g%C3%B6r%C3%BC%C5%9Fmek%20istiyorum." target="_blank" rel="noopener" aria-label="WhatsApp">
+  <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51l-.57-.01c-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+</a>
 
 <!-- ================= LIGHTBOX ================= -->
 <div class="lightbox" id="lightbox">
@@ -1328,9 +1362,11 @@
 
   /* ---- header scroll state ---- */
   var header = document.getElementById('siteHeader');
+  var waFab = document.getElementById('waFab');
   function onScroll(){
     if(window.scrollY > 60){ header.classList.add('scrolled'); }
     else{ header.classList.remove('scrolled'); }
+    if(waFab){ waFab.classList.toggle('show', window.scrollY > 340); }
   }
   document.addEventListener('scroll', onScroll, {passive:true});
   onScroll();
