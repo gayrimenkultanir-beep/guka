@@ -286,7 +286,7 @@
 
 <div class="seal-wrap">
   <div class="seal-line"></div>
-  <div class="seal"><img src="gorseller/logo.png" alt="bisanat logo"></div>
+  <div class="seal"><img src="assets/main/logo.webp" alt="bisanat logo"></div>
 </div>
 
 
@@ -582,12 +582,14 @@
 /* ============================================================
    KATEGORİLER
    ------------------------------------------------------------
-   Görseller artık kodun içine elle yazılmıyor. Site, her kategori
-   için assets/eserler/<slug>/ klasöründeki TÜM görselleri sunucu
-   tarafında çalışan list-images.php betiği üzerinden otomatik okur.
+   Görseller kodun içine elle yazılmıyor. Site, GitHub reponuzun
+   dosya ağacını GitHub API üzerinden okuyup her kategori için
+   assets/eserler/<slug>/ klasöründeki TÜM görselleri otomatik bulur
+   (GitHub Pages statik hosting olduğu için PHP/sunucu betiği
+   kullanılmıyor — bu yöntem tamamen tarayıcıda çalışır).
 
-   → Yeni görsel eklemek için: sadece ilgili klasöre dosyayı atın,
-     kodda HİÇBİR değişiklik gerekmez.
+   → Yeni görsel eklemek için: sadece ilgili klasöre dosyayı atıp
+     GitHub'a push edin, kodda HİÇBİR değişiklik gerekmez.
    → Kart başlığı, görsele verdiğiniz dosya adından otomatik üretilir
      (uzantı atılır, tire/alt çizgi boşluğa çevrilir). Örn:
      "genclik-parki-heykeli.webp" → "genclik parki heykeli"
@@ -600,6 +602,9 @@
    Yeni bir kategori eklemek isterseniz (yeni bir buton/klasör),
    aşağıdaki CATEGORIES dizisine { slug:'...', name:'...' } satırı
    ekleyip assets/eserler/<slug>/ klasörünü oluşturmanız yeterli.
+
+   NOT: Reponuz "private" (gizli) ise bu yöntem çalışmaz — GitHub API
+   herkese açık (public) repolar için kimliksiz erişime izin verir.
 ============================================================ */
 const CATEGORIES = [
   { slug:'ataturk',        name:'Atatürk' },
@@ -641,22 +646,57 @@ function fileLabel(file){
 function clearCycles(){ cycleTimers.forEach(t=>clearInterval(t)); cycleTimers = []; }
 function findCat(slug){ return CATEGORIES.find(c=>c.slug===slug); }
 
-/* ---------- Klasördeki görselleri sunucudan otomatik okuma ---------- */
+/* ---------- Klasördeki görselleri GitHub API üzerinden otomatik okuma ----------
+   GitHub Pages PHP çalıştırmadığı için (statik hosting), görselleri sunucu
+   betiği yerine GitHub'ın kendi API'siyle, doğrudan tarayıcıdan okuyoruz.
+   Tek bir istekle tüm repo dosya ağacı çekilir, sonra her kategori kendi
+   klasörünü bu ağaç içinden filtreler — sayfa başına sadece 1 API isteği. */
+const GH_OWNER    = 'gayrimenkultanir-beep';
+const GH_REPO     = 'guka';
+const GH_BASEPATH = 'heykel';           // index.html'in repo içindeki klasörü
+const GH_BRANCHES = ['main', 'master']; // hangisi tutarsa o kullanılır
+
 const piecesCache = {}; // slug -> [{file, desc}]
+let ghTreePromise = null;
+
+function loadRepoTree(){
+  if(ghTreePromise) return ghTreePromise;
+  ghTreePromise = (async ()=>{
+    for(const branch of GH_BRANCHES){
+      try{
+        const res = await fetch(`https://api.github.com/repos/${GH_OWNER}/${GH_REPO}/git/trees/${branch}?recursive=1`);
+        if(res.ok){
+          const data = await res.json();
+          if(Array.isArray(data.tree)) return data.tree;
+        }
+      }catch(err){ /* bu branch olmadı, diğerini dene */ }
+    }
+    return [];
+  })();
+  return ghTreePromise;
+}
 
 async function loadPieces(slug){
   if(piecesCache[slug]) return piecesCache[slug];
-  let files = [];
-  try{
-    const res = await fetch(`list-images.php?cat=${encodeURIComponent(slug)}`);
-    if(res.ok) files = await res.json();
-  }catch(err){ files = []; }
+  const tree = await loadRepoTree();
+  const prefix = `${GH_BASEPATH}/assets/eserler/${slug}/`;
+  const exts = ['webp','jpg','jpeg','png','gif'];
+
+  let files = tree
+    .filter(item => item.type === 'blob' && item.path.startsWith(prefix))
+    .map(item => item.path.slice(prefix.length))
+    .filter(name => name && !name.includes('/') && name !== 'aciklamalar.json')
+    .filter(name => exts.includes((name.split('.').pop() || '').toLowerCase()));
+
+  files.sort((a, b) => a.localeCompare(b, 'tr', { numeric: true }));
 
   let descMap = {};
-  try{
-    const dres = await fetch(imgPath(slug, 'aciklamalar.json'));
-    if(dres.ok) descMap = await dres.json();
-  }catch(err){ /* açıklama dosyası yoksa sorun değil, boş kalır */ }
+  if(files.length){
+    try{
+      const dres = await fetch(imgPath(slug, 'aciklamalar.json'));
+      if(dres.ok) descMap = await dres.json();
+    }catch(err){ /* açıklama dosyası yoksa sorun değil, boş kalır */ }
+  }
 
   const pieces = files.map(file => ({ file, desc: descMap[file] || '' }));
   piecesCache[slug] = pieces;
