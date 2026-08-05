@@ -431,6 +431,39 @@
 .admin-tab-panel.active{display:block}
 @media (max-width:640px){.admin-box{padding:22px 20px}}
 
+/* ===================== AÇILIŞ INTRO ===================== */
+#introOverlay{position:fixed;inset:0;z-index:9999;display:flex;align-items:center;justify-content:center;
+  background:radial-gradient(900px 600px at 50% 42%, #241a0e 0%, #17110a 55%, #0d0905 100%);
+  overflow:hidden;transition:opacity .9s ease, visibility .9s ease}
+#introOverlay.hide{opacity:0;visibility:hidden;pointer-events:none}
+#introOverlay .intro-glow{position:absolute;width:520px;height:520px;border-radius:50%;
+  background:radial-gradient(circle, rgba(201,150,46,.22) 0%, rgba(201,150,46,0) 68%);
+  filter:blur(6px);opacity:0;animation:introGlow 3s ease forwards}
+#introOverlay .intro-logo{position:relative;width:200px;max-width:52vw;
+  filter:drop-shadow(0 18px 40px rgba(0,0,0,.6));
+  transform:scale(.25);opacity:0;animation:introLogo 3s cubic-bezier(.22,.61,.36,1) forwards}
+#introOverlay .intro-logo img{width:100%;height:100%;object-fit:contain;display:block}
+#introOverlay .intro-brand{position:absolute;bottom:16%;left:0;right:0;text-align:center;
+  font-family:'Cormorant',serif;font-style:italic;font-size:26px;letter-spacing:1px;
+  background:linear-gradient(135deg,#fff6df 0%,#f0d68a 25%,#c9962e 50%,#8a6a2c 75%,#e9c877 100%);
+  -webkit-background-clip:text;background-clip:text;color:transparent;-webkit-text-fill-color:transparent;
+  opacity:0;animation:introBrand 3s ease forwards}
+#introOverlay .intro-brand span{display:block;font-family:'Montserrat';font-style:normal;font-size:10px;
+  letter-spacing:4px;text-transform:uppercase;color:#b79a5f;margin-top:6px;-webkit-text-fill-color:#b79a5f}
+@keyframes introLogo{
+  0%{transform:scale(.25);opacity:0}
+  55%{opacity:1}
+  70%{transform:scale(1.06)}
+  82%{transform:scale(1)}
+  100%{transform:scale(1);opacity:1}
+}
+@keyframes introGlow{0%{opacity:0;transform:scale(.6)}60%{opacity:1;transform:scale(1)}100%{opacity:.85;transform:scale(1.05)}}
+@keyframes introBrand{0%,45%{opacity:0;transform:translateY(10px)}75%{opacity:1;transform:translateY(0)}100%{opacity:1;transform:translateY(0)}}
+body.intro-lock{overflow:hidden}
+@media (prefers-reduced-motion:reduce){
+  #introOverlay .intro-logo,#introOverlay .intro-glow,#introOverlay .intro-brand{animation-duration:.6s}
+}
+
 /* ===================== HAMBURGER (mobil menü) ===================== */
 .nav-toggle{display:none;flex-direction:column;justify-content:center;gap:5px;width:42px;height:42px;
   background:none;border:1px solid rgba(138,106,44,.3);border-radius:8px;cursor:pointer;padding:0 9px;z-index:30}
@@ -528,6 +561,26 @@
 </style>
 </head>
 <body>
+<div id="introOverlay">
+  <div class="intro-glow"></div>
+  <div class="intro-logo"><img src="assets/main/logo.webp" alt="bisanat"></div>
+  <div class="intro-brand">bisanat<span>Bülent İşcan</span></div>
+</div>
+<script>
+(function(){
+  var overlay = document.getElementById('introOverlay');
+  if(!overlay) return;
+  document.body.classList.add('intro-lock');
+  function dismiss(){
+    overlay.classList.add('hide');
+    document.body.classList.remove('intro-lock');
+    setTimeout(function(){ if(overlay && overlay.parentNode) overlay.parentNode.removeChild(overlay); }, 1000);
+  }
+  var timer = setTimeout(dismiss, 3000); /* 3 sn sonra sayfaya geç */
+  /* Kullanıcı dokunursa/tıklarsa erken geç */
+  overlay.addEventListener('click', function(){ clearTimeout(timer); dismiss(); });
+})();
+</script>
 
 <header>
   <div class="logo" id="adminTriggerHeader">bisanat<span>Bülent &amp; Şenay İşcan</span></div>
