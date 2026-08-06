@@ -1071,14 +1071,14 @@ function hyperImgPath(slug, file){ return `assets/atolye/${slug}/${file}`; }
 
 async function loadHyperImages(slug){
   const files = [];
+  let misses = 0;
   for(let i = 1; i <= 60; i++){
     let found = null;
-    for(const ext of PROBE_EXTS){
-      const file = `${i}.${ext}`;
+    for(const file of candidateFiles(i)){
       if(await probeImage(hyperImgPath(slug, file))){ found = file; break; }
     }
-    if(!found) break;
-    files.push(found);
+    if(found){ files.push(found); misses = 0; }
+    else { misses++; if(misses > PROBE_GAP) break; }
   }
   return files;
 }
@@ -1440,6 +1440,18 @@ function findCat(slug){ return CATEGORIES.find(c=>c.slug===slug); }
 const piecesCache = {}; // slug -> [{file, title, desc}]
 const PROBE_EXTS  = ['webp','jpg','jpeg','png','gif','avif'];
 const MAX_PROBE   = 500; // güvenlik sınırı: klasör başına en fazla bu kadar görsel denenir
+const PROBE_GAP   = 3;   // bir numara bulunamazsa, klasörü hemen bitmiş saymadan bu kadar boşluğa tahammül et (1,2,4 gibi atlamalar)
+
+/* Bir sıra numarası için denenecek dosya adı adayları:
+   düz (5.webp) + sıfır dolgulu (05.webp, 005.webp) tüm uzantılarla. */
+function candidateFiles(i){
+  const stems = new Set([String(i)]);
+  if(i < 100) stems.add(String(i).padStart(2,'0'));   // 5 -> 05
+  if(i < 100) stems.add(String(i).padStart(3,'0'));   // 5 -> 005
+  const out = [];
+  stems.forEach(stem => PROBE_EXTS.forEach(ext => out.push(`${stem}.${ext}`)));
+  return out;
+}
 
 /* Admin panelinden düzenlenen görsel başına isim/açıklama için
    localStorage'da saklanan override'lar. Anahtar: "slug::dosyaAdı" */
@@ -1463,14 +1475,14 @@ function probeImage(url){
 async function loadPieces(slug){
   if(piecesCache[slug]) return piecesCache[slug];
   const files = [];
+  let misses = 0;
   for(let i = 1; i <= MAX_PROBE; i++){
     let found = null;
-    for(const ext of PROBE_EXTS){
-      const file = `${i}.${ext}`;
+    for(const file of candidateFiles(i)){
       if(await probeImage(imgPath(slug, file))){ found = file; break; }
     }
-    if(!found) break; // bu numarada hiçbir uzantı bulunamadı → klasör bitti
-    files.push(found);
+    if(found){ files.push(found); misses = 0; }
+    else { misses++; if(misses > PROBE_GAP) break; } // arka arkaya çok boşluk → klasör bitti
   }
 
   let descMap = {};
@@ -2231,6 +2243,5 @@ document.addEventListener('dragstart', e=>{
 })();
 </script>
 
-  
 </body>
 </html>
