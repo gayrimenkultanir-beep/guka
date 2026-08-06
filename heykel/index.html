@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>bisanat — Bülent & Şenay İşcan</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=Cormorant:ital,wght@0,600;1,500&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Semi+Condensed:ital,wght@0,300;0,400;0,500;1,300;1,400;1,500&family=Cormorant+Garamond:wght@400;500;600&family=Cormorant:ital,wght@0,600;1,500&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <style>
@@ -83,6 +83,20 @@
   .person-photo span{font-size:11px;letter-spacing:1px;color:var(--text-muted);text-align:center;padding:0 14px}
   .about-united p{color:var(--text-soft);font-size:17px;line-height:2;text-align:justify;text-justify:inter-word;hyphens:auto}
   .about-united p+p{margin-top:22px}
+
+  /* Biyografi: varsayılan 3 satır, 'Devamını oku' ile açılır */
+  .bio-collapse{position:relative;overflow:hidden;transition:max-height .45s ease}
+  .bio-collapse.collapsed{max-height:calc(1em * 2 * 3); /* line-height:2 × 3 satır */}
+  .bio-collapse.collapsed::after{content:"";position:absolute;left:0;right:0;bottom:0;height:2.4em;
+    background:linear-gradient(to bottom, rgba(241,233,215,0), var(--bg-1));pointer-events:none}
+  .bio-more-wrap{text-align:center;margin-top:14px}
+  .bio-more{display:inline-flex;align-items:center;gap:8px;background:none;cursor:pointer;
+    font-family:'Montserrat',sans-serif;font-size:11px;letter-spacing:2px;text-transform:uppercase;
+    color:var(--gold-2);border:1px solid rgba(138,106,44,.4);border-radius:999px;padding:9px 22px;
+    transition:background .25s ease,border-color .25s ease}
+  .bio-more:hover{background:rgba(201,150,46,.10);border-color:var(--gold-3)}
+  .bio-more .chev{width:13px;height:13px;transition:transform .3s ease}
+  .bio-more.open .chev{transform:rotate(180deg)}
   .village-quote{margin:30px 0 8px;padding:22px 26px;border-left:3px solid var(--gold-1);background:var(--card);border-radius:0 6px 6px 0;
     font-family:'Cormorant Garamond',serif;font-style:italic;font-size:18px;color:var(--gold-2);text-align:left;line-height:1.7;
     box-shadow:0 10px 24px -14px rgba(0,0,0,.35)}
@@ -157,7 +171,7 @@
   .compare .meta{padding:18px 20px 22px;display:flex;flex-direction:column;flex:1}
   .compare .eyebrow-sm{font-family:'Montserrat';font-size:10.5px;letter-spacing:2px;color:var(--gold-2);text-transform:uppercase;font-weight:600}
   .compare h4{font-family:inherit;font-size:16px;font-weight:600;color:var(--cream);margin:8px 0 6px}
-  .compare .desc{color:var(--text-muted);font-size:13px;line-height:1.65;text-align:justify;text-justify:inter-word;flex:1}
+  .compare .desc{color:var(--text-muted);font-size:13px;line-height:1.65;text-align:left;flex:1}
   .compare .detay-btn{margin:16px auto 0;display:block;padding:9px 24px;border-radius:999px;
     border:1px solid var(--gold-1);background:transparent;color:var(--gold-2);
     font-family:'Montserrat';font-size:11px;letter-spacing:2px;text-transform:uppercase;cursor:pointer;transition:.25s;flex-shrink:0}
@@ -180,13 +194,13 @@
   .piece::after{content:"";position:absolute;top:-25%;left:-20%;width:65%;height:55%;background:radial-gradient(circle, rgba(255,255,255,.5), transparent 70%);pointer-events:none;mix-blend-mode:screen;z-index:4}
   .piece img{width:100%;aspect-ratio:3/4;height:auto;object-fit:cover;display:block;filter:saturate(1.05) contrast(1.02)}
   .piece .shine{position:absolute;top:0;left:-60%;width:40%;height:100%;background:linear-gradient(75deg, transparent, rgba(255,255,255,.12), transparent);transform:skewX(-18deg);pointer-events:none;z-index:2}
-  .piece .meta{padding:14px 22px 18px;position:relative;display:flex;flex-direction:column}
+  .piece .meta{padding:12px 20px 16px;position:relative;display:flex;flex-direction:column}
   .piece .num{font-family:'Montserrat';font-size:11px;letter-spacing:2px;color:var(--gold-3)}
-  .piece .divider{width:36px;height:2px;background:linear-gradient(90deg,var(--gold-1),var(--gold-3));margin:7px 0 8px;box-shadow:0 0 6px rgba(212,175,55,.6)}
-  .piece h4{font-family:'Cormorant Garamond',serif;font-size:20px;font-weight:600;color:var(--cream);
-    line-height:1.18;min-height:2.36em;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
-  .piece .loc{color:var(--text-muted);font-size:13px;margin-top:3px;text-align:justify;text-justify:inter-word;
-    line-height:1.3;min-height:3.9em;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+  .piece .divider{width:32px;height:2px;background:linear-gradient(90deg,var(--gold-1),var(--gold-3));margin:6px 0 7px;box-shadow:0 0 6px rgba(212,175,55,.6)}
+  .piece h4{font-family:'Cormorant Garamond',serif;font-size:16px;font-weight:600;color:var(--cream);
+    line-height:1.1;min-height:2.2em;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+  .piece .loc{font-family:'Barlow Semi Condensed',sans-serif;font-style:italic;color:var(--text-muted);font-size:12px;margin-top:3px;text-align:left;
+    line-height:1.32;height:4.4em;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
   /* Görsel çerçevesi — tüm görünümlerde ortak: ince gold border + 3D kabartma */
   .piece .img-wrap{position:relative;width:calc(100% - 24px);margin:12px 12px 0;aspect-ratio:3/4;overflow:hidden;border-radius:5px;box-sizing:border-box;
     border:1.5px solid var(--gold-1);
@@ -241,14 +255,14 @@
   /* Eserler — kategori kartları (Tümü görünümü) & alt galeri */
   .cat-active-label{text-align:center;font-family:'Cormorant Garamond',serif;font-style:italic;font-size:17px;color:var(--gold-2);margin:-24px 0 34px}
   .piece{cursor:pointer}
-  .piece .cat-eyebrow{font-size:10.5px;letter-spacing:2px;text-transform:uppercase;color:var(--text-muted);margin-bottom:2px}
+  .piece .cat-eyebrow{font-size:9.5px;letter-spacing:1.8px;text-transform:uppercase;color:var(--text-muted);margin-bottom:2px}
 
   .empty-note{grid-column:1/-1;text-align:center;color:var(--text-muted);font-size:14px;padding:30px 0}
 
   /* Lightbox / slayt gösterisi */
-  .lightbox{position:fixed;inset:0;background:rgba(14,10,5,.94);z-index:100;display:none;align-items:center;justify-content:center;flex-direction:column;padding:40px 20px}
+  .lightbox{position:fixed;inset:0;background:rgba(14,10,5,.94);z-index:100;display:none;align-items:center;justify-content:center;flex-direction:column;padding:40px 96px}
   .lightbox.open{display:flex}
-  .lightbox img{width:auto;height:auto;max-width:min(94vw,1400px);max-height:80vh;object-fit:contain;border-radius:6px;box-shadow:0 30px 70px -20px rgba(0,0,0,.8), 0 0 0 1px rgba(212,175,55,.25);border:6px solid transparent;border-image:var(--ribbon-frame) 1;background:#0e0a05;display:block}
+  .lightbox img{width:auto;height:auto;max-width:min(88vw,1200px);max-height:80vh;object-fit:contain;border-radius:6px;box-shadow:0 30px 70px -20px rgba(0,0,0,.8), 0 0 0 1px rgba(212,175,55,.25);border:6px solid transparent;border-image:var(--ribbon-frame) 1;background:#0e0a05;display:block}
   .lb-img-wrap{position:relative;display:flex;align-items:center;justify-content:center;
     max-width:min(94vw,1400px);max-height:80vh}
   .lb-watermark{position:absolute;right:18px;bottom:14px;display:flex;flex-direction:column;align-items:center;gap:5px;pointer-events:none;user-select:none;z-index:2;text-align:center}
@@ -265,15 +279,24 @@
   .lb-fallback .fb-sub{font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:#8f8168}
   .lb-meta{text-align:center;margin-top:22px;max-width:640px}
   .lb-meta h4{font-family:'Cormorant Garamond',serif;font-weight:600;font-size:24px;color:#fff8ea}
-  .lb-meta p{color:#cdbfa2;font-size:14px;margin-top:6px;line-height:1.7}
+  .lb-meta p{color:#cdbfa2;font-size:14px;margin-top:6px;line-height:1.7;
+    display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
   .lb-meta .lb-counter{display:block;margin-top:10px;font-size:11px;letter-spacing:2px;color:var(--gold-1);text-transform:uppercase}
   .lb-close{position:absolute;top:22px;right:30px;background:none;border:none;color:#e8dcc3;font-size:34px;cursor:pointer;line-height:1;opacity:.85}
   .lb-close:hover{opacity:1;color:var(--gold-1)}
   .lb-nav{position:absolute;top:50%;transform:translateY(-50%);background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.2);color:#f7f2e7;width:52px;height:52px;border-radius:50%;font-size:20px;cursor:pointer;display:flex;align-items:center;justify-content:center}
   .lb-nav:hover{background:rgba(212,175,55,.25);border-color:var(--gold-1)}
-  .lb-prev{left:24px}
-  .lb-next{right:24px}
-  @media (max-width:640px){.lb-nav{width:42px;height:42px;font-size:16px}.lb-prev{left:8px}.lb-next{right:8px}}
+  .lb-prev{left:-72px}
+  .lb-next{right:-72px}
+  @media (max-width:640px){
+    /* Mobilde önceki/sonraki oklar görselin altında, iki yanda */
+    .lb-img-wrap{position:relative}
+    .lb-nav{width:46px;height:46px;font-size:18px;top:auto;transform:none;
+      bottom:-64px}
+    .lb-prev{left:calc(50% - 70px)}
+    .lb-next{right:calc(50% - 70px)}
+    .lb-meta{margin-top:70px}
+  }
 
   /* Yurtdışı timeline — arşiv kartı estetiğiyle uyumlu */
   .timeline{max-width:860px;margin:0 auto;display:flex;flex-direction:column;gap:12px}
@@ -430,6 +453,11 @@
 .admin-tab-panel{display:none}
 .admin-tab-panel.active{display:block}
 @media (max-width:640px){.admin-box{padding:22px 20px}}
+.admin-io{margin-top:18px;padding-top:16px;border-top:1px solid rgba(138,106,44,.25)}
+.admin-io-note{margin-top:10px;font-size:12.5px;text-align:right;display:none}
+.admin-io-note.show{display:block}
+.admin-io-note.ok{color:#3a7a4a}
+.admin-io-note.err{color:#b5432f}
 
 /* ===================== AÇILIŞ INTRO ===================== */
 #introOverlay{position:fixed;inset:0;z-index:9999;display:flex;align-items:center;justify-content:center;
@@ -500,6 +528,13 @@ body.intro-lock{overflow:hidden}
   .sub{font-size:14.5px;line-height:1.7}
 
   section{padding:48px 20px}
+  /* Mobilde eserler bölümü: kategori çipleri gizli, sadece 'Tümü' mantığı */
+  .cat-chips{display:none}
+  .cat-active-label.back-link{cursor:pointer;display:inline-flex;align-items:center;gap:8px;
+    margin:-8px auto 30px;padding:9px 20px;border:1px solid rgba(138,106,44,.4);border-radius:999px;
+    font-style:normal;font-size:12px;letter-spacing:1.5px;text-transform:uppercase;
+    background:rgba(201,150,46,.08)}
+  .cat-active-label.back-link::before{content:"\2039";font-size:18px;line-height:1;margin-top:-2px}
   .section-head h2{font-size:28px}
   .lede{font-size:14px;margin:-14px auto 32px}
 
@@ -627,17 +662,19 @@ body.intro-lock{overflow:hidden}
   <div class="about-united">
 
     <div class="about-person-name">Bülent İşcan</div>
-    <div id="bulentBioWrap">
+    <div id="bulentBioWrap" class="bio-collapse collapsed">
     <p>1972 Tekirdağ doğumlu Bülent İşcan, Marmara Üniversitesi Güzel Sanatlar Fakültesi Resim Bölümü'nden mezun oldu. Yıllarca sinema, TV ve reklam sektörüne dekor, aksesuar ve maket üreten sanatçı, tarihi film ve dizilerde gerçeğe en yakın görünümü sahneye taşıma tutkusuyla 26 yaşında hiperrealist heykel sanatına yöneldi. Her eserine aylarca süren bir emekle can katan sanatçı, kırışıklıktan damar izine, bakışındaki ışıktan ten dokusuna kadar en ince ayrıntıyı tek tek işleyerek heykellerine adeta nefes alan bir gerçeklik kazandıran Bülent İşcan, bugün 70'i aşkın müzede, binin üzerinde eseriyle sergileniyor — Topkapı ve Dolmabahçe Sarayları'ndan Çanakkale Tarihi Alanı'na, yurt dışında Çin'den Azerbaycan'a kadar birçok ülkede eserleri yer alıyor.</p>
     <p>En çok duygulandığı çalışmalar arasında İstanbul Sinema Müzesi için ürettiği Adile Naşit ve Kemal Sunal heykelleri yer alıyor; yüzlerce fotoğraf ve arşiv taraması sonunda ortaya çıkan bu eserler, bir neslin hafızasını yeniden canlandırdı. İstanbul'daki otuz yıllık atölye hayatının ardından eşi Şenay ile birlikte memleketi Hayrabolu'nun Şalgamlı köyüne yerleşerek üretimini köy sakinleriyle birlikte sürdürmeye başladı; bugün köyde 100'e yakın heykel ortak emekle hayat buluyor.</p>
     <p>Sanatçının en dikkat çeken son eseri, Çanakkale Savaşları Gelibolu Tarihi Alan Başkanlığı için tasarladığı 4,5 metre yüksekliğindeki Mehmetçik Heykeli oldu — dönemin fedakârlığını ve cesaretini tüm gerçekliğiyle yansıtan bu dev eser, sanatçıya 2024 yılında Tekirdağ Kültür Elçisi unvanını kazandırdı.</p>
     </div>
+    <div class="bio-more-wrap"><button type="button" class="bio-more" data-target="bulentBioWrap">Devamını oku<svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg></button></div>
 
     <div class="about-person-name" style="margin-top:48px">Şenay İşcan</div>
-    <div id="senayBioWrap">
+    <div id="senayBioWrap" class="bio-collapse collapsed">
     <p>Atölyenin sanat yönetmeni ve koordinatörü olan Şenay İşcan, her projenin başında dosyaları inceleyerek iş planını ve görev dağılımını belirliyor, anlaşmaları yürütüyor. Dönemin ruhuna uygun çalışmalar üretebilmek için tarihi belge ve görselleri araştırıyor, eskizleri hazırlıyor. Kostüm tasarımından — kumaş seçimi, nakış, başlık ve aksesuar — heykel üretiminin kalıp, döküm, saç ve yüz ekimi aşamalarına kadar atölyenin sanatsal sürecinin tamamını koordine ediyor; birlikte çalıştıkları ustalar ve zanaatkârlarla eş güdümü sağlıyor.</p>
     <p>Bunun yanında 15 yıldır Türkiye'nin farklı şehirlerini — Tekirdağ, Gaziantep, Konya, Hatay, Denizli, Niğde, Mardin ve Şanlıurfa başta olmak üzere — dolaşarak cepken, üç etek, çarık, bindallı, tel kırma ve heybe gibi tarihi eşyaları topluyor. Depoladığı bu eserleri talep halinde müzelere ücretsiz teslim ediyor; bugüne dek İslam Eserleri Müzesi, Afyonkarahisar Arkeoloji Müzesi, Adana Etnografya Müzesi ve Necmi İğe Evi Etnografya Müzesi gibi kurumlarla çalıştı. Amaç, geçmişten gelen kültürel değerleri gelecek nesillere taşımak.</p>
     </div>
+    <div class="bio-more-wrap"><button type="button" class="bio-more" data-target="senayBioWrap">Devamını oku<svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg></button></div>
 
     <p class="about-pull" id="aboutPull">"Bülent elindeki malzemeye can verir, Şenay o canı dünyaya taşır."</p>
     <div class="about-roles">
@@ -682,10 +719,11 @@ body.intro-lock{overflow:hidden}
 
 <div class="lightbox" id="lightbox">
   <button class="lb-close" id="lbClose" aria-label="Kapat">&times;</button>
-  <button class="lb-nav lb-prev" id="lbPrev" aria-label="Önceki">&#10094;</button>
   <div class="lb-img-wrap">
+    <button class="lb-nav lb-prev" id="lbPrev" aria-label="Önceki">&#10094;</button>
     <img id="lbImg" src="" alt="">
     <span class="lb-watermark"><span class="lb-watermark-badge"><img src="assets/main/logo.webp" alt="bisanat logo"></span><span>&copy; Tüm Hakları Saklıdır</span></span>
+    <button class="lb-nav lb-next" id="lbNext" aria-label="Sonraki">&#10095;</button>
   </div>
   <div class="lb-fallback" id="lbFallback"><span class="fb-name" id="lbFbName"></span><span class="fb-sub">Görsel eklenmedi</span></div>
   <div class="lb-meta">
@@ -693,22 +731,21 @@ body.intro-lock{overflow:hidden}
     <p id="lbDesc"></p>
     <span class="lb-counter" id="lbCounter"></span>
   </div>
-  <button class="lb-nav lb-next" id="lbNext" aria-label="Sonraki">&#10095;</button>
 </div>
 
 <div class="lightbox" id="hyperLightbox">
   <button class="lb-close" id="hyperLbClose" aria-label="Kapat">&times;</button>
-  <button class="lb-nav lb-prev" id="hyperLbPrev" aria-label="Önceki">&#10094;</button>
   <div class="lb-img-wrap">
+    <button class="lb-nav lb-prev" id="hyperLbPrev" aria-label="Önceki">&#10094;</button>
     <img id="hyperLbImg" src="" alt="">
     <span class="lb-watermark"><span class="lb-watermark-badge"><img src="assets/main/logo.webp" alt="bisanat logo"></span><span>&copy; Tüm Hakları Saklıdır</span></span>
+    <button class="lb-nav lb-next" id="hyperLbNext" aria-label="Sonraki">&#10095;</button>
   </div>
   <div class="lb-meta">
     <h4 id="hyperLbTitle"></h4>
     <p id="hyperLbDesc"></p>
     <span class="lb-counter" id="hyperLbCounter"></span>
   </div>
-  <button class="lb-nav lb-next" id="hyperLbNext" aria-label="Sonraki">&#10095;</button>
 </div>
 
 <section id="yurtdisi" class="section-alt">
@@ -998,6 +1035,17 @@ body.intro-lock{overflow:hidden}
       <button type="button" class="admin-btn admin-btn-ghost" id="adminResetBtn">Bu Sekmeyi Varsayılana Döndür</button>
       <button type="button" class="admin-btn" id="adminSaveBtn">Kaydet</button>
     </div>
+
+    <div class="admin-io">
+      <p class="admin-pw-hint" style="margin-bottom:10px">Tüm düzenlemelerinizi (görsel isimleri, açıklamalar, kategori ve sayfa metinleri) tek bir dosya olarak indirip bilgisayarınıza kaydedebilir; dilediğinizde geri yükleyebilirsiniz.</p>
+      <div class="admin-btn-row">
+        <button type="button" class="admin-btn admin-btn-ghost" id="adminExportBtn">↓ Düzenlemeleri İndir (JSON)</button>
+        <button type="button" class="admin-btn admin-btn-ghost" id="adminImportBtn">↑ Dosyadan Yükle</button>
+      </div>
+      <input type="file" id="adminImportInput" accept="application/json,.json" style="display:none">
+      <div class="admin-save-note" id="adminIoNote"></div>
+    </div>
+
     <div class="admin-save-note" id="adminSaveNote">Kaydedildi.</div>
   </div>
 </div>
@@ -1033,29 +1081,59 @@ body.intro-lock{overflow:hidden}
    gezinmeli olarak açar.
 ============================================================ */
 const HYPER_WORKS = [
-  { slug:'1', title:'Romalı Savaşçı',
-    desc:'Adana Arkeoloji Müzesi için hazırlanan bu heykel, dönemin savaşçı kıyafetini ve duruşunu tarihi kaynaklara sadık kalarak yeniden canlandırıyor.' },
-  { slug:'2', title:'Tarih Öncesi İnsan',
-    desc:'Hatay Arkeoloji Müzesi\'nde sergilenen bu eser, tarih öncesi insanın yaşam biçimini bilimsel veriler ışığında gerçekçi bir sahneyle anlatıyor.' },
-  { slug:'3', title:'Denizaltı Subayı',
-    desc:'Çanakkale Deniz Müzesi\'ndeki TCG Uluç Ali Reis denizaltısında sergilenen bu heykel, dönemin denizaltı subayını sahne içinde canlandırıyor.' },
-  { slug:'4', title:'Mustafa Kemal Atatürk, 1915',
-    desc:'Koç Müzesi\'nde yer alan bu eser, Mustafa Kemal Atatürk\'ü 1915 yılına ait tarihi bir otomobil sahnesi içinde canlandırıyor.' },
-  { slug:'5', title:'Hilal-i Ahmer Hastanesi',
-    desc:'Çanakkale Tarihi Alanı, Alçıtepe\'deki bu çok figürlü canlandırma, Hilal-i Ahmer Hastanesi\'nin o dönemki atmosferini yeniden yaşatıyor.' },
-  { slug:'6', title:'Kraliyet Bilimleri Akademisi',
-    desc:'Katar\'daki Kraliyet Bilimleri Akademisi için hazırlanan bu çalışma, atölyemizin yurt dışındaki projelerinden biri.' },
+  { slug:'sanatta-yaklasim-1', title:'Romalı Savaşçı',
+    desc:'Adana Arkeoloji Müzesi için hazırlanan bu heykel, dönemin savaşçı kıyafetini ve duruşunu tarihi kaynaklara sadık kalarak canlandırıyor.' },
+  { slug:'sanatta-yaklasim-2', title:'Mehmetçik Heykeli',
+    desc:'Çanakkale Tarihi Alan Başkanlığı\'nda sergilenen 5,50 metrelik anıtsal eser; cesaret ve fedakârlığı en ince ayrıntısına dek yansıtan görkemiyle büyük ilgi görüyor.' },
+  { slug:'sanatta-yaklasim-3', title:'Portre Çalışmaları',
+    desc:'Her döneme ve şahsa ait portreler, gerçeklik ön planda tutularak birebir çalışılır; yüzün her hattı tek tek işlenerek yaşayan bir ifade kazandırılır.' },
+  { slug:'sanatta-yaklasim-4', title:'Yeniçeri Askeri',
+    desc:'Osmanlı ordusunun gücünü simgeleyen Yeniçeri; dönemin kıyafeti ve teçhizatıyla, kaftanından silahına dek tarihsel doğrulukla canlandırılmıştır.' },
+  { slug:'sanatta-yaklasim-5', title:'Timur Heykeli',
+    desc:'Tarihin en güçlü hükümdarlarından Timur, heybetli duruşu ve etkileyici boyutuyla; sarsılmaz iradesini en gerçekçi ayrıntılarla yansıtan bir eserde yeniden hayat buluyor.' },
+  { slug:'sanatta-yaklasim-6', title:'Zırhlı Süvari Heykeli',
+    desc:'Atının üzerinde güç ve asaleti bir arada taşıyan zırhlı süvari; zırhının her plakası tek tek işlenerek dönemin savaş sanatını olanca ihtişamıyla yansıtıyor.' },
 ];
 
 /* Admin panelinden düzenlenen başlık/açıklama metinleri için varsayılan
    yedek + localStorage'dan geri yükleme. */
 const HYPER_WORKS_DEFAULTS = HYPER_WORKS.map(w => ({ slug:w.slug, title:w.title, desc:w.desc }));
+const BAKED_OVERRIDES = {"pieces":{"ataturk::1.webp":{"title":"Mustafa Kemal Atatürk","desc":"Ulu Önder Gazi Mustafa Kemal Atatürk'ün aziz hatırasına duyulan saygı ve minnetle, en ince ayrıntısına kadar titizlikle işlenmiş gerçekçi bir çalışma."},"ataturk::2.webp":{"title":"Mustafa Kemal Atatürk","desc":"Ulu Önder Gazi Mustafa Kemal Atatürk'ün aziz hatırasına duyulan saygı ve minnetle, en ince ayrıntısına kadar titizlikle işlenmiş gerçekçi bir çalışma."},"ataturk::3.webp":{"title":"Mustafa Kemal Atatürk","desc":"Ulu Önder Gazi Mustafa Kemal Atatürk'ün aziz hatırasına duyulan saygı ve minnetle, en ince ayrıntısına kadar titizlikle işlenmiş gerçekçi bir çalışma."},"ataturk::4.webp":{"title":"Mustafa Kemal Atatürk","desc":"Ulu Önder Gazi Mustafa Kemal Atatürk'ün aziz hatırasına duyulan saygı ve minnetle, en ince ayrıntısına kadar titizlikle işlenmiş gerçekçi bir çalışma."},"ataturk::5.webp":{"title":"Mustafa Kemal Atatürk","desc":"Ulu Önder Gazi Mustafa Kemal Atatürk'ün aziz hatırasına duyulan saygı ve minnetle, en ince ayrıntısına kadar titizlikle işlenmiş gerçekçi bir çalışma."},"ataturk::6.webp":{"title":"Mustafa Kemal Atatürk","desc":"Ulu Önder Gazi Mustafa Kemal Atatürk'ün aziz hatırasına duyulan saygı ve minnetle, en ince ayrıntısına kadar titizlikle işlenmiş gerçekçi bir çalışma."},"ataturk::7.webp":{"title":"Mustafa Kemal Atatürk","desc":"Ulu Önder Gazi Mustafa Kemal Atatürk'ün aziz hatırasına duyulan saygı ve minnetle, en ince ayrıntısına kadar titizlikle işlenmiş gerçekçi bir çalışma."},"ataturk::8.webp":{"title":"Mustafa Kemal Atatürk","desc":"Ulu Önder Gazi Mustafa Kemal Atatürk'ün aziz hatırasına duyulan saygı ve minnetle, en ince ayrıntısına kadar titizlikle işlenmiş gerçekçi bir çalışma."},"ataturk::9.webp":{"title":"Mustafa Kemal Atatürk","desc":"Ulu Önder Gazi Mustafa Kemal Atatürk'ün aziz hatırasına duyulan saygı ve minnetle, en ince ayrıntısına kadar titizlikle işlenmiş gerçekçi bir çalışma."},"ataturk::10.webp":{"title":"Mustafa Kemal Atatürk","desc":"Ulu Önder Gazi Mustafa Kemal Atatürk'ün aziz hatırasına duyulan saygı ve minnetle, en ince ayrıntısına kadar titizlikle işlenmiş gerçekçi bir çalışma."},"ataturk::11.webp":{"title":"Mustafa Kemal Atatürk","desc":"Ulu Önder Gazi Mustafa Kemal Atatürk'ün aziz hatırasına duyulan saygı ve minnetle, en ince ayrıntısına kadar titizlikle işlenmiş gerçekçi bir çalışma."},"ataturk::12.webp":{"title":"Mustafa Kemal Atatürk","desc":"Ulu Önder Gazi Mustafa Kemal Atatürk'ün aziz hatırasına duyulan saygı ve minnetle, en ince ayrıntısına kadar titizlikle işlenmiş gerçekçi bir çalışma."},"milli-saraylar::Abdülmecid.webp":{"title":"Abdülmecid","desc":"Topkapı Sarayı 3.Ahmet Kütüphanesinde Sergilenmektedir"},"milli-saraylar::Topkapı Sarayı 3.Ahmet Kütüphanesi Kütüphaneci.webp":{"title":"Kütüphaneci","desc":"Topkapı Sarayı 3.Ahmet Kütüphanesinde Sergilenmektedir"},"milli-saraylar::Topkapı Sarayı 3.Ahmet Kütüphanesi Ulema-1.webp":{"title":"Ulema","desc":"Topkapı Sarayı 3.Ahmet Kütüphanesinde Sergilenmektedir"},"milli-saraylar::Topkapı Sarayı 3.Ahmet Kütüphanesi Ulema-2.webp":{"title":"Ulema","desc":"Topkapı Sarayı 3.Ahmet Kütüphanesinde Sergilenmektedir"},"milli-saraylar::Topkapı Sarayı 3.Ahmet Kütüphanesi Ulema-3.webp":{"title":"Ulema","desc":"Topkapı Sarayı 3.Ahmet Kütüphanesinde Sergilenmektedir"},"milli-saraylar::Topkapı Sarayı 3.Ahmet Kütüphanesi Ulema-4.webp":{"title":"Ulema","desc":"Topkapı Sarayı 3.Ahmet Kütüphanesinde Sergilenmektedir"},"milli-saraylar::Topkapı Sarayı 3.Ahmet Kütüphanesi Ulema-5.webp":{"title":"Ulema","desc":"Topkapı Sarayı 3.Ahmet Kütüphanesinde Sergilenmektedir"},"yurtdisi::Çİn Machou Bilim Merkezi-1.webp":{"title":"Machou Bilim Merkezi","desc":"Çİn Machou Bilim Merkezi'nde Sergilenmektedir."},"yurtdisi::Çİn Machou Bilim Merkezi-2.webp":{"title":"Çİn Machou Bilim Merkezi","desc":"Çİn Machou Bilim Merkezi'nde Sergilenmektedir."},"yurtdisi::Çİn Machou Bilim Merkezi-3.webp":{"title":"Çİn Machou Bilim Merkezi","desc":"Çİn Machou Bilim Merkezi'nde Sergilenmektedir."},"yurtdisi::El Jahiz-1.webp":{"title":"El Jahiz","desc":"Yurt dışındaki müze ve bilim merkezleri için hazırlanan, dönemine sadık kalınarak titizlikle üretilmiş özel bir çalışma."},"yurtdisi::El Jahiz-2.webp":{"title":"El Jahiz","desc":"El Jahiz'de Sergilenmektedir."},"yurtdisi::Katar.webp":{"title":"Katar","desc":"Katar'da Sergilenmektedir."},"yurtdisi::Suudi Arabistan-1.webp":{"title":"Suudi Arabistan","desc":"Suudi Arabistan'da Sergilenmektedir."},"yurtdisi::Suudi Arabistan-2.webp":{"title":"Suudi Arabistan","desc":"Suudi Arabistan'da Sergilenmektedir."},"yurtdisi::Ürdün-1.webp":{"title":"Ürdün","desc":"Ürdün'de Sergilenmektedir."},"yurtdisi::Ürdün-2.webp":{"title":"Ürdün","desc":"Ürdün'de Sergilenmektedir."},"yurtdisi::Ürdün-3.webp":{"title":"Ürdün","desc":"Ürdün'de Sergilenmektedir."},"arkeoloji::1.webp":{"title":"1","desc":"Anadolu'nun köklü geçmişini ve atalarımızın yaşamını tarihsel doğrulukla yansıtan, arkeoloji müzeleri için hazırlanmış gerçekçi bir canlandırma."},"arkeoloji::2.webp":{"title":"2","desc":"Anadolu'nun köklü geçmişini ve atalarımızın yaşamını tarihsel doğrulukla yansıtan, arkeoloji müzeleri için hazırlanmış gerçekçi bir canlandırma."},"arkeoloji::3.webp":{"title":"3","desc":"Anadolu'nun köklü geçmişini ve atalarımızın yaşamını tarihsel doğrulukla yansıtan, arkeoloji müzeleri için hazırlanmış gerçekçi bir canlandırma."},"arkeoloji::4.webp":{"title":"4","desc":"Anadolu'nun köklü geçmişini ve atalarımızın yaşamını tarihsel doğrulukla yansıtan, arkeoloji müzeleri için hazırlanmış gerçekçi bir canlandırma."},"arkeoloji::5.webp":{"title":"5","desc":"Anadolu'nun köklü geçmişini ve atalarımızın yaşamını tarihsel doğrulukla yansıtan, arkeoloji müzeleri için hazırlanmış gerçekçi bir canlandırma."},"arkeoloji::6.webp":{"title":"6","desc":"Anadolu'nun köklü geçmişini ve atalarımızın yaşamını tarihsel doğrulukla yansıtan, arkeoloji müzeleri için hazırlanmış gerçekçi bir canlandırma."},"arkeoloji::7.webp":{"title":"7","desc":"Anadolu'nun köklü geçmişini ve atalarımızın yaşamını tarihsel doğrulukla yansıtan, arkeoloji müzeleri için hazırlanmış gerçekçi bir canlandırma."},"arkeoloji::8.webp":{"title":"8","desc":"Anadolu'nun köklü geçmişini ve atalarımızın yaşamını tarihsel doğrulukla yansıtan, arkeoloji müzeleri için hazırlanmış gerçekçi bir canlandırma."},"arkeoloji::9.webp":{"title":"9","desc":"Anadolu'nun köklü geçmişini ve atalarımızın yaşamını tarihsel doğrulukla yansıtan, arkeoloji müzeleri için hazırlanmış gerçekçi bir canlandırma."},"arkeoloji::10.webp":{"title":"10","desc":"Anadolu'nun köklü geçmişini ve atalarımızın yaşamını tarihsel doğrulukla yansıtan, arkeoloji müzeleri için hazırlanmış gerçekçi bir canlandırma."},"arkeoloji::11.webp":{"title":"11","desc":"Anadolu'nun köklü geçmişini ve atalarımızın yaşamını tarihsel doğrulukla yansıtan, arkeoloji müzeleri için hazırlanmış gerçekçi bir canlandırma."},"arkeoloji::12.webp":{"title":"12","desc":"Anadolu'nun köklü geçmişini ve atalarımızın yaşamını tarihsel doğrulukla yansıtan, arkeoloji müzeleri için hazırlanmış gerçekçi bir canlandırma."},"arkeoloji::13.webp":{"title":"13","desc":"Anadolu'nun köklü geçmişini ve atalarımızın yaşamını tarihsel doğrulukla yansıtan, arkeoloji müzeleri için hazırlanmış gerçekçi bir canlandırma."},"arkeoloji::14.webp":{"title":"14","desc":"Anadolu'nun köklü geçmişini ve atalarımızın yaşamını tarihsel doğrulukla yansıtan, arkeoloji müzeleri için hazırlanmış gerçekçi bir canlandırma."},"arkeoloji::15.webp":{"title":"15","desc":"Anadolu'nun köklü geçmişini ve atalarımızın yaşamını tarihsel doğrulukla yansıtan, arkeoloji müzeleri için hazırlanmış gerçekçi bir canlandırma."},"arkeoloji::16.webp":{"title":"16","desc":"Anadolu'nun köklü geçmişini ve atalarımızın yaşamını tarihsel doğrulukla yansıtan, arkeoloji müzeleri için hazırlanmış gerçekçi bir canlandırma."},"arkeoloji::17.webp":{"title":"17","desc":"Anadolu'nun köklü geçmişini ve atalarımızın yaşamını tarihsel doğrulukla yansıtan, arkeoloji müzeleri için hazırlanmış gerçekçi bir canlandırma."},"arkeoloji::18.webp":{"title":"18","desc":"Anadolu'nun köklü geçmişini ve atalarımızın yaşamını tarihsel doğrulukla yansıtan, arkeoloji müzeleri için hazırlanmış gerçekçi bir canlandırma."},"arkeoloji::19.webp":{"title":"19","desc":"Anadolu'nun köklü geçmişini ve atalarımızın yaşamını tarihsel doğrulukla yansıtan, arkeoloji müzeleri için hazırlanmış gerçekçi bir canlandırma."},"arkeoloji::20.webp":{"title":"20","desc":"Anadolu'nun köklü geçmişini ve atalarımızın yaşamını tarihsel doğrulukla yansıtan, arkeoloji müzeleri için hazırlanmış gerçekçi bir canlandırma."},"arkeoloji::21.webp":{"title":"21","desc":"Anadolu'nun köklü geçmişini ve atalarımızın yaşamını tarihsel doğrulukla yansıtan, arkeoloji müzeleri için hazırlanmış gerçekçi bir canlandırma."},"arkeoloji::22.webp":{"title":"22","desc":"Anadolu'nun köklü geçmişini ve atalarımızın yaşamını tarihsel doğrulukla yansıtan, arkeoloji müzeleri için hazırlanmış gerçekçi bir canlandırma."},"arkeoloji::23.webp":{"title":"23","desc":"Anadolu'nun köklü geçmişini ve atalarımızın yaşamını tarihsel doğrulukla yansıtan, arkeoloji müzeleri için hazırlanmış gerçekçi bir canlandırma."},"etnografya::Adana Arkeoloji Müzesi.webp":{"title":"Adana Arkeoloji Müzesi","desc":"Adana Arkeoloji Müzesi'nde Sergilenmektedir."},"etnografya::Adana Etnografya Müzesi - Dokumacılar.webp":{"title":"Dokumacılar","desc":"Adana Etnografya Müzesi'nde Sergilenmektedir."},"etnografya::Adana Etnografya Müzesi - Kadın.webp":{"title":"Kadın","desc":"Adana Etnografya Müzesi'nde Sergilenmektedir."},"etnografya::Adana Etnografya Müzesi - Sergilenen Yöresel Kadın.webp":{"title":"Yöresel Kadın","desc":"Adana Etnografya Müzesi'nde Sergilenmektedir."},"etnografya::Adana Etnografya Müzesi-Yüz Eğiren Kadın.webp":{"title":"Yüz Eğiren Kadın","desc":"Adana Etnografya Müzesi'nde Sergilenmektedir."},"etnografya::Atatürk Evi-1 İzmit.webp":{"title":"Atatürk Evi","desc":"İzmit Atatürk Evi'nde Sergilenmektedir."},"etnografya::Atatürk Evi-2 İzmit.webp":{"title":"Atatürk Evi","desc":"İzmit Atatürk Evi'nde Sergilenmektedir."},"etnografya::Atatürk Evi-3 İzmit.webp":{"title":"Atatürk Evi","desc":"İzmit Atatürk Evi'nde Sergilenmektedir."},"etnografya::Atatürk Evi-4 İzmit.webp":{"title":"Atatürk Evi","desc":"İzmit Atatürk Evi'nde Sergilenmektedir."},"etnografya::Bartın Arkeoloji Müzesi.webp":{"title":"Bartın Arkeoloji Müzesi","desc":"Bartın Arkeoloji Müzesi'nde Sergilenmektedir."},"etnografya::Cizre Müzesi.webp":{"title":"Cizre Müzesi","desc":"Cizre Müzesi'nde Sergilenmektedir."},"etnografya::Edirne.webp":{"title":"Edirne","desc":"Edirne Müzesi'nde Sergilenmektedir."},"etnografya::Erzurum Arkeoloji Müzesi Etnografya Bölümü.webp":{"title":"Erzurum Arkeoloji Müzesi Etnografya Bölümü","desc":"Erzurum Arkeoloji Müzesi Etnografya Bölümünde Sergilenmketedir."},"etnografya::Eti Göç Müzesi - Göç Edenler.webp":{"title":"Göç Edenler","desc":"Eskişehir Eti Göç Müzesi'nde Sergilenmektedir."},"etnografya::Eti Göç Müzesi Eskişehir.webp":{"title":"Eti Göç Müzesi Eskişehir","desc":"Eskişehir Eti Göç Müzesi'nde Sergilenmektedir."},"etnografya::Eti Göç Müzesi.webp":{"title":"Eti Göç Müzesi","desc":"Eskişehir Eti Göç Müzesi'nde Sergilenmektedir."},"etnografya::Eti Göz Müzesi Göç Edenler.webp":{"title":"Eti Göz Müzesi Göç Edenler","desc":"Eskişehir Eti Göç Müzesi'nde Sergilenmektedir."},"etnografya::Gaziantep Hamam Müzesi.webp":{"title":"Gaziantep Hamam Müzesi","desc":"Gaziantep Hamam Müzesi'nde Sergilenmektedir."},"etnografya::İslam Eserleri Müzesi -  Hattat.webp":{"title":"Hattat","desc":"İslam Eserleri Müzesi'nde Sergilenmektedir."},"etnografya::İslam Eserleri Müzesi Etnografya Bölümü.webp":{"title":"İslam Eserleri Müzesi Etnografya Bölümü","desc":"İslam Eserleri Müzesi Etnografya Bölümü'nde Sergilenmektedir."},"etnografya::İslam Eserleri Müzesi Sultanahmet.webp":{"title":"İslam Eserleri Müzesi Sultanahmet","desc":"İslam Eserleri Müzesi Sultanahmet'te Sergilenmektedir."},"etnografya::İslam Eserleri Müzesi-1.webp":{"title":"İslam Eserleri Müzesi","desc":"İslam Eserleri Müzesi Sultanahmet'te Sergilenmektedir."},"etnografya::İslam Eserleri Müzesi-2.webp":{"title":"İslam Eserleri Müzesi","desc":"İslam Eserleri Müzesi Sultanahmet'te Sergilenmektedir."},"etnografya::İznik Müzesi.webp":{"title":"İznik Müzesi","desc":"İznik Müzesi'nde Sergilenmektedir."},"etnografya::Kırşehir Müzesi.webp":{"title":"Kırşehir Müzesi","desc":"Kırşehir Müzesi'nde Sergilenmektedir."},"etnografya::Niğde Müzesi Sergi.webp":{"title":"Niğde Müzesi","desc":"Niğde Müzesi'nde Sergilenmektedir."},"etnografya::Niğde Müzesi-1.webp":{"title":"Niğde Müzesi","desc":"Niğde Müzesi'nde Sergilenmektedir."},"etnografya::Niğde Müzesi-2.webp":{"title":"Niğde Müzesi","desc":"Niğde Müzesi'nde Sergilenmektedir."},"etnografya::Niğde Müzesi-3.webp":{"title":"Niğde Müzesi","desc":"Niğde Müzesi'nde Sergilenmektedir."},"etnografya::Niğde Müzesi-4.webp":{"title":"Niğde Müzesi","desc":"Niğde Müzesi'nde Sergilenmektedir."},"etnografya::Niğde Müzesi-5.webp":{"title":"Niğde Müzesi","desc":"Niğde Müzesi'nde Sergilenmektedir."},"etnografya::Niğde Müzesi-6.webp":{"title":"Niğde Müzesi","desc":"Niğde Müzesi'nde Sergilenmektedir."},"etnografya::Türkmen Kızı.webp":{"title":"Türkmen Kızı","desc":"Niğde Müzesi'nde Sergilenmektedir."},"tarihi-alan::Alçıtepe Hilal-i Ahmer Yaralı Hastanesi Sergisi-1.webp":{"title":"Hastane; Doktor, Hemşire, Yaralı ve Hastalar","desc":"Çanakkale Tarihi Alan Başkanlığı Alçıtepe Hilal-İ Ahmer Yaralı Hastanesi'nde Sergilenmektedir."},"tarihi-alan::Alçıtepe Hilal-i Ahmer Yaralı Hastanesi Sergisi-2.webp":{"title":"Hastane; Doktor, Hemşire, Yaralı ve Hastalar","desc":"Çanakkale Tarihi Alan Başkanlığı Alçıtepe Hilal-İ Ahmer Yaralı Hastanesi'nde Sergilenmektedir."},"tarihi-alan::Alçıtepe Hilal-i Ahmer Yaralı Hastanesi Sergisi-3.webp":{"title":"Hastane; Doktor, Hemşire, Yaralı ve Hastalar","desc":"Çanakkale Tarihi Alan Başkanlığı Alçıtepe Hilal-İ Ahmer Yaralı Hastanesi'nde Sergilenmektedir."},"tarihi-alan::Alçıtepe Hilal-i Ahmer Yaralı Hastanesi Sergisi-4.webp":{"title":"Hastane; Doktor, Hemşire, Yaralı ve Hastalar","desc":"Çanakkale Tarihi Alan Başkanlığı Alçıtepe Hilal-İ Ahmer Yaralı Hastanesi'nde Sergilenmektedir."},"tarihi-alan::Alçıtepe Hilal-i Ahmer Yaralı Hastanesi Sergisi-5.webp":{"title":"Hastane; Doktor, Hemşire, Yaralı ve Hastalar","desc":"Çanakkale Tarihi Alan Başkanlığı Alçıtepe Hilal-İ Ahmer Yaralı Hastanesi'nde Sergilenmektedir."},"tarihi-alan::Alçıtepe Hilal-i Ahmer Yaralı Hastanesi Sergisi-6.webp":{"title":"Hastane; Doktor, Hemşire, Yaralı ve Hastalar","desc":"Çanakkale Tarihi Alan Başkanlığı Alçıtepe Hilal-İ Ahmer Yaralı Hastanesi'nde Sergilenmektedir."},"tarihi-alan::Alçıtepe Hilal-i Ahmer Yaralı Hastanesi Sergisi-7.webp":{"title":"Hastane; Doktor, Hemşire, Yaralı ve Hastalar","desc":"Çanakkale Tarihi Alan Başkanlığı Alçıtepe Hilal-İ Ahmer Yaralı Hastanesi'nde Sergilenmektedir."},"tarihi-alan::Alçıtepe Hilal-i Ahmer Yaralı Hastanesi Sergisi-8.webp":{"title":"Hastane; Doktor, Hemşire, Yaralı ve Hastalar","desc":"Çanakkale Tarihi Alan Başkanlığı Alçıtepe Hilal-İ Ahmer Yaralı Hastanesi'nde Sergilenmektedir."},"tarihi-alan::Alçıtepe Hilal-i Ahmer Yaralı Hastanesi Sergisi-9.webp":{"title":"Hastane; Doktor, Hemşire, Yaralı ve Hastalar","desc":"Çanakkale Tarihi Alan Başkanlığı Alçıtepe Hilal-İ Ahmer Yaralı Hastanesi'nde Sergilenmektedir."},"tarihi-alan::Alçıtepe Hilal-i Ahmer Yaralı Hastanesi Sergisi-10.webp":{"title":"Hastane; Doktor, Hemşire, Yaralı ve Hastalar","desc":"Çanakkale Tarihi Alan Başkanlığı Alçıtepe Hilal-İ Ahmer Yaralı Hastanesi'nde Sergilenmektedir."},"tarihi-alan::Alçıtepe Hilal-i Ahmer Yaralı Hastanesi Sergisi-11.webp":{"title":"Hastane; Doktor, Hemşire, Yaralı ve Hastalar","desc":"Çanakkale Tarihi Alan Başkanlığı Alçıtepe Hilal-İ Ahmer Yaralı Hastanesi'nde Sergilenmektedir."},"tarihi-alan::Alçıtepe Hilal-i Ahmer Yaralı Hastanesi Sergisi-12.webp":{"title":"Hastane; Doktor, Hemşire, Yaralı ve Hastalar","desc":"Çanakkale Tarihi Alan Başkanlığı Alçıtepe Hilal-İ Ahmer Yaralı Hastanesi'nde Sergilenmektedir."},"tarihi-alan::Alçıtepe Hilal-i Ahmer Yaralı Hastanesi Sergisi-13.webp":{"title":"Hastane; Doktor, Hemşire, Yaralı ve Hastalar","desc":"Çanakkale Tarihi Alan Başkanlığı Alçıtepe Hilal-İ Ahmer Yaralı Hastanesi'nde Sergilenmektedir."},"tarihi-alan::Alçıtepe Hilal-i Ahmer Yaralı Hastanesi Sergisi-14.webp":{"title":"Hastane; Doktor, Hemşire, Yaralı ve Hastalar","desc":"Çanakkale Tarihi Alan Başkanlığı Alçıtepe Hilal-İ Ahmer Yaralı Hastanesi'nde Sergilenmektedir."},"tarihi-alan::Alçıtepe Hilal-i Ahmer Yaralı Hastanesi Sergisi-15.webp":{"title":"Hastane; Doktor, Hemşire, Yaralı ve Hastalar","desc":"Çanakkale Tarihi Alan Başkanlığı Alçıtepe Hilal-İ Ahmer Yaralı Hastanesi'nde Sergilenmektedir."},"tarihi-alan::Kilitbahir Topçu Tabyaları-1.webp":{"title":"Kilitbahir Topçu Tabyaları","desc":"Çanakkale Tarihi Alan Başkanlığı Kilitbahir Topçu Tabyaları'nda Sergilenmektedir."},"tarihi-alan::Kilitbahir Topçu Tabyaları-2.webp":{"title":"Kilitbahir Topçu Tabyaları","desc":"Çanakkale Tarihi Alan Başkanlığı Kilitbahir Topçu Tabyaları'nda Sergilenmektedir."},"tarihi-alan::Kilitbahir Topçu Tabyaları-3.webp":{"title":"Kilitbahir Topçu Tabyaları","desc":"Çanakkale Tarihi Alan Başkanlığı Kilitbahir Topçu Tabyaları'nda Sergilenmektedir."},"tarihi-alan::Kilitbahir Topçu Tabyaları-4.webp":{"title":"Kilitbahir Topçu Tabyaları","desc":"Çanakkale Tarihi Alan Başkanlığı Kilitbahir Topçu Tabyaları'nda Sergilenmektedir."},"tarihi-alan::Kilitbahir Topçu Tabyaları-5.webp":{"title":"Kilitbahir Topçu Tabyaları","desc":"Çanakkale Tarihi Alan Başkanlığı Kilitbahir Topçu Tabyaları'nda Sergilenmektedir."},"tarihi-alan::Kilitbahir Topçu Tabyaları-6.webp":{"title":"Kilitbahir Topçu Tabyaları","desc":"Çanakkale Tarihi Alan Başkanlığı Kilitbahir Topçu Tabyaları'nda Sergilenmektedir."},"tarihi-alan::Mehmetçik Heykeli 5,50m 1.webp":{"title":"Mehmetçik Heykeli 5,50 Metre","desc":"Çanakkale Tarihi Alan Başkanlığı'nda Sergilenmektedir."},"tarihi-alan::Mehmetçik Heykeli 5,50m 2.webp":{"title":"Mehmetçik Heykeli 5,50 Metre","desc":"Çanakkale Tarihi Alan Başkanlığı'nda Sergilenmektedir."},"tarihi-alan::Mehmetçik Heykeli 5,50m 3.webp":{"title":"Mehmetçik Heykeli 5,50 Metre","desc":"Çanakkale Tarihi Alan Başkanlığı'nda Sergilenmektedir."},"tarihi-alan::Mehmetçik Heykeli 5,50m 4.webp":{"title":"Mehmetçik Heykeli 5,50 Metre","desc":"Çanakkale Tarihi Alan Başkanlığı'nda Sergilenmektedir."},"tarihi-alan::Mehmetçik Heykeli 5,50m 5.webp":{"title":"Mehmetçik Heykeli 5,50 Metre","desc":"Çanakkale Tarihi Alan Başkanlığı'nda Sergilenmektedir."},"tarihi-alan::Mehmetçik Heykeli 5,50m 6.webp":{"title":"Mehmetçik Heykeli 5,50 Metre","desc":"Çanakkale Tarihi Alan Başkanlığı'nda Sergilenmektedir."},"tarihi-alan::Mehmetçik Heykeli 5,50m 7.webp":{"title":"Mehmetçik Heykeli 5,50 Metre","desc":"Çanakkale Tarihi Alan Başkanlığı'nda Sergilenmektedir."},"tarihi-alan::Mehmetçik Heykeli 5,50m 8.webp":{"title":"Mehmetçik Heykeli 5,50 Metre","desc":"Çanakkale Tarihi Alan Başkanlığı'nda Sergilenmektedir."},"tarihi-alan::Mehmetçik Heykeli 5,50m 9.webp":{"title":"Mehmetçik Heykeli 5,50 Metre","desc":"Çanakkale Tarihi Alan Başkanlığı'nda Sergilenmektedir."},"tarihi-alan::Mehmetçik Heykeli 5,50m 10.webp":{"title":"Mehmetçik Heykeli 5,50 Metre","desc":"Çanakkale Tarihi Alan Başkanlığı'nda Sergilenmektedir."},"deniz-muzesi::Fatih Sultan Mehmet-1.webp":{"title":"Fatih Sultan Mehmet","desc":"Çanakkale Deniz Müzesinde Sergilenmektedir."},"deniz-muzesi::Fatih Sultan Mehmet-2.webp":{"title":"Fatih Sultan Mehmet","desc":"Çanakkale Deniz Müzesinde Sergilenmektedir."},"deniz-muzesi::Kartal İstimbotu.webp":{"title":"Kartal İstimbotu","desc":"Çanakkale Deniz Müzesinde Sergilenmektedir."},"deniz-muzesi::Piri Reis.webp":{"title":"Piri Reis","desc":"Çanakkale Deniz Müzesinde Sergilenmektedir."},"deniz-muzesi::Piri Reis-2.webp":{"title":"Piri Reis","desc":"Çanakkale Deniz Müzesinde Sergilenmektedir."},"deniz-muzesi::Sadrazam.webp":{"title":"Sadrazam","desc":"Çanakkale Deniz Müzesinde Sergilenmektedir."},"deniz-muzesi::Uluç Ali Reis Denizaltısı-Gemi Komutanı.webp":{"title":"Uluç Ali Reis Denizaltısı Gemi Komutanı","desc":"Çanakkale Deniz Müzesinde Sergilenmektedir."},"tipki-benzer::Adile Naşit, Sinema Müzesi.webp":{"title":"Adile Naşit","desc":"Sinema Müzesinde Sergilenmektedir."},"tipki-benzer::Gulyabani, Sinema Müzesi.webp":{"title":"Gulyabani","desc":"Sinema Müzesinde Sergilenmektedir."},"tipki-benzer::Kazım Karabekir Vakfı.webp":{"title":"Kazım Karabekir","desc":"Kazım Karabekir Vakfı'nda Sergilenmektedir."},"tipki-benzer::Kemal Sunal, Sinema Müzesi.webp":{"title":"Kemal Sunal","desc":"Sinema Müzesinde Sergilenmektedir."},"tipki-benzer::Nejat Uygur, Cibali Karakolu Sergisi.webp":{"title":"Nejat Uygur","desc":"Cibali Karakolu Sergisi'nde Sergilenmketedir."},"tipki-benzer::Sinema Müzesi, Yumurcak.webp":{"title":"Yumurcak","desc":"Sinema Müzesinde Sergilenmektedir."},"tipki-benzer::Tarık Akan, Türvak.webp":{"title":"Tarık Akan","desc":"Türvak'ta Sergilenmektedir."},"ozel-muzeler::1.webp":{"title":"1","desc":"Kurumların ve koleksiyonların hikâyesini yaşatmak üzere, tarihî gerçekliğe bağlı kalınarak hazırlanmış özel bir çalışma."},"ozel-muzeler::2.webp":{"title":"2","desc":"Kurumların ve koleksiyonların hikâyesini yaşatmak üzere, tarihî gerçekliğe bağlı kalınarak hazırlanmış özel bir çalışma."},"ozel-muzeler::3.webp":{"title":"3","desc":"Kurumların ve koleksiyonların hikâyesini yaşatmak üzere, tarihî gerçekliğe bağlı kalınarak hazırlanmış özel bir çalışma."},"ozel-muzeler::4.webp":{"title":"4","desc":"Kurumların ve koleksiyonların hikâyesini yaşatmak üzere, tarihî gerçekliğe bağlı kalınarak hazırlanmış özel bir çalışma."},"ozel-muzeler::5.webp":{"title":"5","desc":"Kurumların ve koleksiyonların hikâyesini yaşatmak üzere, tarihî gerçekliğe bağlı kalınarak hazırlanmış özel bir çalışma."},"ozel-muzeler::6.webp":{"title":"6","desc":"Kurumların ve koleksiyonların hikâyesini yaşatmak üzere, tarihî gerçekliğe bağlı kalınarak hazırlanmış özel bir çalışma."},"ozel-muzeler::7.webp":{"title":"7","desc":"Kurumların ve koleksiyonların hikâyesini yaşatmak üzere, tarihî gerçekliğe bağlı kalınarak hazırlanmış özel bir çalışma."},"ozel-muzeler::8.webp":{"title":"8","desc":"Kurumların ve koleksiyonların hikâyesini yaşatmak üzere, tarihî gerçekliğe bağlı kalınarak hazırlanmış özel bir çalışma."},"ozel-muzeler::9.webp":{"title":"9","desc":"Kurumların ve koleksiyonların hikâyesini yaşatmak üzere, tarihî gerçekliğe bağlı kalınarak hazırlanmış özel bir çalışma."},"portre::1.webp":{"title":"1","desc":"Gerçekçi modelleme ve ince işçiliğin bir araya geldiği, yüz hatlarının ve ifadenin en ince ayrıntısına dek işlendiği özgün bir portre çalışması."},"portre::2.webp":{"title":"2","desc":"Gerçekçi modelleme ve ince işçiliğin bir araya geldiği, yüz hatlarının ve ifadenin en ince ayrıntısına dek işlendiği özgün bir portre çalışması."},"portre::3.webp":{"title":"3","desc":"Gerçekçi modelleme ve ince işçiliğin bir araya geldiği, yüz hatlarının ve ifadenin en ince ayrıntısına dek işlendiği özgün bir portre çalışması."},"portre::4.webp":{"title":"4","desc":"Gerçekçi modelleme ve ince işçiliğin bir araya geldiği, yüz hatlarının ve ifadenin en ince ayrıntısına dek işlendiği özgün bir portre çalışması."},"portre::5.webp":{"title":"5","desc":"Gerçekçi modelleme ve ince işçiliğin bir araya geldiği, yüz hatlarının ve ifadenin en ince ayrıntısına dek işlendiği özgün bir portre çalışması."},"portre::6.webp":{"title":"6","desc":"Gerçekçi modelleme ve ince işçiliğin bir araya geldiği, yüz hatlarının ve ifadenin en ince ayrıntısına dek işlendiği özgün bir portre çalışması."},"portre::7.webp":{"title":"7","desc":"Gerçekçi modelleme ve ince işçiliğin bir araya geldiği, yüz hatlarının ve ifadenin en ince ayrıntısına dek işlendiği özgün bir portre çalışması."},"portre::8.webp":{"title":"8","desc":"Gerçekçi modelleme ve ince işçiliğin bir araya geldiği, yüz hatlarının ve ifadenin en ince ayrıntısına dek işlendiği özgün bir portre çalışması."},"portre::9.webp":{"title":"9","desc":"Gerçekçi modelleme ve ince işçiliğin bir araya geldiği, yüz hatlarının ve ifadenin en ince ayrıntısına dek işlendiği özgün bir portre çalışması."},"portre::10.webp":{"title":"10","desc":"Gerçekçi modelleme ve ince işçiliğin bir araya geldiği, yüz hatlarının ve ifadenin en ince ayrıntısına dek işlendiği özgün bir portre çalışması."},"portre::11.webp":{"title":"11","desc":"Gerçekçi modelleme ve ince işçiliğin bir araya geldiği, yüz hatlarının ve ifadenin en ince ayrıntısına dek işlendiği özgün bir portre çalışması."},"portre::12.webp":{"title":"12","desc":"Gerçekçi modelleme ve ince işçiliğin bir araya geldiği, yüz hatlarının ve ifadenin en ince ayrıntısına dek işlendiği özgün bir portre çalışması."},"portre::13.webp":{"title":"13","desc":"Gerçekçi modelleme ve ince işçiliğin bir araya geldiği, yüz hatlarının ve ifadenin en ince ayrıntısına dek işlendiği özgün bir portre çalışması."},"portre::14.webp":{"title":"14","desc":"Gerçekçi modelleme ve ince işçiliğin bir araya geldiği, yüz hatlarının ve ifadenin en ince ayrıntısına dek işlendiği özgün bir portre çalışması."},"portre::15.webp":{"title":"15","desc":"Gerçekçi modelleme ve ince işçiliğin bir araya geldiği, yüz hatlarının ve ifadenin en ince ayrıntısına dek işlendiği özgün bir portre çalışması."},"tarih-oncesi::1.webp":{"title":"1","desc":"İnsanlığın ilk yaşam izlerini bilimsel veriler ışığında canlandıran, tarih öncesi çağlara ait gerçekçi bir sahne."},"tarih-oncesi::2.webp":{"title":"2","desc":"İnsanlığın ilk yaşam izlerini bilimsel veriler ışığında canlandıran, tarih öncesi çağlara ait gerçekçi bir sahne."},"tarih-oncesi::3.webp":{"title":"3","desc":"İnsanlığın ilk yaşam izlerini bilimsel veriler ışığında canlandıran, tarih öncesi çağlara ait gerçekçi bir sahne."},"tarih-oncesi::4.webp":{"title":"4","desc":"İnsanlığın ilk yaşam izlerini bilimsel veriler ışığında canlandıran, tarih öncesi çağlara ait gerçekçi bir sahne."},"tarih-oncesi::5.webp":{"title":"5","desc":"İnsanlığın ilk yaşam izlerini bilimsel veriler ışığında canlandıran, tarih öncesi çağlara ait gerçekçi bir sahne."},"tarih-oncesi::6.webp":{"title":"6","desc":"İnsanlığın ilk yaşam izlerini bilimsel veriler ışığında canlandıran, tarih öncesi çağlara ait gerçekçi bir sahne."},"tarih-oncesi::7.webp":{"title":"7","desc":"İnsanlığın ilk yaşam izlerini bilimsel veriler ışığında canlandıran, tarih öncesi çağlara ait gerçekçi bir sahne."},"tarih-oncesi::8.webp":{"title":"8","desc":"İnsanlığın ilk yaşam izlerini bilimsel veriler ışığında canlandıran, tarih öncesi çağlara ait gerçekçi bir sahne."},"tarih-oncesi::9.webp":{"title":"9","desc":"İnsanlığın ilk yaşam izlerini bilimsel veriler ışığında canlandıran, tarih öncesi çağlara ait gerçekçi bir sahne."},"tarih-oncesi::10.webp":{"title":"10","desc":"İnsanlığın ilk yaşam izlerini bilimsel veriler ışığında canlandıran, tarih öncesi çağlara ait gerçekçi bir sahne."},"tarih-oncesi::11.webp":{"title":"11","desc":"İnsanlığın ilk yaşam izlerini bilimsel veriler ışığında canlandıran, tarih öncesi çağlara ait gerçekçi bir sahne."},"tarih-oncesi::12.webp":{"title":"12","desc":"İnsanlığın ilk yaşam izlerini bilimsel veriler ışığında canlandıran, tarih öncesi çağlara ait gerçekçi bir sahne."},"film-tv::1.webp":{"title":"1","desc":"Film, televizyon ve reklam yapımları için hazırlanan, sahnenin ruhuna uygun dekor ve aksesuar çalışmalarından bir örnek."},"film-tv::2.webp":{"title":"2","desc":"Film, televizyon ve reklam yapımları için hazırlanan, sahnenin ruhuna uygun dekor ve aksesuar çalışmalarından bir örnek."},"film-tv::3.webp":{"title":"3","desc":"Film, televizyon ve reklam yapımları için hazırlanan, sahnenin ruhuna uygun dekor ve aksesuar çalışmalarından bir örnek."},"film-tv::4.webp":{"title":"4","desc":"Film, televizyon ve reklam yapımları için hazırlanan, sahnenin ruhuna uygun dekor ve aksesuar çalışmalarından bir örnek."},"film-tv::5.webp":{"title":"5","desc":"Film, televizyon ve reklam yapımları için hazırlanan, sahnenin ruhuna uygun dekor ve aksesuar çalışmalarından bir örnek."},"film-tv::6.webp":{"title":"6","desc":"Film, televizyon ve reklam yapımları için hazırlanan, sahnenin ruhuna uygun dekor ve aksesuar çalışmalarından bir örnek."},"film-tv::7.webp":{"title":"7","desc":"Film, televizyon ve reklam yapımları için hazırlanan, sahnenin ruhuna uygun dekor ve aksesuar çalışmalarından bir örnek."},"film-tv::8.webp":{"title":"8","desc":"Film, televizyon ve reklam yapımları için hazırlanan, sahnenin ruhuna uygun dekor ve aksesuar çalışmalarından bir örnek."},"film-tv::9.webp":{"title":"9","desc":"Film, televizyon ve reklam yapımları için hazırlanan, sahnenin ruhuna uygun dekor ve aksesuar çalışmalarından bir örnek."},"film-tv::10.webp":{"title":"10","desc":"Film, televizyon ve reklam yapımları için hazırlanan, sahnenin ruhuna uygun dekor ve aksesuar çalışmalarından bir örnek."},"film-tv::11.webp":{"title":"11","desc":"Film, televizyon ve reklam yapımları için hazırlanan, sahnenin ruhuna uygun dekor ve aksesuar çalışmalarından bir örnek."}},"categories":{"ataturk":{"name":"Mustafa Kemal Atatürk","introTitle":"Mustafa Kemal Atatürk","introParagraphs":"Mustafa Kemal Atatürk; üstün dehası, sarsılmaz liderliği ve eşsiz ileri görüşlülüğüyle tarihe yön vermiş büyük bir devlet adamıdır. Dahi bir stratejist ve benzersiz bir komutan olarak, bağımsızlık mücadelesini zafere taşıyarak milletine umut olmuş, Türk tarihinin en büyük kahramanlarından biri olarak adını ölümsüzleştirmiştir. Cesareti, kararlılığı ve çağdaş uygarlık hedefiyle yalnızca bir ulusu özgürlüğe kavuşturmakla kalmamış, gelecek nesillere ilham veren kalıcı bir miras bırakmıştır. Atatürk, fikirleri ve eserleriyle bugün de saygı, minnet ve hayranlıkla anılan büyük bir liderdir.\n\nDünya tarihinin en büyük devrimcilerinden Gazi Mustafa Kemal Atatürk'e duyduğumuz sonsuz sevgi, saygı ve minnetle onu yaşatmaya çalışıyoruz. Atatürk üzerine çalışmak bizim için en büyük onur, ilham ve sorumluluktur; onun aziz hatırasını gelecek nesillere aktarmak ve unutturmamak en büyük idealimiz ve varlık sebebimizdir."},"milli-saraylar":{"name":"Milli Saraylar","introTitle":"Milli Saraylar","introParagraphs":"Geçmişin ihtişamı, bugünün hafızası. Müze saraylar, bir zamanlar hükümdarların ve devlet yöneticilerinin yaşamına tanıklık etmiş, bugün ise tarih ve kültürü yaşatan eşsiz yapılardır. Görkemli mimarileri ve zengin koleksiyonlarıyla ziyaretçilerini geçmişin ihtişamına götürür; her salonu, tarihin izlerini ve kültürel mirası gelecek nesillere aktaran yaşayan birer hafızadır.\n\nMüze saraylardaki çalışmalarımızda, saray yaşamını ve dönemin insanlarını tarihsel doğrulukla yansıtan gerçekçi canlandırmalar hazırlıyoruz. Orijinal mekânlar ve özgün tefrişlerle oluşturulan bu sahneler, ziyaretçilere geçmişi sanki yeniden yaşıyormuş hissi veren etkileyici bir deneyim sunar.\n\nBu çalışmalarımızın en değerli örneklerinden biri Topkapı Sarayı'ndadır. 15. yüzyıldan 19. yüzyıla kadar Osmanlı İmparatorluğu'nun yönetim merkezi olan ve bugün dünyanın en saygın müze-sarayları arasında yer alan bu eşsiz mekânda sergilenen heykellerimiz, tarihî mekânın ruhuna ve dönemin gerçekliğine uygun olarak bilimsel araştırmalar ve sanatsal titizlikle hazırlanmıştır. Bu köklü tarihî atmosferin bir parçası olmak, eserlerimizin en büyük gurur kaynaklarından biridir."},"yurtdisi":{"name":"Yurtdışı Çalışmaları","introTitle":"Yurtdışı Çalışmalarımız","introParagraphs":"Yurt dışındaki müzeler ve bilim merkezleri için, tarihe yön veren bilim insanlarını ve onların buluşlarını konu alan özel çalışmalar hazırlıyoruz. Bu isimleri en ince ayrıntısına kadar araştırarak gerçekçi heykellerle canlandırırken, icatlarını dönemine özgü dekorlar ve birebir ölçekte yeniden üretilmiş düzeneklerle ziyaretçilerin karşısına çıkarıyoruz.\n\nSergilenen her mekanizmayı, ilk tasarımına sadık kalarak — modern teknolojiye başvurmadan, dönemin malzeme ve yöntemleriyle — yeniden inşa ediyoruz. Amacımız yalnızca bir buluşu göstermek değil, o buluşun ardındaki emeği, dehayı ve dönemin ruhunu olduğu gibi yaşatmaktır. Bu anlayışla ürettiğimiz eserler, bugün dünyanın farklı ülkelerindeki müze ve bilim merkezlerinde sergilenmeye devam ediyor."},"arkeoloji":{"name":"Arkeoloji Müzeleri","introTitle":"Arkeoloji Müzeleri","introParagraphs":"Arkeoloji müzeleri, geçmiş uygarlıkların izlerini günümüze taşıyan eşsiz kültür hazineleridir. Binlerce yıllık eserleri koruyarak ziyaretçilere tarihin derinliklerinde unutulmaz bir yolculuk sunar. Her eser, insanlığın ortak mirasını anlatan sessiz bir tanık; her sergi ise geçmiş ile gelecek arasında kurulan değerli bir köprüdür.\n\nAnadolu medeniyetleri, insanlık tarihine yön veren sayısız arkeolojik mirası günümüze ulaştırmıştır. Bu eşsiz eserler, dünya kültür mirasının en değerli hazineleri arasında yer alır. Arkeoloji müzelerindeki çalışmalarımızda, Anadolu'nun zengin kültürel geçmişini ve atalarımızın yaşamını tarihsel doğrulukla yansıtan gerçekçi sahneler hazırlıyoruz. Amacımız, yazı öncesi ve yazı sonrası dönemleri ziyaretçilere etkileyici ve öğretici bir görsel deneyimle sunmaktır."},"etnografya":{"name":"Etnografya Müzeleri","introTitle":"Etnografya Müzeleri","introParagraphs":"Bir toplumun ruhu, elden ele, nesilden nesile. Etnografya müzeleri, toplumların yaşam biçimini, geleneklerini, el sanatlarını ve kültürel değerlerini geleceğe taşıyan kültür merkezleridir. Geçmişin günlük yaşamını, yaşam alanlarını ve üretim kültürünü özgün eserlerle ziyaretçilere sunar; her eser, bir toplumun kimliğini ve zengin mirasını anlatan değerli bir tanıktır.\n\nEtnografya müzelerindeki çalışmalarımızda, bu toprakların zengin kültürünü, geleneklerini, el sanatlarını ve özgün yaşam biçimini gerçekçi sahnelerle yaşatmayı amaçlıyoruz. Her çalışmamız, kültürel mirasımızın eşsiz zenginliğine duyduğumuz saygının ve onu gelecek nesillere aktarma sorumluluğumuzun bir yansımasıdır."},"tarihi-alan":{"name":"Çanakkale Savaşları Tarihi Alan","introTitle":"Çanakkale Savaşları Tarihi Alan Çalışmaları","introParagraphs":"Çanakkale Tarihi Alanı, milletimizin bağımsızlık uğruna verdiği destansı mücadelenin, fedakârlığın ve kahramanlığın en güçlü simgelerinden biridir. Aynı zamanda savaşın acılarını ve barışın kıymetini gelecek nesillere anlatan evrensel bir hatıra mekânıdır.\n\nBu anlamlı tarihî alandaki çalışmalarımızda, Çanakkale kahramanlarını ve savaşın unutulmaz anlarını tarihsel doğruluk ve sanatsal titizlikle heykellerimizde yaşatıyoruz. Her eserimiz, aziz kahramanlarımızın hatırasını ölümsüzleştirmek, ziyaretçilere o ruhu hissettirmek ve Çanakkale destanını gelecek nesillere aktarmak amacıyla hazırlanmıştır."},"deniz-muzesi":{"name":"Çanakkale Deniz Müzesi","introTitle":"Çanakkale Deniz Müzesi","introParagraphs":"Çimenlik Kalesi'nde, denizlerin destanını yaşatıyoruz. Çanakkale Deniz Müzesi, Türk denizcilik tarihinin en önemli miraslarını yaşatan, Çimenlik Kalesi'nin eşsiz tarihî atmosferinde ziyaretçilerini geçmişle buluşturan seçkin bir müzedir.\n\nÇanakkale ruhunu, deniz savaşlarının kahramanlığını ve bu köklü mirası etkileyici biçimde yaşatan bu müzede yer almak bizim için büyük bir onur ve gurur kaynağıdır. Buradaki heykellerimiz, tarihî gerçekliğe bağlı kalınarak hazırlanmış ve ziyaretçilerin o dönemin ruhunu hissedebilmesi amacıyla tasarlanmıştır."},"tipki-benzer":{"name":"Tıpkı Benzer Çalışmalar","introTitle":"Tıpkı Benzer Çalışmalar","introParagraphs":"Bir bakışta tanınan, bir dokunuşta hayat bulan yüzler. Benzetme heykellerimiz, kişilerin fotoğrafları, portreleri ve mevcut görsel kaynakları esas alınarak hazırlanır; her eser, karakterin yüz hatlarını, ifadesini ve kendine özgü duruşunu en doğru şekilde yansıtacak titizlikte şekillendirilir.\n\nAmacımız, yalnızca fiziksel benzerliği değil; kişinin karakterini ve ruhunu da sanatsal bir yorumla yaşatmaktır."},"ozel-muzeler":{"name":"Özel Müzeler","introTitle":"Özel Müzeler","introParagraphs":"Bir kurumun hafızasını, bir mirasın hikâyesini heykelleştiriyoruz. Özel müzeler; kişi, vakıf ya da kurumlar tarafından kurulan, sanat, tarih, kültür ve koleksiyon mirasını koruyup ziyaretçilerle buluşturan seçkin mekânlardır.\n\nBu müzelerdeki çalışmalarımızda, tarihî kişilikleri, kültürel değerleri ve önemli yaşam sahnelerini gerçekçi heykeller ve canlandırmalarla yeniden kuruyor, ziyaretçilere etkileyici ve unutulmaz bir deneyim sunuyoruz."},"portre":{"name":"Portreler","introTitle":"Heykel Yüzleri","introParagraphs":"Her çizgide bir karakter, her ifadede bir hikâye. Bu bölümde, heykellerimizin yüz ifadelerini ve karakter detaylarını yakından inceleyebilirsiniz. Her portre; gerçekçi modelleme, sanatsal ustalık ve ince işçiliğin bir araya geldiği özgün bir eserdir."},"tarih-oncesi":{"name":"Tarih Öncesi İnsanlar","introTitle":"Tarih Öncesi İnsanlar","introParagraphs":"Tarih öncesi çağlara ait çalışmalarımızda, insanlığın ilk yaşam izlerini bilimsel veriler ışığında gerçekçi sahnelerle canlandırıyoruz. Alanında uzman akademisyenler ve bilim insanlarıyla hazırlanan bu eserler, geçmişimizi tarihsel doğrulukla ziyaretçilere sunmaktadır. Her sahne, insanlığın köklü geçmişini keşfetmeye davet eden etkileyici bir zaman yolculuğudur."},"film-tv":{"name":"Film, TV, Reklam Setleri","introTitle":"Film, TV, Reklam Setleri Dekor Çalışmaları","introParagraphs":"Kameranın arkasında, sanatın önünde. Uzun yıllar boyunca film, televizyon ve reklam sektöründe pek çok değerli yapımda görev aldık; birlikte çalışma onurunu yaşadığımız sanatçılar ve film ekipleri, mesleki yolculuğumuzun en değerli parçası oldu.\n\nBu bölümde, yer aldığımız yapımlardan seçilmiş dekor, aksesuar ve çalışmalarımızdan örnekleri görebilirsiniz."}},"texts":{"heroEyebrow":"bisanat atölyesi","heroTitle":"Gerçeğin ötesinde<br>bir <em>gerçeklik.</em>","heroSub":"<span class=\"brand-hl\">bisanat</span> atölyesinde her eser, gerçeğin sınırlarını zorlayan bir tutkuyla doğar. Bülent İşcan'ın hiperrealist heykelleri, Şenay İşcan'ın usta sanat yönetmenliğiyle buluşunca tarih artık anlatılmaz — karşınızda nefes alır.","stat1Num":"1000+","stat1Label":"Üretilen hiperrealist eser","stat2Num":"90+","stat2Label":"Yurt içi müze projesi","stat3Num":"10","stat3Label":"Ülkede sergilenen eser","stat4Num":"20+","stat4Label":"Yıl sinema / TV deneyimi","bulentBio":"1972 Tekirdağ doğumlu Bülent İşcan, Marmara Üniversitesi Güzel Sanatlar Fakültesi Resim Bölümü'nden mezun oldu. Yıllarca sinema, TV ve reklam sektörüne dekor, aksesuar ve maket üreten sanatçı, tarihi film ve dizilerde gerçeğe en yakın görünümü sahneye taşıma tutkusuyla 26 yaşında hiperrealist heykel sanatına yöneldi. Her eserine aylarca süren bir emekle can katan sanatçı, kırışıklıktan damar izine, bakışındaki ışıktan ten dokusuna kadar en ince ayrıntıyı tek tek işleyerek heykellerine adeta nefes alan bir gerçeklik kazandıran Bülent İşcan, bugün 70'i aşkın müzede, binin üzerinde eseriyle sergileniyor — Topkapı ve Dolmabahçe Sarayları'ndan Çanakkale Tarihi Alanı'na, yurt dışında Çin'den Azerbaycan'a kadar birçok ülkede eserleri yer alıyor.\n\nEn çok duygulandığı çalışmalar arasında İstanbul Sinema Müzesi için ürettiği Adile Naşit ve Kemal Sunal heykelleri yer alıyor; yüzlerce fotoğraf ve arşiv taraması sonunda ortaya çıkan bu eserler, bir neslin hafızasını yeniden canlandırdı. İstanbul'daki otuz yıllık atölye hayatının ardından eşi Şenay ile birlikte memleketi Hayrabolu'nun Şalgamlı köyüne yerleşerek üretimini köy sakinleriyle birlikte sürdürmeye başladı; bugün köyde 100'e yakın heykel ortak emekle hayat buluyor.\n\nSanatçının en dikkat çeken son eseri, Çanakkale Savaşları Gelibolu Tarihi Alan Başkanlığı için tasarladığı 4,5 metre yüksekliğindeki Mehmetçik Heykeli oldu — dönemin fedakârlığını ve cesaretini tüm gerçekliğiyle yansıtan bu dev eser, sanatçıya 2024 yılında Tekirdağ Kültür Elçisi unvanını kazandırdı.","senayBio":"Atölyenin sanat yönetmeni ve koordinatörü olan Şenay İşcan, her projenin başında dosyaları inceleyerek iş planını ve görev dağılımını belirliyor, anlaşmaları yürütüyor. Dönemin ruhuna uygun çalışmalar üretebilmek için tarihi belge ve görselleri araştırıyor, eskizleri hazırlıyor. Kostüm tasarımından — kumaş seçimi, nakış, başlık ve aksesuar — heykel üretiminin kalıp, döküm, saç ve yüz ekimi aşamalarına kadar atölyenin sanatsal sürecinin tamamını koordine ediyor; birlikte çalıştıkları ustalar ve zanaatkârlarla eş güdümü sağlıyor.\n\nBunun yanında 15 yıldır Türkiye'nin farklı şehirlerini — Tekirdağ, Gaziantep, Konya, Hatay, Denizli, Niğde, Mardin ve Şanlıurfa başta olmak üzere — dolaşarak cepken, üç etek, çarık, bindallı, tel kırma ve heybe gibi tarihi eşyaları topluyor. Depoladığı bu eserleri talep halinde müzelere ücretsiz teslim ediyor; bugüne dek İslam Eserleri Müzesi, Afyonkarahisar Arkeoloji Müzesi, Adana Etnografya Müzesi ve Necmi İğe Evi Etnografya Müzesi gibi kurumlarla çalıştı. Amaç, geçmişten gelen kültürel değerleri gelecek nesillere taşımak.","aboutPull":"\"Bülent elindeki malzemeye can verir, Şenay o canı dünyaya taşır.\"","hyperCardTitle":"Bülent İşcan İle Gerçeğin Ötesinde Bir Gerçeklik","hyperCardBody":"Aşırı gerçekçilik, bir yüzü, bir anı ya da bir karakteri fotoğrafik netlikte — hatta çoğu zaman çıplak gözün fark edemeyeceği bir ayrıntı düzeyinde — yeniden üretme sanatıdır. Cilt dokusu, damar izleri, tek tek yerleştirilen kıllar, gözbebeğinin derinliğindeki ışık kırılması... Hiçbir ayrıntı tesadüfe bırakılmaz; her biri, izleyeni \"gerçek mi, değil mi\" sorusuyla baş başa bırakmak için özenle hesaplanır.\n\nBülent İşcan bu sanata 26 yaşında başladı ve o günden bu yana doğal malzemelerden en son teknolojik materyallere kadar geniş bir yelpazede çalışıyor. Balmumu ve silikon gibi malzemeler, yılların ustalığıyla yavaş yavaş bir yüze dönüşür; her eser, referans fotoğraflarla defalarca kıyaslanarak, saatlerce süren elle uygulanan ayrıntı işçiliğiyle can bulur.\n\nSonuç, bir heykel değil; donmuş bir andır. Ziyaretçi karşısındaki yüze baktığında kendine bir soru sorar: <em class=\"gold-text\">nefes alıyor mu?</em> Aşırı gerçekçiliğin gücü de tam olarak bu şüphede saklıdır.","contactBig":"Bir sonraki eseri birlikte kuralım.","siteFooter":"© 2026 bisanat — Bülent & Şenay İşcan Atölyesi · Tüm eserler telif hakkı ile korunmaktadır."},"hyper":{"sanatta-yaklasim-1":{"title":"Romalı Savaşçı","desc":"Adana Arkeoloji Müzesi için hazırlanan bu heykel, dönemin savaşçı kıyafetini ve duruşunu tarihi kaynaklara sadık kalarak canlandırıyor."},"sanatta-yaklasim-2":{"title":"Mehmetçik Heykeli","desc":"Çanakkale Tarihi Alan Başkanlığı'nda sergilenen 5,50 metrelik anıtsal eser; cesaret ve fedakârlığı en ince ayrıntısına dek yansıtan görkemiyle büyük ilgi görüyor."},"sanatta-yaklasim-3":{"title":"Portre Çalışmaları","desc":"Her döneme ve şahsa ait portreler, gerçeklik ön planda tutularak birebir çalışılır; yüzün her hattı tek tek işlenerek yaşayan bir ifade kazandırılır."},"sanatta-yaklasim-4":{"title":"Yeniçeri Askeri","desc":"Osmanlı ordusunun gücünü simgeleyen Yeniçeri; dönemin kıyafeti ve teçhizatıyla, kaftanından silahına dek tarihsel doğrulukla canlandırılmıştır."},"sanatta-yaklasim-5":{"title":"Timur Heykeli","desc":"Tarihin en güçlü hükümdarlarından Timur, heybetli duruşu ve etkileyici boyutuyla; sarsılmaz iradesini en gerçekçi ayrıntılarla yansıtan bir eserde yeniden hayat buluyor."},"sanatta-yaklasim-6":{"title":"Zırhlı Süvari Heykeli","desc":"Atının üzerinde güç ve asaleti bir arada taşıyan zırhlı süvari; zırhının her plakası tek tek işlenerek dönemin savaş sanatını olanca ihtişamıyla yansıtıyor."}}};
+
+/* Kaydedilmiş varsayılan içerik (yönetim panelinden indirilen JSON buraya gömülüdür).
+   localStorage'da kullanıcı düzenlemesi varsa o öncelik alır; yoksa bu gömülü
+   değerler kullanılır. Böylece isim/açıklamalar herkeste kalıcı görünür. */
+function bakedSection(name){ return (BAKED_OVERRIDES && BAKED_OVERRIDES[name]) ? BAKED_OVERRIDES[name] : {}; }
+function mergedOverrides(storageKey, section){
+  const baseObj = bakedSection(section);
+  let userObj = {};
+  try{ const raw = localStorage.getItem(storageKey); if(raw) userObj = JSON.parse(raw) || {}; }catch(err){ userObj = {}; }
+  /* Anahtar bazında derin birleştir: kullanıcının boş bıraktığı alan (ör. desc)
+     gömülü değeri EZMESİN; sadece dolu yazdığı alanlar gömülünün üstüne geçsin. */
+  const out = {};
+  const keys = new Set([...Object.keys(baseObj), ...Object.keys(userObj)]);
+  keys.forEach(k=>{
+    const b = baseObj[k], u = userObj[k];
+    if(b && typeof b === 'object' && u && typeof u === 'object'){
+      const merged = Object.assign({}, b);
+      Object.keys(u).forEach(f=>{
+        const val = u[f];
+        if(typeof val === 'string' ? val.trim() !== '' : (val !== undefined && val !== null)){
+          merged[f] = val; /* kullanıcı dolu yazmışsa üste geçir */
+        }
+      });
+      out[k] = merged;
+    } else {
+      out[k] = (u !== undefined) ? u : b;
+    }
+  });
+  return out;
+}
+
 const HYPER_OVERRIDES_KEY = 'bisanat_hyper_overrides';
 function loadHyperOverrides(){
   try{
-    const raw = localStorage.getItem(HYPER_OVERRIDES_KEY);
-    if(!raw) return;
-    const overrides = JSON.parse(raw);
+    const overrides = mergedOverrides(HYPER_OVERRIDES_KEY, 'hyper');
     HYPER_WORKS.forEach(w=>{
       const o = overrides[w.slug];
       if(o){
@@ -1067,7 +1145,7 @@ function loadHyperOverrides(){
 }
 loadHyperOverrides();
 
-function hyperImgPath(slug, file){ return `assets/atolye/${slug}/${file}`; }
+function hyperImgPath(slug, file){ return `assets/eserler/${slug}/${file}`; }
 
 async function loadHyperImages(slug){
   const files = [];
@@ -1294,9 +1372,7 @@ const CATEGORIES_DEFAULTS = CATEGORIES.map(c => ({
 const CAT_OVERRIDES_KEY = 'bisanat_cat_overrides';
 function loadCatOverrides(){
   try{
-    const raw = localStorage.getItem(CAT_OVERRIDES_KEY);
-    if(!raw) return;
-    const overrides = JSON.parse(raw);
+    const overrides = mergedOverrides(CAT_OVERRIDES_KEY, 'categories');
     CATEGORIES.forEach(c=>{
       const o = overrides[c.slug];
       if(!o) return;
@@ -1372,9 +1448,7 @@ PAGE_TEXT_FIELDS.forEach(f=>{
 const TEXT_OVERRIDES_KEY = 'bisanat_text_overrides';
 function loadTextOverrides(){
   try{
-    const raw = localStorage.getItem(TEXT_OVERRIDES_KEY);
-    if(!raw) return;
-    const overrides = JSON.parse(raw);
+    const overrides = mergedOverrides(TEXT_OVERRIDES_KEY, 'texts');
     PAGE_TEXT_FIELDS.forEach(f=>{
       const node = document.querySelector(f.el);
       if(!node) return;
@@ -1401,9 +1475,18 @@ const catIntro      = document.getElementById('catIntro');
 const catIntroTitle = document.getElementById('catIntroTitle');
 const catIntroBody  = document.getElementById('catIntroBody');
 const catIntroBtn   = document.getElementById('catIntroBtn');
-catIntroBtn.addEventListener('click', ()=>{
+catIntroBtn.addEventListener('click', async ()=>{
   catIntro.style.display = 'none';
-  loadCategoryGallery(currentSlug);
+  /* 3'lü grid yerine doğrudan gezinme galerisi (lightbox) aç */
+  const slug = currentSlug;
+  const pieces = await loadPieces(slug);
+  if(currentSlug !== slug) return;
+  currentCatPieces = pieces;
+  if(!pieces.length){
+    grid.innerHTML = '<div class="empty-note">Bu kategoride henüz görsel eklenmedi.</div>';
+    return;
+  }
+  openLightbox(slug, 0);
 });
 moreLink.addEventListener('click', e=>{
   if(currentSlug === 'all'){
@@ -1453,13 +1536,127 @@ function candidateFiles(i){
   return out;
 }
 
+/* Bazı kategorilerde görseller sıralı sayı değil, isimli dosyalardır.
+   Bu kategoriler için dosya adlarını burada listeliyoruz; kod bu isimleri
+   sırasıyla kullanır (yine de klasörde var mı diye doğrular). Listede
+   olmayan kategoriler eskisi gibi 1.webp, 2.jpg... diye taranır. */
+const NAMED_PIECES = {
+  'deniz-muzesi': [
+    'Fatih Sultan Mehmet-1.webp',
+    'Fatih Sultan Mehmet-2.webp',
+    'Kartal İstimbotu.webp',
+    'Piri Reis.webp',
+    'Piri Reis-2.webp',
+    'Sadrazam.webp',
+    'Uluç Ali Reis Denizaltısı-Gemi Komutanı.webp'
+  ],
+  'etnografya': [
+    'Adana Arkeoloji Müzesi.webp',
+    'Adana Etnografya Müzesi - Dokumacılar.webp',
+    'Adana Etnografya Müzesi - Kadın.webp',
+    'Adana Etnografya Müzesi - Sergilenen Yöresel Kadın.webp',
+    'Adana Etnografya Müzesi-Yüz Eğiren Kadın.webp',
+    'Atatürk Evi-1 İzmit.webp',
+    'Atatürk Evi-2 İzmit.webp',
+    'Atatürk Evi-3 İzmit.webp',
+    'Atatürk Evi-4 İzmit.webp',
+    'Bartın Arkeoloji Müzesi.webp',
+    'Cizre Müzesi.webp',
+    'Edirne.webp',
+    'Erzurum Arkeoloji Müzesi Etnografya Bölümü.webp',
+    'Eti Göç Müzesi - Göç Edenler.webp',
+    'Eti Göç Müzesi Eskişehir.webp',
+    'Eti Göç Müzesi.webp',
+    'Eti Göz Müzesi Göç Edenler.webp',
+    'Gaziantep Hamam Müzesi.webp',
+    'İslam Eserleri Müzesi -  Hattat.webp',
+    'İslam Eserleri Müzesi Etnografya Bölümü.webp',
+    'İslam Eserleri Müzesi Sultanahmet.webp',
+    'İslam Eserleri Müzesi-1.webp',
+    'İslam Eserleri Müzesi-2.webp',
+    'İznik Müzesi.webp',
+    'Kırşehir Müzesi.webp',
+    'Niğde Müzesi Sergi.webp',
+    'Niğde Müzesi-1.webp',
+    'Niğde Müzesi-2.webp',
+    'Niğde Müzesi-3.webp',
+    'Niğde Müzesi-4.webp',
+    'Niğde Müzesi-5.webp',
+    'Niğde Müzesi-6.webp',
+    'Türkmen Kızı.webp'
+  ],
+  'milli-saraylar': [
+    'Abdülmecid.webp',
+    'Topkapı Sarayı 3.Ahmet Kütüphanesi Kütüphaneci.webp',
+    'Topkapı Sarayı 3.Ahmet Kütüphanesi Ulema-1.webp',
+    'Topkapı Sarayı 3.Ahmet Kütüphanesi Ulema-2.webp',
+    'Topkapı Sarayı 3.Ahmet Kütüphanesi Ulema-3.webp',
+    'Topkapı Sarayı 3.Ahmet Kütüphanesi Ulema-4.webp',
+    'Topkapı Sarayı 3.Ahmet Kütüphanesi Ulema-5.webp'
+  ],
+  'tarihi-alan': [
+    'Alçıtepe Hilal-i Ahmer Yaralı Hastanesi Sergisi-1.webp',
+    'Alçıtepe Hilal-i Ahmer Yaralı Hastanesi Sergisi-2.webp',
+    'Alçıtepe Hilal-i Ahmer Yaralı Hastanesi Sergisi-3.webp',
+    'Alçıtepe Hilal-i Ahmer Yaralı Hastanesi Sergisi-4.webp',
+    'Alçıtepe Hilal-i Ahmer Yaralı Hastanesi Sergisi-5.webp',
+    'Alçıtepe Hilal-i Ahmer Yaralı Hastanesi Sergisi-6.webp',
+    'Alçıtepe Hilal-i Ahmer Yaralı Hastanesi Sergisi-7.webp',
+    'Alçıtepe Hilal-i Ahmer Yaralı Hastanesi Sergisi-8.webp',
+    'Alçıtepe Hilal-i Ahmer Yaralı Hastanesi Sergisi-9.webp',
+    'Alçıtepe Hilal-i Ahmer Yaralı Hastanesi Sergisi-10.webp',
+    'Alçıtepe Hilal-i Ahmer Yaralı Hastanesi Sergisi-11.webp',
+    'Alçıtepe Hilal-i Ahmer Yaralı Hastanesi Sergisi-12.webp',
+    'Alçıtepe Hilal-i Ahmer Yaralı Hastanesi Sergisi-13.webp',
+    'Alçıtepe Hilal-i Ahmer Yaralı Hastanesi Sergisi-14.webp',
+    'Alçıtepe Hilal-i Ahmer Yaralı Hastanesi Sergisi-15.webp',
+    'Kilitbahir Topçu Tabyaları-1.webp',
+    'Kilitbahir Topçu Tabyaları-2.webp',
+    'Kilitbahir Topçu Tabyaları-3.webp',
+    'Kilitbahir Topçu Tabyaları-4.webp',
+    'Kilitbahir Topçu Tabyaları-5.webp',
+    'Kilitbahir Topçu Tabyaları-6.webp',
+    'Mehmetçik Heykeli 5,50m 1.webp',
+    'Mehmetçik Heykeli 5,50m 2.webp',
+    'Mehmetçik Heykeli 5,50m 3.webp',
+    'Mehmetçik Heykeli 5,50m 4.webp',
+    'Mehmetçik Heykeli 5,50m 5.webp',
+    'Mehmetçik Heykeli 5,50m 6.webp',
+    'Mehmetçik Heykeli 5,50m 7.webp',
+    'Mehmetçik Heykeli 5,50m 8.webp',
+    'Mehmetçik Heykeli 5,50m 9.webp',
+    'Mehmetçik Heykeli 5,50m 10.webp'
+  ],
+  'tipki-benzer': [
+    'Adile Naşit, Sinema Müzesi.webp',
+    'Gulyabani, Sinema Müzesi.webp',
+    'Kazım Karabekir Vakfı.webp',
+    'Kemal Sunal, Sinema Müzesi.webp',
+    'Nejat Uygur, Cibali Karakolu Sergisi.webp',
+    'Sinema Müzesi, Yumurcak.webp',
+    'Tarık Akan, Türvak.webp'
+  ],
+  'yurtdisi': [
+    'Çİn Machou Bilim Merkezi-1.webp',
+    'Çİn Machou Bilim Merkezi-2.webp',
+    'Çİn Machou Bilim Merkezi-3.webp',
+    'El Jahiz-1.webp',
+    'El Jahiz-2.webp',
+    'Katar.webp',
+    'Suudi Arabistan-1.webp',
+    'Suudi Arabistan-2.webp',
+    'Ürdün-1.webp',
+    'Ürdün-2.webp',
+    'Ürdün-3.webp'
+  ]
+};
+
 /* Admin panelinden düzenlenen görsel başına isim/açıklama için
    localStorage'da saklanan override'lar. Anahtar: "slug::dosyaAdı" */
 const PIECE_OVERRIDES_KEY = 'bisanat_piece_overrides';
 function loadPieceOverrides(){
   try{
-    const raw = localStorage.getItem(PIECE_OVERRIDES_KEY);
-    return raw ? JSON.parse(raw) : {};
+    return mergedOverrides(PIECE_OVERRIDES_KEY, 'pieces');
   }catch(err){ return {}; }
 }
 
@@ -1475,14 +1672,32 @@ function probeImage(url){
 async function loadPieces(slug){
   if(piecesCache[slug]) return piecesCache[slug];
   const files = [];
-  let misses = 0;
-  for(let i = 1; i <= MAX_PROBE; i++){
-    let found = null;
-    for(const file of candidateFiles(i)){
-      if(await probeImage(imgPath(slug, file))){ found = file; break; }
+  if(NAMED_PIECES[slug]){
+    /* İsimli dosya listesi: sırayı koru, klasörde gerçekten var olanları al */
+    for(const file of NAMED_PIECES[slug]){
+      if(await probeImage(imgPath(slug, file))) files.push(file);
     }
-    if(found){ files.push(found); misses = 0; }
-    else { misses++; if(misses > PROBE_GAP) break; } // arka arkaya çok boşluk → klasör bitti
+  } else {
+    /* Numaralı klasör: dosyalar 1.webp, 2.jpg, 05.png... diye. Yol tamamen
+       numaradan bulunur. Klasör 0'dan da başlayabilsin ve baştaki birkaç
+       numara eksik olsa da (ör. 3.webp'ten başlıyorsa) bulabilsin diye
+       ilk görsele kadar daha toleranslı, bulduktan sonra normal tarıyoruz. */
+    let misses = 0;
+    let foundAny = false;
+    for(let i = 0; i <= MAX_PROBE; i++){
+      let found = null;
+      for(const file of candidateFiles(i)){
+        if(await probeImage(imgPath(slug, file))){ found = file; break; }
+      }
+      if(found){ files.push(found); misses = 0; foundAny = true; }
+      else {
+        if(i === 0) continue; // 0.webp yoksa sorun değil, 1'den devam
+        misses++;
+        // henüz hiç görsel bulunmadıysa baştaki boşluklara geniş tolerans
+        const limit = foundAny ? PROBE_GAP : 10;
+        if(misses > limit) break;
+      }
+    }
   }
 
   let descMap = {};
@@ -1519,24 +1734,33 @@ function buildChips(){
   });
 }
 
+const isMobile = ()=> window.matchMedia('(max-width:768px)').matches;
+
 function setActiveCategory(slug){
   currentSlug = slug;
   [...catChips.children].forEach(c=> c.classList.toggle('active', c.dataset.cat === slug));
   catIntro.style.display = 'none';
   if(slug === 'all'){
     activeLbl.style.display = 'none';
+    activeLbl.classList.remove('back-link');
     moreLink.textContent = 'Tüm arşivi gör →';
     catNav.style.display = 'none';
+    if(isMobile()) allViewExpanded = true; /* mobilde 'Tümü' hep tüm kartları gösterir */
     renderAll(); /* moreLink görünürlüğünü renderAll ayarlar */
   } else {
     allViewExpanded = false; /* kategoriye geçince 'Tümü' genişletmesini sıfırla */
     const cat = findCat(slug);
     activeLbl.style.display = 'block';
-    activeLbl.textContent = cat ? cat.name : '';
+    activeLbl.textContent = isMobile() ? 'Tüm eserlere dön' : (cat ? cat.name : '');
+    activeLbl.classList.toggle('back-link', isMobile());
     moreLink.style.display = 'none';
     renderCategory(slug);
   }
 }
+/* Mobilde kategori etiketine tıklayınca 'Tümü'ye dön */
+activeLbl.addEventListener('click', ()=>{
+  if(activeLbl.classList.contains('back-link')) setActiveCategory('all');
+});
 
 /* Tümü görünümü: her kategori için 1 kart, kendi görselleri arasında döngü */
 async function renderAll(){
@@ -1722,6 +1946,16 @@ function openLightbox(slug, index){
 function closeLightbox(){
   lightbox.classList.remove('open');
   document.body.style.overflow = '';
+  /* Galeri doğrudan lightbox olarak açıldıysa (grid yok), kapanınca
+     boş ekran yerine kategori tanıtımına geri dön */
+  if(currentSlug !== 'all' && !grid.querySelector('.img-box') && catIntro){
+    const cat = findCat(currentSlug);
+    if(cat && cat.intro){
+      catIntroTitle.textContent = cat.intro.title || cat.name;
+      catIntroBody.innerHTML = cat.intro.paragraphs.map(p => `<p>${p}</p>`).join('');
+      catIntro.style.display = 'block';
+    }
+  }
 }
 function updateLightbox(){
   const cat = findCat(lbSlug);
@@ -1764,8 +1998,35 @@ lightbox.addEventListener('touchend', e=>{
 });
 
 buildChips();
+if(isMobile()) allViewExpanded = true; /* mobilde açılışta tüm kartlar görünsün */
 renderAll();
 renderHyperGrid();
+
+/* ---------- Biyografi 'Devamını oku' aç/kapa ---------- */
+(function initBioToggles(){
+  document.querySelectorAll('.bio-more').forEach(btn=>{
+    const wrap = document.getElementById(btn.dataset.target);
+    if(!wrap) return;
+    btn.addEventListener('click', ()=>{
+      const collapsed = wrap.classList.contains('collapsed');
+      if(collapsed){
+        wrap.classList.remove('collapsed');
+        wrap.style.maxHeight = wrap.scrollHeight + 'px';
+        btn.classList.add('open');
+        btn.childNodes[0].nodeValue = 'Daha az göster';
+      } else {
+        /* önce mevcut yüksekliği sabitle, sonra kapat (yumuşak geçiş için) */
+        wrap.style.maxHeight = wrap.scrollHeight + 'px';
+        requestAnimationFrame(()=>{
+          wrap.classList.add('collapsed');
+          wrap.style.maxHeight = '';
+        });
+        btn.classList.remove('open');
+        btn.childNodes[0].nodeValue = 'Devamını oku';
+      }
+    });
+  });
+})();
 
 /* ---------- Mobil menü (hamburger) ---------- */
 (function initMobileNav(){
@@ -2240,6 +2501,111 @@ document.addEventListener('dragstart', e=>{
     }
   }
   resetBtn.addEventListener('click', resetEdits);
+
+  /* ---------- Düzenlemeleri indir / geri yükle (JSON) ---------- */
+  const exportBtn  = document.getElementById('adminExportBtn');
+  const importBtn  = document.getElementById('adminImportBtn');
+  const importInput= document.getElementById('adminImportInput');
+  const ioNote     = document.getElementById('adminIoNote');
+  const IO_KEYS = {
+    pieces:     PIECE_OVERRIDES_KEY,
+    categories: CAT_OVERRIDES_KEY,
+    texts:      TEXT_OVERRIDES_KEY,
+    hyper:      HYPER_OVERRIDES_KEY
+  };
+  function ioMsg(text, ok){
+    if(!ioNote) return;
+    ioNote.textContent = text;
+    ioNote.className = 'admin-save-note admin-io-note show ' + (ok ? 'ok' : 'err');
+    if(ok) setTimeout(()=> ioNote.classList.remove('show'), 4000);
+  }
+  function readKey(k){
+    try{ const raw = localStorage.getItem(k); return raw ? JSON.parse(raw) : {}; }
+    catch(err){ return {}; }
+  }
+  function doExport(){
+    /* açık sekmede yazılmış ama henüz kaydedilmemiş görsel alanlarını da dahil et */
+    harvestImgFields();
+    const pieceLive = readKey(IO_KEYS.pieces);
+    Object.keys(pendingPieceEdits).forEach(key=>{
+      const e = pendingPieceEdits[key], entry = {};
+      if(e.title) entry.title = e.title;
+      if(e.desc)  entry.desc  = e.desc;
+      if(Object.keys(entry).length) pieceLive[key] = entry;
+    });
+    const data = {
+      _format: 'bisanat-icerik',
+      _version: 1,
+      _exportedAt: new Date().toISOString(),
+      pieces: pieceLive,
+      categories: readKey(IO_KEYS.categories),
+      texts: readKey(IO_KEYS.texts),
+      hyper: readKey(IO_KEYS.hyper)
+    };
+    const blob = new Blob([JSON.stringify(data, null, 2)], {type:'application/json'});
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    const stamp = new Date().toISOString().slice(0,10);
+    a.href = url;
+    a.download = `bisanat-icerik-${stamp}.json`;
+    document.body.appendChild(a); a.click(); a.remove();
+    setTimeout(()=> URL.revokeObjectURL(url), 1000);
+    ioMsg('İndirildi. Dosyayı bilgisayarınıza kaydedin.', true);
+  }
+  function applyImported(data){
+    /* her bölümü localStorage'a yaz + bellekteki verilere uygula */
+    if(data.pieces && typeof data.pieces === 'object'){
+      try{ localStorage.setItem(IO_KEYS.pieces, JSON.stringify(data.pieces)); }catch(err){}
+      /* önbelleği temizle ki galeri yeni isimlerle yeniden okusun */
+      Object.keys(piecesCache).forEach(s=> delete piecesCache[s]);
+      Object.keys(pendingPieceEdits).forEach(k=> delete pendingPieceEdits[k]);
+    }
+    if(data.categories && typeof data.categories === 'object'){
+      try{ localStorage.setItem(IO_KEYS.categories, JSON.stringify(data.categories)); }catch(err){}
+      if(typeof loadCatOverrides === 'function') loadCatOverrides();
+    }
+    if(data.texts && typeof data.texts === 'object'){
+      try{ localStorage.setItem(IO_KEYS.texts, JSON.stringify(data.texts)); }catch(err){}
+      PAGE_TEXT_FIELDS.forEach(f=>{
+        const node = document.querySelector(f.el);
+        const val = data.texts[f.key];
+        if(node && typeof val === 'string' && val.trim()) applyPageText(f, node, val);
+      });
+    }
+    if(data.hyper && typeof data.hyper === 'object'){
+      try{ localStorage.setItem(IO_KEYS.hyper, JSON.stringify(data.hyper)); }catch(err){}
+      if(typeof loadHyperOverrides === 'function') loadHyperOverrides();
+    }
+    /* görünümleri tazele */
+    if(typeof updateCatChipLabels === 'function') updateCatChipLabels();
+    renderHyperGrid();
+    if(currentSlug === 'all') renderAll(); else renderCategory(currentSlug);
+    /* açık panel sekmelerini de tazele */
+    buildTextFields(); buildFields(); buildCatFields();
+    if(currentImgSlug) buildImgFieldsForCat(currentImgSlug);
+  }
+  function doImport(file){
+    const reader = new FileReader();
+    reader.onload = ()=>{
+      try{
+        const data = JSON.parse(reader.result);
+        if(!data || typeof data !== 'object') throw new Error('geçersiz');
+        applyImported(data);
+        ioMsg('Yüklendi. İçerik güncellendi.', true);
+      }catch(err){
+        ioMsg('Dosya okunamadı — geçerli bir JSON değil.', false);
+      }
+    };
+    reader.onerror = ()=> ioMsg('Dosya okunamadı.', false);
+    reader.readAsText(file);
+  }
+  if(exportBtn)   exportBtn.addEventListener('click', doExport);
+  if(importBtn)   importBtn.addEventListener('click', ()=> importInput && importInput.click());
+  if(importInput) importInput.addEventListener('change', e=>{
+    const f = e.target.files && e.target.files[0];
+    if(f) doImport(f);
+    e.target.value = ''; /* aynı dosyayı tekrar seçebilmek için sıfırla */
+  });
 })();
 </script>
 
